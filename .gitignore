@@ -34,3 +34,10 @@ build/
 
 ### docker ###
 .docker
+
+### Env files ###
+
+application.yaml
+.env
+.env.prod
+.env.dev
