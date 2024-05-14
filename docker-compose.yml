@@ -10,7 +10,7 @@ services:
       - ./docker_application.properties:/app/application.properties:ro
     depends_on:
       - db
-      - redis
+      # - redis
 
   db:
     image: mysql:8
@@ -22,8 +22,8 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: demo_app
 
-  redis:
-    image: redis:6-alpine
-    restart: always
-    volumes:
-      - ./.docker/data/redis:/data
+  # redis:
+  #   image: redis:6-alpine
+  #   restart: always
+  #   volumes:
+  #     - ./.docker/data/redis:/data
