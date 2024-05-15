@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ${ENV_NAME}
+    name: ${ENV_NAME:movie_booking}
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME}
     username: ${DB_USER}
