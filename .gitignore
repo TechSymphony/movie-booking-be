@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### docker ###
+.docker
+
+### Env files ###
+
+.env
+.env.prod
+.env.dev
+
+# Secrets
+
+/secrets
+/secrets/*
