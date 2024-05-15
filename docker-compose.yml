@@ -9,7 +9,7 @@ services:
     volumes:
       - ./docker_application.properties:/app/application.properties:ro
     env_file:
-      - path: ./.env
+      - .env
     # depends_on:
       # - db
       # - redis
