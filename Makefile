@@ -3,4 +3,4 @@ start:
 stop:
 	docker compose down
 build:
-	docker build -t movie-booking:v2 .
+	docker build -t movie-booking-be:v1 .
