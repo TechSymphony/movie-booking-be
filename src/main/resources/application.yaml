@@ -2,12 +2,14 @@ server:
   port: ${ENV_PORT}
 
 spring:
+  config:
+    import: optional:configtree:/run/secrets/
   application:
     name: ${ENV_NAME}
   datasource:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USER}
-    password: ${DB_PASS}
+    password: ${db_dev_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: ${DB_SHOW_SQL}
