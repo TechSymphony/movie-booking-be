@@ -40,3 +40,8 @@ build/
 .env
 .env.prod
 .env.dev
+
+# Secrets
+
+/secrets
+/secrets/*
