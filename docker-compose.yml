@@ -28,10 +28,6 @@ services:
       - db_root_password
 
 secrets:
-   db_dev_password:
-     file: ./secrets/db_dev_password.txt
-   db_password:
-     file: ./secrets/db_password.txt
    db_root_password:
      file: ./secrets/db_root_password.txt
 
