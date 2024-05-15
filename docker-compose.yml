@@ -26,16 +26,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_ROOTPW}
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    restart: always
-    ports:
-      - "8081:8081"
-    environment:
-      - PMA_ARBITRARY=1
-    depends_on:
-      - db
-
   # redis:
   #   image: redis:6-alpine
   #   restart: always
