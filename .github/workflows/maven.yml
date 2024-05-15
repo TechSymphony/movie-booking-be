@@ -18,15 +18,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
+    # services:
+    #   mysql:
+    #     image: mysql:8
 
-        env:
-          MYSQL_ROOT_PASSWORD: rootpass
-          MYSQL_DATABASE: database
-        ports:
-          - 3306:3306
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: rootpass
+    #       MYSQL_DATABASE: database
+    #     ports:
+    #       - 3306:3306
 
     steps:
       - uses: actions/checkout@v4

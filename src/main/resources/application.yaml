@@ -1,15 +1,15 @@
 server:
-  port: ${ENV_PORT:3000}
+  port: ${ENV_PORT}
 
 spring:
   application:
-    name: ${ENV_NAME:movie_booking}
+    name: ${ENV_NAME}
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:database}
-    username: ${DB_USER:root}
-    password: ${DB_PASS:rootpass}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: ${DB_SHOW_SQL:true}
+    show-sql: ${DB_SHOW_SQL}
     hibernate:
-      ddl-auto: ${DB_HIBERNATE_DDL_AUTO:create-drop}
+      ddl-auto: ${DB_HIBERNATE_DDL_AUTO}
