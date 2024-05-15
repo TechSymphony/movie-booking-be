@@ -9,4 +9,4 @@ COPY mvnw pom.xml ./
 COPY src ./src
 RUN ./mvnw install
 # run java jar file
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "./target/movie_booking-0.0.1-SNAPSHOT.jar"]
