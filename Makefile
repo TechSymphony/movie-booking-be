@@ -1,3 +1,7 @@
+setup:
+	@make stop
+	@make build
+	@make start
 start:
 	docker compose up -d
 stop:
