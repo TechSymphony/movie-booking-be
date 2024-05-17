@@ -38,8 +38,6 @@ public class OrderController {
 	@GetMapping("/orders")
 	public CollectionModel<EntityModel<Order>> all() {
 		return assembler.toCollectionModel(orderService.findAllOrders());
-		// return CollectionModel.of(orderService.findAllOrders(),
-		// linkTo(methodOn(OrderController.class).all()).withSelfRel());
 	}
 
 	@GetMapping("/orders/{id}")
@@ -55,23 +53,14 @@ public class OrderController {
 		Order newOrder = orderService.saveOrder(order);
 
 		return ResponseEntity
-				.created(linkTo(methodOn(OrderController.class).one(newOrder.getId())).toUri())
-				.body(assembler.toModel(newOrder));
+			.created(linkTo(methodOn(OrderController.class).one(newOrder.getId())).toUri())
+			.body(assembler.toModel(newOrder));
 	}
 
 	@DeleteMapping("/orders/{id}/cancel")
 	EntityModel<Order> cancel(@PathVariable Long id) {
-
 		return assembler.toModel(orderService.cancelOrder(id));
 
-		// return ResponseEntity //
-		// .status(HttpStatus.METHOD_NOT_ALLOWED) //
-		// .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
-		// //
-		// .body(Problem.create() //
-		// .withTitle("Method not allowed") //
-		// .withDetail("You can't cancel an order that is in the " + order.getStatus() +
-		// " status"));
 	}
 
 	@PutMapping("/orders/{id}/complete")
@@ -79,13 +68,5 @@ public class OrderController {
 
 		return assembler.toModel(orderService.completeOrder(id));
 
-		// return ResponseEntity //
-		// .status(HttpStatus.METHOD_NOT_ALLOWED) //
-		// .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
-		// //
-		// .body(Problem.create() //
-		// .withTitle("Method not allowed") //
-		// .withDetail("You can't complete an order that is in the " + order.getStatus()
-		// + " status"));
 	}
 }

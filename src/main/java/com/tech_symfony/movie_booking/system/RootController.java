@@ -1,15 +1,15 @@
-
 package com.tech_symfony.movie_booking.system;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
+import com.tech_symfony.movie_booking.order.OrderController;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.tech_symfony.movie_booking.order.OrderController;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-class RootController {
+public class RootController {
 
 	@GetMapping
 	RepresentationModel<?> index() {
