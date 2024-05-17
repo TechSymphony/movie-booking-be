@@ -10,9 +10,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -48,9 +48,11 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           script: |
             cd ~/repos/movie-booking-be
+            git checkout main
             git pull
             docker compose down
             docker build -t movie-booking-be:v1 .
+            docker compose up -d
           #  docker compose up -d
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
