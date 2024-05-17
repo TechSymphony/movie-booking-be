@@ -1,6 +1,8 @@
 package com.tech_symfony.movie_booking.order;
 
+import com.tech_symfony.movie_booking.system.exception.ForbidenMethodControllerException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 public interface OrderService {
@@ -47,10 +49,8 @@ class DefaultOrderService implements OrderService {
 			order.setStatus(OrderStatus.CANCELLED);
 			return orderRepository.save(order);
 		}
-		return orderRepository.save(order);
 
-		// throw new MethodNotAllowedException("Order can't be cancelled in " +
-		// order.getStatus() + " status");
+		throw new ForbidenMethodControllerException("Order can't be cancelled in " + order.getStatus() + " status");
 	}
 
 	public Order completeOrder(Long id) {
@@ -59,9 +59,6 @@ class DefaultOrderService implements OrderService {
 			order.setStatus(OrderStatus.COMPLETED);
 			return orderRepository.save(order);
 		}
-		// throw new MethodNotAllowedException("Order can't be completed in " );
-		return orderRepository.save(order);
-
-		// order.getStatus() + " status");
+		throw new ForbidenMethodControllerException("Order can't be completed in " + order.getStatus() + " status");
 	}
 }
