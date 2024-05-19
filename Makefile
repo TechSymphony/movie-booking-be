@@ -9,6 +9,7 @@ dev:
 start-dev:
 	@make stop
 	docker-compose up dev -d
+	docker compose watch --no-up
 start:
 	@make stop
 	docker-compose up app -d

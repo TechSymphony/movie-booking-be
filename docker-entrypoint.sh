@@ -6,5 +6,4 @@ do
 done >/dev/null 2>&1 &
 
 mvn clean prepare-package
-cd /app
 mvn spring-boot:run

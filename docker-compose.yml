@@ -1,7 +1,6 @@
-version: '3.7'
-
 services: 
   dev:
+    build: .
     image: movie-booking-be:dev
     restart: always
     ports:
@@ -12,8 +11,13 @@ services:
       - .env
     depends_on:
       - db
-      # - redis
-
+    develop:
+      watch:
+        - path: src/
+          target: /app/src
+          action: sync
+        - action: rebuild
+          path: pom.xml
   app:
     image: movie-booking-be:v1
     restart: always
@@ -26,7 +30,6 @@ services:
     depends_on:
       - db
       # - redis
-
   db:
     image: mysql:8
     restart: always
