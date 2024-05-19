@@ -19,6 +19,7 @@
     <asciidoctor.version>2.2.6</asciidoctor.version>
     <restdocs-api-spec.version>0.19.2</restdocs-api-spec.version>
     <restdocs-spec.version>0.23</restdocs-spec.version>
+    <go-offline-maven-plugin.version>1.2.8</go-offline-maven-plugin.version>
   </properties>
   <dependencies>
     <dependency>
@@ -199,6 +200,11 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>de.qaware.maven</groupId>
+        <artifactId>go-offline-maven-plugin</artifactId>
+        <version>${go-offline-maven-plugin.version}</version>
       </plugin>
     </plugins>
   </build>
