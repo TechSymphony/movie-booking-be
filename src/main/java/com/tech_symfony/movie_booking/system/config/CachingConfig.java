@@ -1,5 +1,5 @@
 
-package com.tech_symfony.movie_booking.system;
+package com.tech_symfony.movie_booking.system.config;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;

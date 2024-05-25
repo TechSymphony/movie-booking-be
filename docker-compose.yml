@@ -1,3 +1,4 @@
+name: movie-self-learning
 services:
   dev:
     build: .
