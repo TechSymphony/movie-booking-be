@@ -1,18 +1,15 @@
-package com.tech_symfony.movie_booking.user;
+package com.tech_symfony.movie_booking.api.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tech_symfony.movie_booking.role.Role;
+import com.tech_symfony.movie_booking.api.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.sql.Array;
 import java.sql.Date;
-import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.*;
 

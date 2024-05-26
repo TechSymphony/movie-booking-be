@@ -1,6 +1,7 @@
-package com.tech_symfony.movie_booking.movie_status;
+package com.tech_symfony.movie_booking.api.movie_status;
 
-import com.tech_symfony.movie_booking.movie.Movie;
+import com.tech_symfony.movie_booking.api.movie.Movie;
+import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,13 +14,14 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "movies_status")
-public class MovieStatus {
+public class MovieStatus extends NamedEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
+	@Transient
 	private String description;
+
+	public String getDescription() {
+		return this.getName();
+	}
 
 	private String slug;
 

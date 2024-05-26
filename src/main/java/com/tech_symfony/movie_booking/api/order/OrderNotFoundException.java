@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.order;
+package com.tech_symfony.movie_booking.api.order;
 
 class OrderNotFoundException extends RuntimeException {
 

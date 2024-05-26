@@ -1,11 +1,8 @@
-package com.tech_symfony.movie_booking.user;
+package com.tech_symfony.movie_booking.api.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Optional;

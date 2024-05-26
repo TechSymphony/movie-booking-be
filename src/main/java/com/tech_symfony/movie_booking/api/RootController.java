@@ -1,6 +1,6 @@
-package com.tech_symfony.movie_booking.system;
+package com.tech_symfony.movie_booking.api;
 
-import com.tech_symfony.movie_booking.order.OrderController;
+import com.tech_symfony.movie_booking.api.order.OrderController;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

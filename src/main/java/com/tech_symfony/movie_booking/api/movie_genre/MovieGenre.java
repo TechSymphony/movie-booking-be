@@ -1,6 +1,7 @@
-package com.tech_symfony.movie_booking.movie_genre;
+package com.tech_symfony.movie_booking.api.movie_genre;
 
-import com.tech_symfony.movie_booking.movie.Movie;
+import com.tech_symfony.movie_booking.api.movie.Movie;
+import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,14 +12,8 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "movie_genres")
-public class MovieGenre {
+public class MovieGenre extends NamedEntity {
 
-	@Id
-	@GeneratedValue
-	private Integer id;
-
-	@NonNull
-	private String name;
 
 	@ManyToMany(mappedBy = "genres")
 	private Set<Movie> movies;

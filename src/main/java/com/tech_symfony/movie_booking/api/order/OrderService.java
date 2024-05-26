@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.order;
+package com.tech_symfony.movie_booking.api.order;
 
 import com.tech_symfony.movie_booking.system.exception.ForbidenMethodControllerException;
 import org.springframework.stereotype.Service;

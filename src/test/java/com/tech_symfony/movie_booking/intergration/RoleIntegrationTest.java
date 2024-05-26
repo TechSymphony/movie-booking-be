@@ -1,17 +1,12 @@
 package com.tech_symfony.movie_booking.intergration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech_symfony.movie_booking.model.BaseTest;
-import com.tech_symfony.movie_booking.role.Role;
-import com.tech_symfony.movie_booking.role.RoleRepository;
+import com.tech_symfony.movie_booking.api.role.Role;
+import com.tech_symfony.movie_booking.api.role.RoleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.resourceDetails;
@@ -19,7 +14,6 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

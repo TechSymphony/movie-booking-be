@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.order;
+package com.tech_symfony.movie_booking.api.order;
 
 import java.util.Objects;
 
@@ -11,7 +11,8 @@ import jakarta.persistence.Table;
 @Table(name = "CUSTOMER_ORDER")
 class Order {
 
-	private @Id @GeneratedValue Long id;
+	private @Id
+	@GeneratedValue Long id;
 
 	private String description;
 	private OrderStatus status;
@@ -58,7 +59,7 @@ class Order {
 			return false;
 		Order order = (Order) o;
 		return Objects.equals(this.id, order.id) && Objects.equals(this.description, order.description)
-				&& this.status == order.status;
+			&& this.status == order.status;
 	}
 
 	@Override
@@ -69,6 +70,6 @@ class Order {
 	@Override
 	public String toString() {
 		return "Order{" + "id=" + this.id + ", description='" + this.description + '\'' + ", status=" + this.status
-				+ '}';
+			+ '}';
 	}
 }

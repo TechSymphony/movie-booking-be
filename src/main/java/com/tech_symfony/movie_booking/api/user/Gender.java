@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.user;
+package com.tech_symfony.movie_booking.api.user;
 
 import lombok.Getter;
 

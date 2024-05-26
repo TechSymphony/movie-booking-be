@@ -1,13 +1,13 @@
-package com.tech_symfony.movie_booking.movie;
+package com.tech_symfony.movie_booking.api.movie;
 
-import com.tech_symfony.movie_booking.movie_genre.MovieGenre;
-import com.tech_symfony.movie_booking.movie_status.MovieStatus;
+import com.tech_symfony.movie_booking.api.movie_genre.MovieGenre;
+import com.tech_symfony.movie_booking.api.movie_status.MovieStatus;
+import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 import java.sql.Date;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -17,15 +17,11 @@ import java.util.Set;
 @Entity
 @Builder
 @Table(name = "movies")
-public class Movie {
+public class Movie extends NamedEntity {
 
-	@Id
-	@GeneratedValue
-	private Integer id;
 
 	private String code;
-	@NonNull
-	private String name;
+
 
 	@Column(name = "sub_name")
 	private String subName;
