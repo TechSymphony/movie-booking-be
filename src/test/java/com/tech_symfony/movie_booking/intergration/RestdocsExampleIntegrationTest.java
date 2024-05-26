@@ -3,7 +3,6 @@ package com.tech_symfony.movie_booking.intergration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech_symfony.movie_booking.MovieBookingApplication;
 import com.tech_symfony.movie_booking.model.BaseTest;
-import com.tech_symfony.movie_booking.restdocs_example.CrudInput;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -38,16 +38,6 @@ public class DefaultSecurityConfig {
 		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
 			.oidc(Customizer.withDefaults());    // Enable OpenID Connect 1.0
 
-//		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
-//		http
-//			.getConfigurer(authorizationServerConfigurer);
-//		authorizationServerConfigurer
-//			.authorizationEndpoint(authorizationEndpoint ->
-//				authorizationEndpoint
-//
-//					.consentPage("/oauth2/v1/authorize")
-//			);
-
 		http
 			// Redirect to the login page when not authenticated from the
 			// authorization endpoint
@@ -69,21 +59,26 @@ public class DefaultSecurityConfig {
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
 		throws Exception {
 		http
+			// using resource server and authorize server in same application
+			.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()))
 			// Authorize requests
 			.authorizeHttpRequests((authorize) -> authorize
 
 				.requestMatchers("/", "api/v1/landing/**", "api/v1/auth/**").permitAll()
 
 				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-				.anyRequest().authenticated()
+				.anyRequest()
+				.authenticated()
 			)
 			.userDetailsService(customUserDetailService)
+
+
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
 			.oauth2Login(Customizer.withDefaults())
 			.formLogin(Customizer.withDefaults());
 
-		return http.cors(Customizer.withDefaults()).build();
+		return http.cors(Customizer.withDefaults()).getOrBuild();
 	}
 
 

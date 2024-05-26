@@ -1,14 +1,18 @@
 package com.tech_symfony.movie_booking.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tech_symfony.movie_booking.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Array;
 import java.sql.Date;
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -21,14 +25,15 @@ import java.util.*;
 public class User implements UserDetails {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
 	//	@Column(name = "full_name")
 	private String fullName;
 
 	@Column(unique = true)
 	private String email;
-
+	@JsonIgnore
 	private String password;
 
 	@Column(name = "date_of_birth")
@@ -37,12 +42,13 @@ public class User implements UserDetails {
 	private String avatar;
 
 	private Integer point;
-
+	@JsonIgnore
 	private Boolean verify;
-
+	@JsonIgnore
 	@Column(name = "verify_account")
 	private String verifyAccount;
 
+	@JsonIgnore
 	@Column(name = "verify_pass")
 	private String verifyPass;
 
@@ -70,42 +76,47 @@ public class User implements UserDetails {
 	}
 
 	@Override
+	@JsonIgnore
 	public String getPassword() {
 		return this.password;
 	}
 
 	@Override
+	@JsonIgnore
 	public String getUsername() {
 		return this.email;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isEnabled() {
 		return true;
 	}
 
-//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//	@JoinColumn(
-//		name = "role_id",
-//		referencedColumnName = "role_id",
-//		nullable = false
-//	)
-//	private RoleEntity role;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JoinColumn(
+		name = "role_id",
+		nullable = false
+	)
+	private Role role;
 //
 //	@OneToMany(
 //		mappedBy = "user",

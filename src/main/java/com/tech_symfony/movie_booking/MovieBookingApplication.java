@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.UUID;
+
 @SpringBootApplication
 public class MovieBookingApplication {
 
@@ -12,7 +14,10 @@ public class MovieBookingApplication {
 		SpringApplication.run(MovieBookingApplication.class, args);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		//default password
+
 		String encodedPassword = encoder.encode("123");
+		System.out.println(UUID.randomUUID().toString());
+		
 		System.out.println(encodedPassword + " " + encoder.matches("123", encodedPassword));
 	}
 
