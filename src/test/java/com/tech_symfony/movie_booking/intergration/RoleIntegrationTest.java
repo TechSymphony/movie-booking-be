@@ -7,12 +7,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.resourceDetails;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +37,6 @@ public class RoleIntegrationTest extends BaseTest {
 
 
 	@Test
-
 	public void getRoles() throws Exception {
 		this.roleRepository.deleteAll();
 //		createRole("ROLE_USER");
@@ -41,10 +44,14 @@ public class RoleIntegrationTest extends BaseTest {
 		createRole("ROLE_SELLER");
 
 
-		this.mockMvc.perform(get("/roles"))
+		this.mockMvc.perform(this.getAuthenticateHeader(get("/roles")))
 			.andExpect(status().isOk())
-			.andDo(document("roles-list",
+
+			.andDo(document("rolesList",
 				resourceDetails().description("Get all Roles"),
+//				requestHeaders(
+//					headerWithName("Authorization").description("Jwt token")
+//				),
 				links(
 					linkWithRel("self").description("Canonical link for this resource"),
 					linkWithRel("profile").description("Canonical link for this resource")

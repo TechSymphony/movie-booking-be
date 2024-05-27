@@ -12,8 +12,6 @@ import jakarta.persistence.MappedSuperclass;
  * Simple JavaBean domain object with an id property. Used as a base class for
  * objects
  * needing this property.
- *
- * 
  */
 @MappedSuperclass
 public class BaseEntity implements Serializable {

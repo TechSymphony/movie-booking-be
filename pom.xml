@@ -15,6 +15,7 @@
   <description>Movie booking</description>
   <properties>
     <java.version>17</java.version>
+    <server.variable.url>localhost:8080</server.variable.url>
     <asciidoctor.version>2.2.6</asciidoctor.version>
     <restdocs-api-spec.version>0.19.2</restdocs-api-spec.version>
     <restdocs-spec.version>0.23</restdocs-spec.version>
@@ -188,9 +189,27 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-
               <specification>OPENAPI_V3</specification>
               <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
+              <host>${server.variable.url}</host>
+              <oauth2>
+
+                <tokenUrl>http://${server.variable.url}/oauth2/token</tokenUrl>
+                <authorizationUrl>http://${server.variable.url}/oauth2/authorize</authorizationUrl>
+                <flows>
+                  <flow>authorizationCode</flow>
+                </flows>
+                <!--                <scopes>-->
+                <!--                  <scope>-->
+                <!--                    <name>read</name>-->
+                <!--                    <description>Access to read operations.</description>-->
+                <!--                  </scope>-->
+                <!--                  <scope>-->
+                <!--                    <name>write</name>-->
+                <!--                    <description>Access to write operations.</description>-->
+                <!--                  </scope>-->
+                <!--                </scopes>-->
+              </oauth2>
             </configuration>
           </execution>
         </executions>

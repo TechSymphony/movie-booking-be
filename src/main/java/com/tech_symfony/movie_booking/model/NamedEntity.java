@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
 /**
@@ -13,20 +14,19 @@ import lombok.NonNull;
  * a base class for objects needing these properties.
  */
 @MappedSuperclass
-@Data
 public class NamedEntity extends BaseEntity {
 
 	@Column
 	@NotNull
 	private String name;
 
-//	public String getName() {
-//		return this.name;
-//	}
-//
-//	public void setName(String name) {
-//		this.name = name;
-//	}
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 //
 //	@Override
 //	public String toString() {
