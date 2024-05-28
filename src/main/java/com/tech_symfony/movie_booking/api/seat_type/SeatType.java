@@ -9,11 +9,7 @@ import lombok.*;
 
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "seat_types")
 public class SeatType extends NamedEntity {

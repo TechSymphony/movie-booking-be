@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.room;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.cinema.Cinema;
 import com.tech_symfony.movie_booking.api.seat.Seat;
 import com.tech_symfony.movie_booking.api.showtime.Showtime;
@@ -11,11 +12,7 @@ import lombok.*;
 
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "rooms")
 public class Room extends NamedEntity {
@@ -48,6 +45,7 @@ public class Room extends NamedEntity {
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.PERSIST
 	)
+	@JsonIgnore
 	private Set<Seat> seats;
 
 

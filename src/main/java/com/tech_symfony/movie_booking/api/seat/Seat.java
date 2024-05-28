@@ -1,7 +1,10 @@
 package com.tech_symfony.movie_booking.api.seat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tech_symfony.movie_booking.api.room.Room;
 import com.tech_symfony.movie_booking.api.seat_type.SeatType;
+import com.tech_symfony.movie_booking.api.ticket.Ticket;
 import com.tech_symfony.movie_booking.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -10,11 +13,8 @@ import lombok.*;
 
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Setter
-@Getter
+
+@Data
 @Entity
 @Table(name = "seats")
 public class Seat extends BaseEntity {
@@ -32,13 +32,6 @@ public class Seat extends BaseEntity {
 	)
 	private Room room;
 
-//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(
-//            name = "seat_id",
-//            referencedColumnName = "seat_id",
-//            nullable = false
-//    )
-//    private SeatEntity seat;
 
 	@NotEmpty
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -49,12 +42,14 @@ public class Seat extends BaseEntity {
 	)
 	private SeatType type;
 
-	//	@OneToMany(
-//		mappedBy = "seatRoom",
-//		fetch = FetchType.LAZY,
-//		cascade = CascadeType.ALL
-//	)
-//	private Set<TicketEntity> tickets;
+	@OneToMany(
+		mappedBy = "seat",
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.PERSIST
+	)
+	private Set<Ticket> tickets;
+
+	
 	@Column
 	@NotBlank(message = "seat room row must not be blank")
 	@NotNull(message = "seat room row must not be null")

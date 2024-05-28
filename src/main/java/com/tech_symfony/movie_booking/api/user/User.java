@@ -2,7 +2,9 @@ package com.tech_symfony.movie_booking.api.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tech_symfony.movie_booking.api.bill.Bill;
 import com.tech_symfony.movie_booking.api.role.Role;
+import com.tech_symfony.movie_booking.model.BaseUUIDEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -18,16 +20,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User extends BaseUUIDEntity implements UserDetails {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
 
 	@NotBlank(message = "Full name must not be blank")
 	@Column(name = "full_name")
@@ -131,13 +127,13 @@ public class User implements UserDetails {
 		nullable = false
 	)
 	private Role role;
-//
-//	@OneToMany(
-//		mappedBy = "user",
-//		fetch = FetchType.LAZY,
-//		cascade = CascadeType.ALL
-//	)
-//	private Set<BillEntity> bills;
+
+	@OneToMany(
+		mappedBy = "user",
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.ALL
+	)
+	private Set<Bill> bills;
 
 
 }

@@ -1,5 +1,7 @@
 package com.tech_symfony.movie_booking.api.showtime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tech_symfony.movie_booking.api.movie.Movie;
 import com.tech_symfony.movie_booking.api.room.Room;
 import com.tech_symfony.movie_booking.model.BaseEntity;
@@ -12,13 +14,10 @@ import lombok.*;
 import java.sql.Date;
 import java.sql.Time;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "showtimes")
+
 public class Showtime extends BaseEntity {
 
 	@Future(message = "The start date must be in the future")
@@ -26,6 +25,7 @@ public class Showtime extends BaseEntity {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date")
 	private Date startDate;
+
 
 	@Temporal(TemporalType.TIME)
 	@Column(name = "start_time")

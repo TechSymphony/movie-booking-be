@@ -1,6 +1,7 @@
 
 package com.tech_symfony.movie_booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +16,7 @@ import lombok.NonNull;
  * a base class for objects needing these properties.
  */
 @MappedSuperclass
-public class NamedEntity extends BaseEntity {
+public abstract class NamedEntity extends BaseEntity {
 
 
 	@Column

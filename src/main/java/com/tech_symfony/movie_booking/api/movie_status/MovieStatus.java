@@ -7,11 +7,7 @@ import lombok.*;
 
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "movies_status")
 public class MovieStatus extends NamedEntity {

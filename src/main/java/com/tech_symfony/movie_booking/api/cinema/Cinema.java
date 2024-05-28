@@ -10,11 +10,7 @@ import lombok.*;
 
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "cinemas")
 public class Cinema extends NamedEntity {
@@ -41,6 +37,7 @@ public class Cinema extends NamedEntity {
 	private String slug;
 
 	@Enumerated(EnumType.STRING)
+	@NotBlank(message = "Cinema status must not be blank")
 	private CinemaStatus status;
 
 	@NotBlank(message = "Cinema phone number must not be blank")

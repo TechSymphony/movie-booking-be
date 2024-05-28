@@ -7,9 +7,7 @@ import lombok.*;
 
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Data
 @Entity
 @Table(name = "movie_genres")

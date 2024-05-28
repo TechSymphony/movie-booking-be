@@ -11,11 +11,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Setter
-@Getter
+@Data
 //@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "roles")
@@ -25,7 +21,7 @@ public class Role extends NamedEntity {
 //	@Column
 //	@NotNull
 //	private String name;
-	
+
 	@OneToMany(
 		mappedBy = "role",
 		fetch = FetchType.LAZY,
