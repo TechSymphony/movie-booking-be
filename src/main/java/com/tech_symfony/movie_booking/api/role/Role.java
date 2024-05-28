@@ -12,7 +12,6 @@ import java.util.Set;
 
 
 @Data
-//@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "roles")
 public class Role extends NamedEntity {

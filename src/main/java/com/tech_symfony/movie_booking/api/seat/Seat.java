@@ -49,11 +49,11 @@ public class Seat extends BaseEntity {
 	)
 	private Set<Ticket> tickets;
 
-	
-	@Column
+
+	@Column(name = "row_name")
 	@NotBlank(message = "seat room row must not be blank")
 	@NotNull(message = "seat room row must not be null")
-	private String row;
+	private String rowName;
 
 	@Column(name = "row_index")
 	@Positive

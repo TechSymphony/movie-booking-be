@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Data;
 
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for
@@ -18,18 +19,19 @@ import jakarta.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+@Data
 public abstract class BaseEntity implements Serializable {
 
 	@Id
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

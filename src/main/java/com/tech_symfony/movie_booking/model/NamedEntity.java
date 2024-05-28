@@ -16,6 +16,7 @@ import lombok.NonNull;
  * a base class for objects needing these properties.
  */
 @MappedSuperclass
+@Data
 public abstract class NamedEntity extends BaseEntity {
 
 
@@ -31,10 +32,6 @@ public abstract class NamedEntity extends BaseEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-//
-//	@Override
-//	public String toString() {
-//		return this.getName();
-//	}
+
 
 }
