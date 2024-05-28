@@ -1,6 +1,5 @@
 package com.tech_symfony.movie_booking.api.bill;
 
-import com.tech_symfony.movie_booking.api.bill_status.BillStatus;
 import com.tech_symfony.movie_booking.api.ticket.Ticket;
 import com.tech_symfony.movie_booking.api.user.User;
 import com.tech_symfony.movie_booking.model.BaseUUIDEntity;
@@ -60,11 +59,9 @@ public class Bill extends BaseUUIDEntity {
 	)
 	private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinColumn(
-		name = "status_id",
-		nullable = false
-	)
+
+	@NotNull(message = "Gender must not be null")
+	@Enumerated(EnumType.ORDINAL)
 	private BillStatus status;
 
 

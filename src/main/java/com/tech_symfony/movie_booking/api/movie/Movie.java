@@ -1,7 +1,6 @@
 package com.tech_symfony.movie_booking.api.movie;
 
 import com.tech_symfony.movie_booking.api.movie_genre.MovieGenre;
-import com.tech_symfony.movie_booking.api.movie_status.MovieStatus;
 import com.tech_symfony.movie_booking.api.showtime.Showtime;
 import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
@@ -79,8 +78,6 @@ public class Movie extends NamedEntity {
 	@Max(value = 18, message = "Age for rated MUST be less than or equal to 18")
 	private Integer rated;
 
-	@NotBlank(message = "Producer MUST not be plank")
-	private String producer;
 
 	private String slug;
 
@@ -91,15 +88,7 @@ public class Movie extends NamedEntity {
 		cascade = CascadeType.ALL
 	)
 	private Set<Showtime> showtimes;
-	//
-//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-//	@JoinTable(
-//		name = "movie_format",
-//		joinColumns = @JoinColumn(name = "movie_id", nullable = false),
-//		inverseJoinColumns = @JoinColumn(name = "format_id", nullable = false)
-//	)
-//	private Set<FormatEntity> formats;
-//
+
 
 	@NotEmpty(message = "Genre MUST not be empty")
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -117,13 +106,6 @@ public class Movie extends NamedEntity {
 //	)
 //	private Set<MovieImageEntity> images;
 //
-	@Positive
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinColumn(
-		name = "status_id",
-		nullable = false
-	)
-	private MovieStatus status;
 
 
 }

@@ -46,14 +46,6 @@ public class Showtime extends BaseEntity {
 	private Movie movie;
 
 
-//	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-//	@JoinColumn(
-//		name = "format_id",
-//		referencedColumnName = "format_id",
-//		nullable = false
-//	)
-//	private FormatEntity format;
-
 	@NotEmpty(message = "room id must not be empty")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(

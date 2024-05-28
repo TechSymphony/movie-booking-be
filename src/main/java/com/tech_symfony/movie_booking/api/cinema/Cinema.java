@@ -34,8 +34,6 @@ public class Cinema extends NamedEntity {
 	@NotNull(message = "Cinema description must not be null")
 	private String description;
 
-	private String slug;
-
 	@Enumerated(EnumType.STRING)
 	@NotBlank(message = "Cinema status must not be blank")
 	private CinemaStatus status;
