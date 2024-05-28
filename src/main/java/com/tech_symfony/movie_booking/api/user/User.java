@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,7 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "users")
-public class User extends BaseUUIDEntity implements UserDetails {
+public class User extends BaseUUIDEntity {
 
 
 	@NotBlank(message = "Full name must not be blank")
@@ -59,7 +60,7 @@ public class User extends BaseUUIDEntity implements UserDetails {
 	@Column(name = "verify_pass")
 	private String verifyPass;
 
-
+	@CreationTimestamp
 	private LocalDateTime createDate;
 
 	@NotBlank(message = "Phone number must not be blank")
@@ -69,57 +70,6 @@ public class User extends BaseUUIDEntity implements UserDetails {
 	@NotNull(message = "Gender must not be null")
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
-
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Arrays
-			.stream(
-				new String[]{"Geeks", "for", "Geeks"}
-//				userInfoEntity
-//				.getRoles()
-//				.split(",")
-
-			)
-			.map(SimpleGrantedAuthority::new)
-			.toList();
-	}
-
-	@Override
-	@JsonIgnore
-	public String getPassword() {
-		return this.password;
-	}
-
-	@Override
-	@JsonIgnore
-	public String getUsername() {
-		return this.email;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isEnabled() {
-		return true;
-	}
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(
