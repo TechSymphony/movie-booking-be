@@ -19,10 +19,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 	private final CustomUserDetailService customUserDetailService;
 
@@ -60,7 +62,8 @@ public class SecurityConfig {
 			// Authorize requests
 			.authorizeHttpRequests((authorize) -> authorize
 
-				.requestMatchers("/", "api/v1/landing/**", "api/v1/auth/**").permitAll()
+				.requestMatchers("/", "api/v1/auth/**").permitAll()
+				.requestMatchers(antMatcher("/**/search/public*")).permitAll()
 				//swagger docs
 				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/openapi-3.0.yml").permitAll()
 				.anyRequest()
