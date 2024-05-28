@@ -3,6 +3,7 @@ package com.tech_symfony.movie_booking.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,8 +17,10 @@ import lombok.NonNull;
 @MappedSuperclass
 public class NamedEntity extends BaseEntity {
 
+
 	@Column
-	@NotNull
+	@NotNull(message = "name must not be null")
+	@NotBlank(message = "name must not be blank")
 	private String name;
 
 	public String getName() {

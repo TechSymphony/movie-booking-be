@@ -3,6 +3,9 @@ package com.tech_symfony.movie_booking.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,9 +17,11 @@ import jakarta.persistence.MappedSuperclass;
  * needing this property.
  */
 @MappedSuperclass
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BaseEntity implements Serializable {
 
 	@Id
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
@@ -28,6 +33,7 @@ public class BaseEntity implements Serializable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public boolean isNew() {
 		return this.id == null;
 	}

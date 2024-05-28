@@ -4,6 +4,10 @@ package com.tech_symfony.movie_booking.api.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.role.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,19 +29,29 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	//	@Column(name = "full_name")
+	@NotBlank(message = "Full name must not be blank")
+	@Column(name = "full_name")
 	private String fullName;
 
+	@NotBlank(message = "Email must not be blank")
+	@Email(message = "Email should be valid")
 	@Column(unique = true)
 	private String email;
+
+	@NotBlank(message = "Password must not be blank")
 	@JsonIgnore
 	private String password;
 
+
+	@NotNull(message = "Date of birth must not be null")
+	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_birth")
 	private Date dateOfBirth;
 
+
 	private String avatar;
 
+	@Positive(message = "Point must be positive")
 	private Integer point;
 	@JsonIgnore
 	private Boolean verify;
@@ -49,11 +63,14 @@ public class User implements UserDetails {
 	@Column(name = "verify_pass")
 	private String verifyPass;
 
+
 	private LocalDateTime createDate;
 
+	@NotBlank(message = "Phone number must not be blank")
 	@Column(name = "phone_number")
 	private String phoneNumber;
 
+	@NotNull(message = "Gender must not be null")
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
@@ -108,7 +125,7 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(
 		name = "role_id",
 		nullable = false
@@ -121,20 +138,6 @@ public class User implements UserDetails {
 //		cascade = CascadeType.ALL
 //	)
 //	private Set<BillEntity> bills;
-//
-//	@OneToMany(
-//		mappedBy = "user",
-//		fetch = FetchType.LAZY,
-//		cascade = CascadeType.ALL
-//	)
-//	private Set<CommentEntity> comments;
-
-//	@Override
-//	public Collection<? extends GrantedAuthority> getAuthorities() {
-//		List<GrantedAuthority> authorities = new ArrayList<>();
-//		authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-//		return authorities;
-//	}
 
 
 }

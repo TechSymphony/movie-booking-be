@@ -2,13 +2,13 @@ package com.tech_symfony.movie_booking.api.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
+@RepositoryRestResource(excerptProjection = UserInfoProjector.class)
 public interface UserRepository extends PagingAndSortingRepository<User, UUID>, JpaRepository<User, UUID> {
 //    @Transactional
 //    @Modifying

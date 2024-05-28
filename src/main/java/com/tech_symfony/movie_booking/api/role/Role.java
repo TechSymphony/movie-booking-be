@@ -25,7 +25,7 @@ public class Role extends NamedEntity {
 //	@Column
 //	@NotNull
 //	private String name;
-
+	
 	@OneToMany(
 		mappedBy = "role",
 		fetch = FetchType.LAZY,
