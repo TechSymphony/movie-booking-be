@@ -75,6 +75,7 @@ public class SecurityConfig {
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
 			.oauth2Login(Customizer.withDefaults())
+			
 			.formLogin(Customizer.withDefaults());
 
 		return http.cors(Customizer.withDefaults()).getOrBuild();
