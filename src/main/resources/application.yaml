@@ -61,7 +61,14 @@ spring:
           google:
             clientId: 242257763708-v3424p6g9o1rr46q4vtuubvf5f4k5f7r.apps.googleusercontent.com
             clientSecret: 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
-  #            redirect_uri: https://booking-movie-backend-3a547b1ac2e9.herokuapp.com/oauth2/callback/google
+            scope:
+              - email
+              - profile
+              - phone
+            redirect-uri:
+              - http://localhost:8080/oauth2/callback/google
+              - https://oauth.pstmn.io/v1/browser-callback
+              - https://oauth.pstmn.io/v1/callback
   config:
     import: optional:configtree:/run/secrets/ , optional:file:.env[.properties]
   application:
@@ -71,10 +78,10 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #  jpa:
-    #    properties:
-    #      hibernate:
-    #        enable_lazy_load_no_trans: true
+  jpa:
+    #      properties:
+    #        hibernate:
+    #          enable_lazy_load_no_trans: true
     show-sql: ${DB_SHOW_SQL}
     hibernate:
       ddl-auto: ${DB_HIBERNATE_DDL_AUTO}

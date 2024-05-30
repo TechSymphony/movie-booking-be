@@ -16,7 +16,6 @@ interface UserInfoProjector {
 
 	String getAvatar();
 
-	Integer getPoint();
 
 	LocalDateTime getCreateDate();
 

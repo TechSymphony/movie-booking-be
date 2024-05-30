@@ -7,11 +7,9 @@ import com.tech_symfony.movie_booking.api.bill.Bill;
 import com.tech_symfony.movie_booking.api.role.Role;
 import com.tech_symfony.movie_booking.model.BaseUUIDEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +25,7 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "users")
+
 public class User extends BaseUUIDEntity {
 
 
@@ -42,19 +41,25 @@ public class User extends BaseUUIDEntity {
 	@NotBlank(message = "Password must not be blank")
 	@JsonIgnore
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private String password;
+	private String password = "123";
 
 
-	@NotNull(message = "Date of birth must not be null")
+	//	@NotNull(message = "Date of birth must not be null")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_birth")
+	@Future()
 	private Date dateOfBirth;
 
+	private String avatar = "";
 
-	private String avatar;
+	@Enumerated(EnumType.STRING)
+	@NotNull(message = "Provider must not be null")
+	private Provider provider = Provider.LOCAL;
 
-	@Positive(message = "Point must be positive")
-	private Integer point;
+	@Column(name = "provider_id")
+	private String providerId;
+
+
 	@JsonIgnore
 	private Boolean verify;
 	@JsonIgnore
@@ -68,18 +73,19 @@ public class User extends BaseUUIDEntity {
 	@CreationTimestamp
 	private LocalDateTime createDate;
 
-	@NotBlank(message = "Phone number must not be blank")
+	//	@NotBlank(message = "Phone number must not be blank")
 	@Column(name = "phone_number")
+	@Pattern(regexp = "^[0-9]{10}$", message = "Invalid number phone")
 	private String phoneNumber;
 
 	@NotNull(message = "Gender must not be null")
 	@Enumerated(EnumType.STRING)
-	private Gender gender;
+	private Gender gender = Gender.UNKNOWN;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(
-		name = "role_id",
-		nullable = false
+		name = "role_id"
+//		, nullable = false
 	)
 	private Role role;
 

@@ -10,6 +10,5 @@ public interface UserMapper {
 
 	@Mapping(target = "principle", source = "email")
 	@Mapping(target = "credential", source = "password")
-	@Mapping(target = "authorities", ignore = true)
 	CustomUserDetail userToCustomerUserDetail(User user);
 }

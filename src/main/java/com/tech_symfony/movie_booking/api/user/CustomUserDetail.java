@@ -2,11 +2,7 @@ package com.tech_symfony.movie_booking.api.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +14,7 @@ import java.util.Collection;
 
 @Setter
 @Getter
+@Builder
 public class CustomUserDetail implements UserDetails {
 
 
@@ -41,37 +38,31 @@ public class CustomUserDetail implements UserDetails {
 	}
 
 	@Override
-	@JsonIgnore
 	public String getPassword() {
 		return this.credential;
 	}
 
 	@Override
-	@JsonIgnore
 	public String getUsername() {
 		return this.principle;
 	}
 
 	@Override
-	@JsonIgnore
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
 	@Override
-	@JsonIgnore
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
 	@Override
-	@JsonIgnore
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
 	@Override
-	@JsonIgnore
 	public boolean isEnabled() {
 		return true;
 	}

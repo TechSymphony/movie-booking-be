@@ -1,10 +1,13 @@
 package com.tech_symfony.movie_booking.system.config;
 
 import com.tech_symfony.movie_booking.api.user.CustomUserDetailService;
+import com.tech_symfony.movie_booking.api.user.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,6 +30,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 	private final CustomUserDetailService customUserDetailService;
+	private final OAuth2UserService oAuth2UserService;
 
 	@Bean
 	@Order(1)
@@ -56,12 +60,16 @@ public class SecurityConfig {
 	@Order(2)
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
 		throws Exception {
+
 		http
 			// using resource server and authorize server in same application
 			.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()))
 			// Authorize requests
 			.authorizeHttpRequests((authorize) -> authorize
+				//Getting public api
+				.requestMatchers(HttpMethod.GET, "movies/**").permitAll()
 
+				//
 				.requestMatchers("/", "api/v1/auth/**").permitAll()
 				.requestMatchers(antMatcher("/**/search/public*")).permitAll()
 				//swagger docs
@@ -74,8 +82,10 @@ public class SecurityConfig {
 
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
-			.oauth2Login(Customizer.withDefaults())
-			
+//			.oauth2Login(Customizer.withDefaults())
+			.oauth2Login(oauth2 -> oauth2
+				.userInfoEndpoint(infoEndpoint ->
+					infoEndpoint.userService(oAuth2UserService)))
 			.formLogin(Customizer.withDefaults());
 
 		return http.cors(Customizer.withDefaults()).getOrBuild();

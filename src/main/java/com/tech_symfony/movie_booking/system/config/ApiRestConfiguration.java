@@ -18,6 +18,6 @@ public class ApiRestConfiguration implements RepositoryRestConfigurer {
 //		config.disableDefaultExposure();
 		config.setRepositoryDetectionStrategy(RepositoryDetectionStrategy.RepositoryDetectionStrategies.ANNOTATED);
 //		config.setExposeRepositoryMethodsByDefault(false);
-		config.getMetadataConfiguration().setAlpsEnabled(false);
+//		config.getMetadataConfiguration().setAlpsEnabled(false);
 	}
 }

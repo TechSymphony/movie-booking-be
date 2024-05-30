@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.UUID;
 
-@RepositoryRestResource(excerptProjection = TicketProjector.class)
+//@RepositoryRestResource(excerptProjection = TicketProjector.class)
 public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
 }
