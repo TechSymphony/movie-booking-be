@@ -10,6 +10,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,6 +29,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = false, jsr250Enabled = false)
 public class SecurityConfig {
 	private final CustomUserDetailService customUserDetailService;
 	private final OAuth2UserService oAuth2UserService;
@@ -72,8 +74,9 @@ public class SecurityConfig {
 				//
 				.requestMatchers("/", "api/v1/auth/**").permitAll()
 				.requestMatchers(antMatcher("/**/search/public*")).permitAll()
+
 				//swagger docs
-				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/openapi-3.0.yml").permitAll()
+				.requestMatchers("/swagger-ui/**", "/v3/**", "/swagger-ui.html", "/openapi-3.0.yml").permitAll()
 				.anyRequest()
 				.authenticated()
 			)

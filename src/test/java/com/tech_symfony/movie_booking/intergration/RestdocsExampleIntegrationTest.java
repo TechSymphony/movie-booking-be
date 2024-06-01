@@ -32,7 +32,14 @@ public class RestdocsExampleIntegrationTest extends BaseIntegrationTest {
 			.andDo(document("index-example",
 				resourceDetails()
 					.description("Get all base links."),
-				links(linkWithRel("orders").description("The orders resource")),
+				links(linkWithRel("login").description("The login")
+
+					, linkWithRel("movies").description("The movies resource")
+
+					, linkWithRel("cinemas").description("The cinemas resource")
+
+					, linkWithRel("showtimes").description("The showtimes resource")),
+
 				responseFields(subsectionWithPath("_links").description("Links to other resources")),
 				responseHeaders(headerWithName("Content-Type").description("The Content-Type of the payload, e.g. `application/hal+json`"))));
 	}

@@ -2,6 +2,7 @@ package com.tech_symfony.movie_booking.api.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tech_symfony.movie_booking.api.role.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,12 +23,13 @@ public class CustomUserDetail implements UserDetails {
 
 	private String credential;
 
+	private Role role;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Arrays
 			.stream(
-				new String[]{"Geeks", "for", "Geeks"}
+				new String[]{role.getName()}
 //				userInfoEntity
 //				.getRoles()
 //				.split(",")

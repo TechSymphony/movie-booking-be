@@ -9,7 +9,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import java.util.Set;
 import java.util.UUID;
 
-@RepositoryRestResource
+//@RepositoryRestResource
 public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
 	@RestResource(exported = false)

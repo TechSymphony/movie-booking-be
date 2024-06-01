@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.room;
 
+import com.tech_symfony.movie_booking.model.BaseAuthenticatedRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RepositoryRestResource
-public interface RoomRepository extends JpaRepository<Room, Integer> {
+public interface RoomRepository extends BaseAuthenticatedRepository<Room, Integer> {
 //	@Query("SELECT r FROM Room r " +
 //		"WHERE r.cinema.id = :cinemaId")
 //	List<Room> findAllByCinemaId(@Param("cinemaId") String cinemaId);
