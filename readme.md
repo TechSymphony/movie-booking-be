@@ -22,43 +22,25 @@
 
 ###	Mua vé trực tuyến qua website của rạp CGV
 
-Khách hàng khi mua vé trực tuyến tại website của rạp CGV phải đăng nhập tài khoản
-thành viên CGV và thực hiện các thao tác theo trình tự sau:
-Bước 1: Khách hàng lựa chọn suất chiếu theo phim hoặc suất chiếu theo rạp.
-Bước 2: Khách hàng lựa chọn chỗ ngồi.
-Bước 3: Kiểm tra lại toàn bộ thông tin trước khi thanh toán
-Bước 4: Thanh toán bằng các hình thức thanh toán online qua thẻ tín dụng (Visa,Mastercard...), thẻ ATM, ví điện tử,...
-Bước 5.1: Thông báo cho khách hàng không còn suất chiếu
-Bước 5.2: Khách hàng nhận mã đặt chỗ qua tin nhắn SMS và email.
-Bước 6: Khách hàng cung cấp mã đặt vé và các thông tin tài khoản thành viên CGV dùng để đặt vé để nhận vé tại rạp. Nếu khách hàng không cung cấp được thông tin tài khoản CGV và mã đặt vé, CGV có quyền từ chối xuất vé.
-Bước 7: Nhân viên quầy bán vé cập nhật thông tin vé đã bán lên hệ thống. Đồng thời nhân viên quầy bán vé sẽ tiến hành in vé và sau đó phát vé cho khách hàng
+> Khách hàng khi mua vé trực tuyến tại website của rạp CGV phải đăng nhập tài khoản thành viên CGV và thực hiện các thao tác theo trình tự sau:
 
-1.1.3	Hoàn vé khi đặt vé qua website: (phụ)
+1. Khách hàng lựa chọn suất chiếu theo phim hoặc suất chiếu theo rạp.
+2. Khách hàng lựa chọn chỗ ngồi.
+3. Kiểm tra lại toàn bộ thông tin trước khi thanh toán
+4. Thanh toán bằng các hình thức thanh toán online qua thẻ tín dụng (Visa,Mastercard...), thẻ ATM, ví điện tử,...
+5.1. Thông báo cho khách hàng không còn suất chiếu
+5.2. Khách hàng nhận mã đặt chỗ qua tin nhắn SMS và email.
+6. Khách hàng cung cấp mã đặt vé và các thông tin tài khoản thành viên CGV dùng để đặt vé để nhận vé tại rạp. Nếu khách hàng không cung cấp được thông tin tài khoản CGV và mã đặt vé, CGV có quyền từ chối xuất vé.
+7. Nhân viên quầy bán vé cập nhật thông tin vé đã bán lên hệ thống. Đồng thời nhân viên quầy bán vé sẽ tiến hành in vé và sau đó phát vé cho khách hàng
 
+###	Hoàn vé khi đặt vé qua website: 
 1.	Khách hàng đăng nhập thông tin tài khoản thành công vào website của CGV
 2.	Sau đó, khách hàng tìm kiếm thông tin vé đã đặt của mình trên giao diện của website
 3.	Tiếp theo, khách hàng có thể thấy chức năng “Hoàn vé, đổi vé” của rạp và khách hàng chỉ thực hiện được chức năng sớm hơn giờ suất chiếu đã đặt là 1 giờ 30p
 
 
 
-## Actors
 
-### Khách (Guest)
-
-- Là người dùng chưa đăng nhập hoặc chưa có tài khoản trong hệ thống, có thể xem thông tin, tra cứu phim, có thể xem các
-  giờ chiếu,
-- Phải đăng ký tài khoản để đặt vé
-- Khi tài khoản được đăng ký cần phải xác thực được xác nhận thông qua email
-
-### Khách hàng (Customer)
-
-- Là người đã có tài khoản trong hệ thống và đã xác thực email, có thể đặt vé và nhận thông tin vé mình đã mua qua email
-- Có thể cập nhật thông tin tài khoản, lấy lại tài khoản khi quên mật khẩu
-
-### Người quản trị (Admin)
-
-- Là người quản lý các suất chiếu, tài khoản người dùng, phim, rạp, và là người biết tình hình kinh doanh tổng và từng
-  chi nhánh của The Cinema
 
 ## Use Case Diagram
 
@@ -68,7 +50,7 @@ Bước 7: Nhân viên quầy bán vé cập nhật thông tin vé đã bán lê
 | 1              | Thiết yếu | Yêu cầu này rất quan trọng đối với sự thành công của dự án. Dự án sẽ không thể thực hiện được nếu không có yêu cầu này. |
 | 2              | Tương lai | Yêu cầu này nằm ngoài phạm vi cho dự án này và đã được đưa vào đây để phát hành có thể trong tương lai.                 |
 
-> Vì thời gian và nhân lực nhóm giới hạn lại phạm vi gồm các chức năng như sau:
+> Vì thời gian cùng nhân lực nên nhóm giới hạn lại phạm vi gồm các chức năng như sau:
 
 |   |   |   |   |
 |---|---|---|---|
@@ -91,6 +73,25 @@ Bước 7: Nhân viên quầy bán vé cập nhật thông tin vé đã bán lê
 ![Use Case Diagram](./document/Usecase-movie-booking-1-6-24.png)
 Use Case Diagram Tổng quát
 
+## Actors
+
+### Khách 
+
+- Là người dùng chưa đăng nhập hoặc chưa có tài khoản trong hệ thống, có thể xem thông tin, tra cứu phim, có thể xem các
+  giờ chiếu,
+- Phải đăng ký tài khoản để đặt vé
+- Khi tài khoản được đăng ký cần phải xác thực được xác nhận thông qua email
+
+### Khách hàng
+
+- Là người đã có tài khoản trong hệ thống và đã xác thực email, có thể đặt vé và nhận thông tin vé mình đã mua qua email
+- Có thể cập nhật thông tin tài khoản, lấy lại tài khoản khi quên mật khẩu
+
+### Người quản lý 
+
+- Là người quản lý các suất chiếu, tài khoản người dùng, phim, rạp, và là người biết tình hình kinh doanh tổng và từng
+  chi nhánh của The Cinema
+  
 ## Class Diagram
 
 ![Use Case Diagram](./document/classdiagram-1-6-24.png)
