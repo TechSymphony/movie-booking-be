@@ -1,32 +1,23 @@
 package com.tech_symfony.movie_booking.api.role;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.user.User;
 import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 
 
-@Data
 @Entity
 @Table(name = "roles")
+@Setter
+@Getter
 public class Role extends NamedEntity {
 
-
-//	@Column
-//	@NotNull
-//	private String name;
-
 	@OneToMany(
-		mappedBy = "role",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL
-	)
+		cascade = CascadeType.ALL,
+		fetch = FetchType.LAZY)
+
 	private Set<User> users;
-
-
 }

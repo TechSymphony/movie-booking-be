@@ -8,7 +8,9 @@ import lombok.*;
 import java.util.Set;
 
 
-@Data
+@Setter
+@Getter
+
 @Entity
 @Table(name = "movie_genres")
 public class MovieGenre extends NamedEntity {

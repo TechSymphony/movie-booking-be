@@ -1,7 +1,9 @@
 package com.tech_symfony.movie_booking.api.user;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tech_symfony.movie_booking.api.bill.Bill;
 import com.tech_symfony.movie_booking.api.role.Role;
@@ -12,6 +14,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,10 +25,11 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
-
+@RequiredArgsConstructor
 public class User extends BaseUUIDEntity {
 
 
@@ -82,17 +86,16 @@ public class User extends BaseUUIDEntity {
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.UNKNOWN;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(
-		name = "role_id"
-//		, nullable = false
+		name = "role_id",
+		nullable = false
 	)
 	private Role role;
 
 	@OneToMany(
 		mappedBy = "user",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL
+		fetch = FetchType.LAZY
 	)
 	private Set<Bill> bills;
 

@@ -16,12 +16,10 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 //    @Query("UPDATE UserEntity u SET u.verify = ?1, u.role = ?2 WHERE u.email = ?3")
 //    void updateVerifyAndRoleByEmail(Boolean verify, RoleEntity role, String email);
 
+	@RestResource(exported = false)
 	Optional<User> findByEmail(String email);
 
-	Optional<User> findByFullName(String email);
 
-	void deleteByEmail(String email);
-
-	//	@RestResource(exported = false)
+	@RestResource(exported = false)
 	Optional<User> findByEmailAndProviderId(String email, String providerID);
 }

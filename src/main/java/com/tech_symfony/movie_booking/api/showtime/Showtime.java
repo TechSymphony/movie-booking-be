@@ -14,7 +14,9 @@ import lombok.*;
 import java.sql.Date;
 import java.sql.Time;
 
-@Data
+@Setter
+@Getter
+
 @Entity
 @Table(name = "showtimes")
 

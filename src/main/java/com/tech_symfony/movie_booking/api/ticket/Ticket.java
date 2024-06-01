@@ -17,10 +17,14 @@ import lombok.*;
 import java.util.List;
 
 
-@Data
+@Setter
+@Getter
+
 @Entity
 @Table(name = "tickets")
-
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Ticket extends BaseUUIDEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -28,6 +32,8 @@ public class Ticket extends BaseUUIDEntity {
 		name = "bill_id",
 		nullable = false
 	)
+	@NotNull(message = "Bill  MUST not be null")
+
 	private Bill bill;
 
 
@@ -36,7 +42,7 @@ public class Ticket extends BaseUUIDEntity {
 		name = "showtime_id",
 		nullable = false
 	)
-	@NotBlank(message = "Showtime id MUST not be blank")
+	@NotNull(message = "Showtime  MUST not be null")
 	private Showtime showtime;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -44,6 +50,8 @@ public class Ticket extends BaseUUIDEntity {
 		name = "seat_id",
 		nullable = false
 	)
+	@NotNull(message = "seat  MUST not be null")
+
 	private Seat seat;
 
 

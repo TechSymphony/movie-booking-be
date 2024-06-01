@@ -14,7 +14,9 @@ import lombok.*;
 import java.util.Set;
 
 
-@Data
+@Setter
+@Getter
+
 @Entity
 @Table(name = "seats")
 public class Seat extends BaseEntity {

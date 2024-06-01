@@ -6,18 +6,21 @@ import com.tech_symfony.movie_booking.model.BaseUUIDEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "bills")
 public class Bill extends BaseUUIDEntity {
 
 	@Column(name = "create_time")
-	@Temporal(TemporalType.DATE)
+	@CreationTimestamp
 	private Date createTime;
 
 	@Column(name = "payment_at")
@@ -28,18 +31,18 @@ public class Bill extends BaseUUIDEntity {
 	@Min(value = 0, message = "Changed point MUST MUST be at least 0")
 	@Max(value = 50, message = "Changed point MUST be less than or equal to 18")
 	@Column(name = "change_point")
-	private Integer changedPoint;
+	private Integer changedPoint = 0;
 
 	@Positive(message = "Total must be positive")
 	private Double total;
 
 	@Column(name = "transaction_id")
-	@NotEmpty(message = "Transaction id must not be empty")
+//	@NotEmpty(message = "Transaction id must not be empty")
 	private String transactionId;
 
 	@Column(name = "cancel_reason")
 	@NotNull(message = "Cancel reason must not be null")
-	private String cancelReason;
+	private String cancelReason = "";
 
 	@Column(name = "cancel_date")
 	private LocalDateTime cancelDate;
@@ -52,17 +55,27 @@ public class Bill extends BaseUUIDEntity {
 	)
 	private Set<Ticket> tickets;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(
 		name = "user_id",
 		nullable = false
 	)
+	@NotNull(message = "User must not be null")
 	private User user;
 
 
 	@NotNull(message = "Gender must not be null")
 	@Enumerated(EnumType.ORDINAL)
-	private BillStatus status;
+	private BillStatus status = BillStatus.IN_PROGRESS;
 
+	public void addTicket(
+		Ticket ticket
+	) {
+		if (this.tickets == null) this.tickets = new HashSet<>();
+		this.tickets.add(ticket);
+		ticket.setBill(this);
+	}
 
+	@Transient
+	String vnpayUrl;
 }

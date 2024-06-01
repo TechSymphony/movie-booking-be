@@ -51,18 +51,18 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(body, httpStatus);
 	}
 
-//	@ExceptionHandler(Exception.class)
-//	public ResponseEntity<String> exception(Exception e) {
-//		ObjectMapper mapper = new ObjectMapper();
-//		ErrorInfo errorInfo = new ErrorInfo(e);
-//		String respJSONstring = "{}";
-//		try {
-//			respJSONstring = mapper.writeValueAsString(errorInfo);
-//		} catch (JsonProcessingException e1) {
-//			e1.printStackTrace();
-//		}
-//		return ResponseEntity.badRequest().body(respJSONstring);
-//	}
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> exception(Exception e) {
+		ObjectMapper mapper = new ObjectMapper();
+		ErrorInfo errorInfo = new ErrorInfo(e);
+		String respJSONstring = "{}";
+		try {
+			respJSONstring = mapper.writeValueAsString(errorInfo);
+		} catch (JsonProcessingException e1) {
+			e1.printStackTrace();
+		}
+		return ResponseEntity.badRequest().body(respJSONstring);
+	}
 
 //	/**
 //	 * Handles exception thrown by Bean Validation on controller methods parameters

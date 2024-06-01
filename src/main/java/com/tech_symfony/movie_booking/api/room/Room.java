@@ -12,7 +12,9 @@ import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
+
 @Entity
 @Table(name = "rooms")
 public class Room extends NamedEntity {

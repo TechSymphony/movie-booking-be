@@ -2,6 +2,7 @@
 package com.tech_symfony.movie_booking.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,7 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for
@@ -19,8 +21,7 @@ import lombok.Data;
  */
 @MappedSuperclass
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
-@Data
-public abstract class BaseEntity implements Serializable {
+public class BaseEntity {
 
 	@Id
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -39,5 +40,6 @@ public abstract class BaseEntity implements Serializable {
 	public boolean isNew() {
 		return this.id == null;
 	}
+
 
 }

@@ -11,7 +11,9 @@ import lombok.*;
 import java.sql.Date;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
+
 @Entity
 @Table(name = "movies")
 public class Movie extends NamedEntity {

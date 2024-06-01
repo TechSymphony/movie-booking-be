@@ -5,9 +5,9 @@ server:
 
 #spring.jpa.show-sql: true
 springdoc:
-  url=/openapi-3:
-    0:
-      yml:
+  #  url=/openapi-3:
+  #    0:
+  #      yml:
   #  api-docs:
   #    enabled: false
   swagger-ui:
@@ -17,10 +17,8 @@ springdoc:
     urls:
       - name: "Swagger UI - Spring data rest"
         url: /v3/api-docs
-      - name: "Spring restdocs"
-        url: /openapi-3.0.yml
-    path=/swagger-ui-custom:
-      html:
+  #      - name: "Spring restdocs"
+  #        url: /openapi-3.0.yml
   oAuthFlow:
     authorizationUrl: ${BASE_URL}/oauth2/authorize
     tokenUrl: ${BASE_URL}/oauth2/token
@@ -79,9 +77,6 @@ spring:
     password: ${DB_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    #      properties:
-    #        hibernate:
-    #          enable_lazy_load_no_trans: true
     show-sql: ${DB_SHOW_SQL}
     hibernate:
       ddl-auto: ${DB_HIBERNATE_DDL_AUTO}

@@ -6,9 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
+import lombok.*;
 
 /**
  * Simple JavaBean domain object adds a name property to
@@ -16,22 +14,19 @@ import lombok.NonNull;
  * a base class for objects needing these properties.
  */
 @MappedSuperclass
-@Data
-public abstract class NamedEntity extends BaseEntity {
+public class NamedEntity extends BaseEntity {
 
 
 	@Column
 	@NotNull(message = "name must not be null")
 	@NotBlank(message = "name must not be blank")
-	private String name;
+	protected String name;
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 }

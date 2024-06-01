@@ -10,7 +10,9 @@ import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
+
 @Entity
 @Table(name = "cinemas")
 public class Cinema extends NamedEntity {
