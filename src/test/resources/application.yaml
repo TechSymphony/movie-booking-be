@@ -10,3 +10,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+jwt:
+  key:
+    id: 'configured-f57f-46a2-b502-8a24c308be7f'
+    public: classpath:app.pub
+    private: classpath:app.key
