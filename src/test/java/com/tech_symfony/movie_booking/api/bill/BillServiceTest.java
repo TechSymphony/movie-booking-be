@@ -10,17 +10,12 @@ import com.tech_symfony.movie_booking.api.showtime.ShowtimeRepository;
 import com.tech_symfony.movie_booking.api.ticket.TicketRepository;
 import com.tech_symfony.movie_booking.api.user.User;
 import com.tech_symfony.movie_booking.api.user.UserRepository;
-import com.tech_symfony.movie_booking.model.BaseUnitTest;
 import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.util.*;
