@@ -1,17 +1,92 @@
-#server:
-#  port: ${ENV_PORT}
-#
-#spring:
-#  config:
-#    import: optional:configtree:/run/secrets/
-#  application:
-#    name: ${ENV_NAME}
-#  datasource:
-#    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-#    username: ${DB_USER}
-#    password: ${DB_PASS}
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#  jpa:
-#    show-sql: ${DB_SHOW_SQL}
-#    hibernate:
-#      ddl-auto: ${DB_HIBERNATE_DDL_AUTO}
+server:
+  port: ${ENV_PORT}
+
+
+
+#spring.jpa.show-sql: true
+springdoc:
+  #  url=/openapi-3:
+  #    0:
+  #      yml:
+  #  api-docs:
+  #    enabled: false
+  swagger-ui:
+    oauth:
+      client-id: public-client
+      use-pkce-with-authorization-code-grant: true
+    urls:
+      - name: "Swagger UI - Spring data rest"
+        url: /v3/api-docs
+  #      - name: "Spring restdocs"
+  #        url: /openapi-3.0.yml
+  oAuthFlow:
+    authorizationUrl: ${BASE_URL}/oauth2/authorize
+    tokenUrl: ${BASE_URL}/oauth2/token
+
+#  api-docs:
+#    path=/api-docs:
+
+
+spring:
+
+  security:
+
+    oauth2:
+
+      #      authorizationserver:
+      #        client:
+      #
+      #          public-client:
+
+      #            registration:
+      #              client-id: "public-client"
+      #              client-authentication-methods:
+      #                - "none"
+      #              authorization-grant-types:
+      #                - "authorization_code"
+      #              redirect-uris:
+      #                - "https://oauth.pstmn.io/v1/browser-callback"
+      #              #                - "http:localhost:8080/oauth2/callback/public-client"
+      #
+      #              scopes: openid,profile,email
+
+
+      # hien ra cai bang kieu gg cho phep xem tem email, bla bla bla
+      #            require-authorization-consent: true
+      #            require-proof-key: true
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+              - phone
+            redirect-uri:
+              - http://localhost:8080/oauth2/callback/google
+              - https://oauth.pstmn.io/v1/browser-callback
+              - https://oauth.pstmn.io/v1/callback
+  config:
+    import: optional:configtree:/run/secrets/ , optional:file:.env[.properties]
+  application:
+    name: ${ENV_NAME}
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: ${DB_SHOW_SQL}
+    hibernate:
+      ddl-auto: ${DB_HIBERNATE_DDL_AUTO}
+
+logging:
+  level:
+    org.springframework.security: debug
+
+jwt:
+  key:
+    id: 'configured-f57f-46a2-b502-8a24c308be7f'
+    public: classpath:app.pub
+    private: classpath:app.key
