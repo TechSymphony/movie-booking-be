@@ -15,15 +15,35 @@
   <description>Movie booking</description>
   <properties>
     <java.version>17</java.version>
-
+    <server.variable.url>localhost:8080</server.variable.url>
     <asciidoctor.version>2.2.6</asciidoctor.version>
     <restdocs-api-spec.version>0.19.2</restdocs-api-spec.version>
     <restdocs-spec.version>0.23</restdocs-spec.version>
+    <go-offline-maven-plugin.version>1.2.8</go-offline-maven-plugin.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20240303</version>
+
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-rest</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-rest-webmvc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -44,28 +64,18 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <scope>runtime</scope>
+      <scope>test</scope>
     </dependency>
 
-    <!--    <dependency>-->
-    <!--      <groupId>com.mysql</groupId>-->
-    <!--      <artifactId>mysql-connector-j</artifactId>-->
-    <!--      <scope>runtime</scope>-->
-    <!--    </dependency>-->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.restdocs</groupId>
-      <artifactId>spring-restdocs-mockmvc</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -75,6 +85,49 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-authorization-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>1.5.5.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+
+
+    <!--    Spring restdocs and swagger ui-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.vaadin.external.google</groupId>
+          <artifactId>android-json</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.restdocs</groupId>
+      <artifactId>spring-restdocs-mockmvc</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.epages</groupId>
@@ -94,7 +147,12 @@
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <version>2.5.0</version>
     </dependency>
- 
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+
     <!--    <dependency>-->
     <!--      <groupId>me.paulschwarz</groupId>-->
     <!--      <artifactId>spring-dotenv</artifactId>-->
@@ -104,6 +162,8 @@
 
   <build>
     <plugins>
+
+
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -150,23 +210,41 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin>
-        <groupId>io.github.berkleytechnologyservices</groupId>
-        <artifactId>restdocs-spec-maven-plugin</artifactId>
-        <version>${restdocs-spec.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
+<!--      <plugin>-->
+<!--        <groupId>io.github.berkleytechnologyservices</groupId>-->
+<!--        <artifactId>restdocs-spec-maven-plugin</artifactId>-->
+<!--        <version>${restdocs-spec.version}</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <goals>-->
+<!--              <goal>generate</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <specification>OPENAPI_V3</specification>-->
+<!--              <outputDirectory>${project.build.directory}/classes/static</outputDirectory>-->
+<!--              <host>${server.variable.url}</host>-->
+<!--              <oauth2>-->
 
-              <specification>OPENAPI_V3</specification>
-              <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+<!--                <tokenUrl>http://${server.variable.url}/oauth2/token</tokenUrl>-->
+<!--                <authorizationUrl>http://${server.variable.url}/oauth2/authorize</authorizationUrl>-->
+<!--                <flows>-->
+<!--                  <flow>authorizationCode</flow>-->
+<!--                </flows>-->
+<!--                &lt;!&ndash;                <scopes>&ndash;&gt;-->
+<!--                &lt;!&ndash;                  <scope>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <name>read</name>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <description>Access to read operations.</description>&ndash;&gt;-->
+<!--                &lt;!&ndash;                  </scope>&ndash;&gt;-->
+<!--                &lt;!&ndash;                  <scope>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <name>write</name>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <description>Access to write operations.</description>&ndash;&gt;-->
+<!--                &lt;!&ndash;                  </scope>&ndash;&gt;-->
+<!--                &lt;!&ndash;                </scopes>&ndash;&gt;-->
+<!--              </oauth2>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -199,6 +277,29 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>de.qaware.maven</groupId>
+        <artifactId>go-offline-maven-plugin</artifactId>
+        <version>${go-offline-maven-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>1.5.5.Final</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
       </plugin>
     </plugins>
   </build>
