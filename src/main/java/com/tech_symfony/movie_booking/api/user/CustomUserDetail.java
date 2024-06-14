@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -27,16 +29,28 @@ public class CustomUserDetail implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Arrays
-			.stream(
-				new String[]{role.getName()}
-//				userInfoEntity
-//				.getRoles()
-//				.split(",")
+//		String role = this.role.getName();
 
-			)
-			.map(SimpleGrantedAuthority::new)
-			.toList();
+//		String[] authorities = new String[]{"ROLE_USER"};
+		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+//		for (AppRole role : user.getRoles()) {
+//			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+//		}
+		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		if(this.role != null)
+			grantedAuthorities.add(new SimpleGrantedAuthority(this.role.getName()));
+		
+		return grantedAuthorities;
+//		return Arrays
+//			.stream(
+//				authorities
+////				userInfoEntity
+////				.getRoles()
+////				.split(",")
+//
+//			)
+//			.map(SimpleGrantedAuthority::new)
+//			.toList();
 	}
 
 	@Override
