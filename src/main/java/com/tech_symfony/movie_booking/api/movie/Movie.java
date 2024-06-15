@@ -3,6 +3,7 @@ package com.tech_symfony.movie_booking.api.movie;
 import com.tech_symfony.movie_booking.api.movie_genre.MovieGenre;
 import com.tech_symfony.movie_booking.api.showtime.Showtime;
 import com.tech_symfony.movie_booking.model.NamedEntity;
+//import io.swagger.v3.oas.annotations.Operation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "movies")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Movie extends NamedEntity {
 
 
@@ -108,6 +110,5 @@ public class Movie extends NamedEntity {
 //	)
 //	private Set<MovieImageEntity> images;
 //
-
 
 }
