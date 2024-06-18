@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.util.Base64;
 
 @Configuration
 public class ESConfiguration extends ElasticsearchConfiguration {

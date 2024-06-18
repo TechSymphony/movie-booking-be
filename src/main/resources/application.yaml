@@ -87,7 +87,6 @@ spring:
 logging:
   level:
     org.springframework.security: debug
-#    tracer: trace
 
 jwt:
   key:
