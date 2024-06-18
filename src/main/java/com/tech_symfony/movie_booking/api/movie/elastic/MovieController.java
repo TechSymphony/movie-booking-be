@@ -24,8 +24,8 @@ public class MovieController {
 	private final MovieModelAssembler movieModelAssembler;
 
 	@Operation(
-		summary = "Tìm kiếm movie dựa theo các tham số truyền vào",
-		description = "API tìm kiếm thông tin movie dựa theo các thông tin được truyền vào."
+		summary = "Tìm kiếm movie dựa theo tên",
+		description = "API tìm kiếm thông tin movie dựa theo các thông tin được truyền vào (ở đây là tên)."
 	)
 	@GetMapping("/movies/search")
 	@ResponseBody
