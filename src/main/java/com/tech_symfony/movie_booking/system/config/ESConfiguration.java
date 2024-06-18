@@ -29,7 +29,7 @@ public class ESConfiguration extends ElasticsearchConfiguration {
 
 		return ClientConfiguration.builder()
 			.connectedTo("localhost:9200")
-			.usingSsl(getSslContext())
+//			.usingSsl(getSslContext())
 			.withBasicAuth(username, password)
 			.build();
 	}
@@ -39,10 +39,9 @@ public class ESConfiguration extends ElasticsearchConfiguration {
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
 		Certificate ca;
-		try (InputStream certificateInputStream = new FileInputStream("ca.crt")) {
+		try (InputStream certificateInputStream = new FileInputStream("./certs/ca/ca.crt")) {
 			ca = cf.generateCertificate(certificateInputStream);
 		}
-
 		// Create a KeyStore containing our trusted CAs
 		String keyStoreType = KeyStore.getDefaultType();
 		KeyStore keyStore = KeyStore.getInstance(keyStoreType);

@@ -8,16 +8,13 @@ dev:
 start-dev:
 	@make stop
 	docker-compose up setup -d
-	docker-compose up es01 -d
-	docker-compose up kibana -d
 	docker-compose up db -d
-	mvnw spring-boot:run
+	docker-compose up logstash -d
 start:
 	@make stop
 	docker-compose up setup -d
-	docker-compose up es01 -d
-	docker-compose up kibana -d
 	docker-compose up app -d
+	docker-compose up logstash -d
 stop:
 	docker-compose down
 build-nocache:

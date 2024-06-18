@@ -1,8 +1,6 @@
 version: '3.7'
 
 volumes:
-  certs:
-    driver: local
   esdata01:
     driver: local
   kibanadata:
@@ -18,7 +16,7 @@ services:
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
-      - certs:/usr/share/elasticsearch/config/certs
+      - ./certs:/usr/share/elasticsearch/config/certs
     user: "0"
     command: >
       bash -c '
@@ -59,9 +57,9 @@ services:
         find . -type d -exec chmod 750 \{\} \;;
         find . -type f -exec chmod 640 \{\} \;;
         echo "Waiting for Elasticsearch availability";
-        until curl -s --cacert config/certs/ca/ca.crt https://es01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        until curl -s --cacert config/certs/ca/ca.crt http://es01:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
         echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" https://es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" http://es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
         echo "All done!";
       '
     healthcheck:
@@ -78,7 +76,7 @@ services:
     labels:
       co.elastic.logs/module: elasticsearch
     volumes:
-      - certs:/usr/share/elasticsearch/config/certs
+      - ./certs:/usr/share/elasticsearch/config/certs
       - esdata01:/usr/share/elasticsearch/data
     ports:
       - ${ES_PORT}:9200
@@ -89,11 +87,11 @@ services:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
-      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.enabled=false # consider switch it to true in production
       - xpack.security.http.ssl.key=certs/es01/es01.key
       - xpack.security.http.ssl.certificate=certs/es01/es01.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
-      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.enabled=false # consider switch it to true in production
       - xpack.security.transport.ssl.key=certs/es01/es01.key
       - xpack.security.transport.ssl.certificate=certs/es01/es01.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
@@ -108,7 +106,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+          "curl -s --cacert config/certs/ca/ca.crt http://localhost:9200 | grep -q 'missing authentication credentials'",
         ]
       interval: 10s
       timeout: 10s
@@ -122,13 +120,13 @@ services:
     labels:
       co.elastic.logs/module: kibana
     volumes:
-      - certs:/usr/share/kibana/config/certs
+      - ./certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
     ports:
       - ${KIBANA_PORT}:5601
     environment:
       - SERVERNAME=kibana
-      - ELASTICSEARCH_HOSTS=https://es01:9200
+      - ELASTICSEARCH_HOSTS=http://es01:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
@@ -146,28 +144,54 @@ services:
       timeout: 10s
       retries: 120
 
-#  metricbeat01:
-#    depends_on:
-#      es01:
-#        condition: service_healthy
-#      kibana:
-#        condition: service_healthy
-#    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
-#    user: root
-#    volumes:
-#      - certs:/usr/share/metricbeat/certs
-#      - metricbeatdata01:/usr/share/metricbeat/data
-#      - "./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro"
-#      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-#      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
-#      - "/proc:/hostfs/proc:ro"
-#      - "/:/hostfs:ro"
-#    environment:
-#      - ELASTIC_USER=elastic
-#      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-#      - ELASTIC_HOSTS=https://es01:9200
-#      - KIBANA_HOSTS=http://kibana:5601
-#      - LOGSTASH_HOSTS=http://logstash01:9600
+  logstash:
+    build:
+      context: logstash/
+      args:
+        ELASTIC_VERSION: ${STACK_VERSION}
+    user: root
+    volumes:
+      - ./certs:/usr/share/logstash/config/certs
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+      - ./logstash/mysql-connector-j-8.4.0.jar:/usr/share/logstash/lib/mysql-connector-j-8.4.0.jar:ro
+    ports:
+      - 5044:5044
+      - 50000:50000/tcp
+      - 50000:50000/udp
+      - 9600:9600
+    environment:
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+    depends_on:
+      - es01
+      - db
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  metricbeat:
+    depends_on:
+      es01:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
+    user: root
+    volumes:
+      - ./certs:/usr/share/metricbeat/certs
+      - metricbeatdata01:/usr/share/metricbeat/data
+      - "./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
+      - "/proc:/hostfs/proc:ro"
+      - "/:/hostfs:ro"
+    environment:
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_HOSTS=http://es01:9200 # https in production env
+      - KIBANA_HOSTS=http://kibana:5601
+      - LOGSTASH_HOSTS=http://logstash:9600
 
   dev:
     build: .
@@ -177,6 +201,7 @@ services:
       - "8080:8080"
     volumes:
       - ./docker_application.properties:/app/application.properties:ro
+      - ./certs:/certs
     env_file:
       - .env
     depends_on:
@@ -196,6 +221,7 @@ services:
       - "8080:8080"
     volumes:
       - ./docker_application.properties:/app/application.properties:ro
+      - ./certs:/certs
     env_file:
       - .env
     depends_on:
