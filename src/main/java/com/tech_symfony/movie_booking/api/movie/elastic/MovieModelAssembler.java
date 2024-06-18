@@ -1,5 +1,6 @@
-package com.tech_symfony.movie_booking.api.movie;
+package com.tech_symfony.movie_booking.api.movie.elastic;
 
+import com.tech_symfony.movie_booking.api.movie.Movie;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.EntityModel;
@@ -9,22 +10,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class MovieModelAssembler implements RepresentationModelAssembler<Movie, EntityModel<Movie>> {
+public class MovieModelAssembler implements RepresentationModelAssembler<MovieSearch, EntityModel<MovieSearch>> {
 
 	private final RepositoryEntityLinks entityLinks;
 
 	@Override
-	public EntityModel<Movie> toModel(Movie movie) {
-		Link linkResource = entityLinks.linkToItemResource(Movie.class, movie.getId());
+	public EntityModel<MovieSearch> toModel(MovieSearch movieSearch) {
+		Link linkResource = entityLinks.linkToItemResource(Movie.class, movieSearch.getId());
 		Link linkCollectionResource = entityLinks.linkToCollectionResource(Movie.class);
 
-		EntityModel<Movie> movieModel = EntityModel.of(
-			movie,
+		return EntityModel.of(
+			movieSearch,
 			linkResource,
 			linkCollectionResource
 		);
-
-		return movieModel;
-
 	}
 }
