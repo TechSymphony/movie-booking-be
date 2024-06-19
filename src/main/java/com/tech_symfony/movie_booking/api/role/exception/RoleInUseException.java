@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.system.exception;
+package com.tech_symfony.movie_booking.api.role.exception;
 
 public class RoleInUseException extends RuntimeException {
 	public RoleInUseException(Integer roleId) {

@@ -1,7 +1,7 @@
 package com.tech_symfony.movie_booking.api.role;
 
-import com.tech_symfony.movie_booking.system.exception.RoleInUseException;
-import com.tech_symfony.movie_booking.system.exception.RoleNotFoundException;
+import com.tech_symfony.movie_booking.api.role.exception.RoleInUseException;
+import com.tech_symfony.movie_booking.api.role.exception.RoleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
