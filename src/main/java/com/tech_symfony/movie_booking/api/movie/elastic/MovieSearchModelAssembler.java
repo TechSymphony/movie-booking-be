@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class MovieModelAssembler implements RepresentationModelAssembler<MovieSearch, EntityModel<MovieSearch>> {
+public class MovieSearchModelAssembler implements RepresentationModelAssembler<MovieSearch, EntityModel<MovieSearch>> {
 
 	private final RepositoryEntityLinks entityLinks;
 

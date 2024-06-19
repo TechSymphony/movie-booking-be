@@ -7,13 +7,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
+public interface MovieElasticService {
+	Page<MovieSearch> search(Pageable pageable, Optional<String> name);
+}
+
 @Service
 @RequiredArgsConstructor
-public class MovieService {
+class DefaultMovieService implements MovieElasticService {
 
 	private final MovieSearchRepository movieSearchRepository;
 
-	Page<MovieSearch> search(Pageable pageable, Optional<String> name) {
+	@Override
+	public Page<MovieSearch> search(Pageable pageable, Optional<String> name) {
 		return movieSearchRepository.findByName(name.orElse(""), pageable);
 	}
 }

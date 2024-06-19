@@ -9,6 +9,7 @@ import lombok.*;
 
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -83,23 +84,23 @@ public class Movie extends NamedEntity {
 
 	private String slug;
 
-	@NotEmpty(message = "Showtime MUST not be empty")
+//	@NotEmpty(message = "Showtime MUST not be empty")
 	@OneToMany(
 		mappedBy = "movie",
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL
 	)
-	private Set<Showtime> showtimes;
+	private Set<Showtime> showtimes = new HashSet<>();
 
 
-	@NotEmpty(message = "Genre MUST not be empty")
+//	@NotEmpty(message = "Genre MUST not be empty")
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(
 		name = "movie_genre",
 		joinColumns = @JoinColumn(name = "movie_id", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "movie_genre_id", nullable = false)
 	)
-	private Set<MovieGenre> genres;
+	private Set<MovieGenre> genres = new HashSet<>();
 	//
 //	@OneToMany(
 //		mappedBy = "movie",

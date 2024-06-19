@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +17,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RepositoryRestController
 @ResponseBody
-public class MovieController {
+public class MovieElasticController {
 
-	private final MovieService movieService;
-	private final MovieModelAssembler movieModelAssembler;
+	private final MovieElasticService movieElasticService;
+	private final MovieSearchModelAssembler movieSearchModelAssembler;
 
 	@Operation(
 		summary = "Tìm kiếm movie dựa theo các tham số truyền vào",
@@ -31,10 +30,10 @@ public class MovieController {
 	@ResponseBody
 	public CollectionModel<EntityModel<MovieSearch>> search(Pageable pageable, @RequestParam Optional<String> name) {
 
-		Page<MovieSearch> movies = movieService.search(PageRequest.of(
+		Page<MovieSearch> movies = movieElasticService.search(PageRequest.of(
 			pageable.getPageNumber(),
 			pageable.getPageSize()
 		), name);
-		return movieModelAssembler.toCollectionModel(movies);
+		return movieSearchModelAssembler.toCollectionModel(movies);
 	}
 }
