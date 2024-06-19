@@ -10,6 +10,6 @@ public interface UserMapper {
 
 	@Mapping(target = "principle", source = "email")
 	@Mapping(target = "credential", source = "password")
-	@Mapping(target = "role", source = "user.role", ignore = true)
+	@Mapping(target = "role", source = "role")
 	CustomUserDetail userToCustomerUserDetail(User user);
 }

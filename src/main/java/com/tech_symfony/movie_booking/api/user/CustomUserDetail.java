@@ -32,14 +32,18 @@ public class CustomUserDetail implements UserDetails {
 //		String role = this.role.getName();
 
 //		String[] authorities = new String[]{"ROLE_USER"};
-		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+//		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 //		for (AppRole role : user.getRoles()) {
 //			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 //		}
-		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		if(this.role != null)
-			grantedAuthorities.add(new SimpleGrantedAuthority(this.role.getName()));
-		
+//		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+//		if(this.role != null)
+//			grantedAuthorities.add(new SimpleGrantedAuthority(this.role.getName()));
+		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+		grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		role.getPermissions().forEach(permission ->
+			grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName()))
+		);
 		return grantedAuthorities;
 //		return Arrays
 //			.stream(
