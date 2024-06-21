@@ -14,7 +14,7 @@ public interface MovieElasticService {
 
 @Service
 @RequiredArgsConstructor
-class DefaultMovieService implements MovieElasticService {
+class DefaultMovieElasticService implements MovieElasticService {
 
 	private final MovieSearchRepository movieSearchRepository;
 
