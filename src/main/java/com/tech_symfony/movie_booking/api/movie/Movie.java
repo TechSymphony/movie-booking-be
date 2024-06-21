@@ -84,23 +84,23 @@ public class Movie extends NamedEntity {
 
 	private String slug;
 
-//	@NotEmpty(message = "Showtime MUST not be empty")
+	@NotEmpty(message = "Showtime MUST not be empty")
 	@OneToMany(
 		mappedBy = "movie",
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL
 	)
-	private Set<Showtime> showtimes = new HashSet<>();
+	private Set<Showtime> showtimes;
 
 
-//	@NotEmpty(message = "Genre MUST not be empty")
+	@NotEmpty(message = "Genre MUST not be empty")
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(
 		name = "movie_genre",
 		joinColumns = @JoinColumn(name = "movie_id", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "movie_genre_id", nullable = false)
 	)
-	private Set<MovieGenre> genres = new HashSet<>();
+	private Set<MovieGenre> genres;
 	//
 //	@OneToMany(
 //		mappedBy = "movie",
