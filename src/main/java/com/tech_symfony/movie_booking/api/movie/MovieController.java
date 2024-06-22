@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @RepositoryRestController
 @ResponseBody
@@ -34,5 +36,19 @@ public class MovieController {
 		return ResponseEntity
 			.created(link.toUri())
 			.body(movieModelAssembler.toModel(newMovie));
+	}
+
+	@Operation(
+		summary = "Cập nhật một bộ phim",
+		description = "API cập nhật một bộ phim"
+	)
+	@PutMapping(value = "/movies/{movieId}")
+	public ResponseEntity<EntityModel<Movie>> update(
+		@PathVariable Integer movieId,
+		@Valid @RequestBody MovieDTO dataRaw
+	) {
+		Movie newMovie = movieService.update(movieId, dataRaw);
+		return ResponseEntity
+			.ok(movieModelAssembler.toModel(newMovie));
 	}
 }

@@ -6,16 +6,18 @@ import com.tech_symfony.movie_booking.api.showtime.Showtime;
 import com.tech_symfony.movie_booking.api.showtime.ShowtimeRepository;
 import com.tech_symfony.movie_booking.system.exception.ForbidenMethodControllerException;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public interface MovieService {
 	Movie create(MovieDTO dataRaw);
 
-	Movie update(MovieDTO dataRaw);
+	Movie update(Integer movieId, MovieDTO dataRaw);
 }
 
 @Service
@@ -26,67 +28,74 @@ class DefaultMovieService implements MovieService {
 	private final ShowtimeRepository showtimeRepository;
 	private final MovieGenreRepository movieGenreRepository;
 
-	private void checkShowtimes(Set<Integer> showtimes) {
-		if (showtimes.isEmpty()) {
-			throw new ForbidenMethodControllerException("Data not found");
+	private final MovieMapper mapper = Mappers.getMapper(MovieMapper.class);
+
+	private Set<Showtime> checkShowtimes(Set<Integer> showtimes) {
+
+		if (showtimes == null) {
+			throw new IllegalArgumentException("Showtimes field not found");
 		}
+		if (showtimes.isEmpty()) {
+			throw new ForbidenMethodControllerException("Showtimes data not found");
+		}
+
+		Set<Showtime> showtimeSet = new HashSet<>();
 
 		showtimes.forEach(showtime -> {
 			if (!showtimeRepository.existsById(showtime)) {
 				throw new ResourceNotFoundException("Showtime not found");
 			}
+			showtimeSet.add(showtimeRepository.findById(showtime).orElseThrow());
 		});
+
+		return showtimeSet;
 	}
 
-	private void checkGernes(Set<Integer> genres) {
-		if (genres.isEmpty()) {
-			throw new ForbidenMethodControllerException("Data not found");
+	private Set<MovieGenre> checkGernes(Set<Integer> genres) {
+		if (genres == null) {
+			throw new IllegalArgumentException("Genres field not found");
 		}
 
+		if (genres.isEmpty()) {
+			throw new ForbidenMethodControllerException("Genres data not found");
+		}
+
+		Set<MovieGenre> movieGenreSet = new HashSet<>();
 		genres.forEach(genre -> {
 			if (!movieGenreRepository.existsById(genre)) {
 				throw new ResourceNotFoundException("Movie genre not found");
 			}
+			movieGenreSet.add(movieGenreRepository.findById(genre).orElseThrow());
 		});
+
+		return movieGenreSet;
 	}
 
 	@Override
 	public Movie create(MovieDTO dataRaw) {
 
-		checkShowtimes(dataRaw.getShowtimes());
-		checkGernes(dataRaw.getGenres());
+		Movie movie = mapper.movieDtoToMovie(dataRaw);
 
-		Movie movie = new Movie();
+		movie.setShowtimes(checkShowtimes(dataRaw.getShowtimes()));
+		movie.setGenres(checkGernes(dataRaw.getGenres()));
 
-		movie.setCode(dataRaw.getCode());
-		movie.setSubName(dataRaw.getSubName());
-		movie.setDirector(dataRaw.getDirector());
-		movie.setCaster(dataRaw.getCaster());
-		movie.setReleaseDate(dataRaw.getReleaseDate());
-		movie.setEndDate(dataRaw.getEndDate());
-		movie.setRunningTime(dataRaw.getRunningTime());
-		movie.setLanguage(dataRaw.getLanguage());
-		movie.setNumberOfRatings(dataRaw.getNumberOfRatings());
-		movie.setSumOfRatings(dataRaw.getSumOfRatings());
-		movie.setDescription(dataRaw.getDescription());
-		movie.setPoster(dataRaw.getPoster());
-		movie.setTrailer(dataRaw.getTrailer());
-		movie.setRated(dataRaw.getRated());
-
-		Set<Showtime> showtimes = new HashSet<>(showtimeRepository.findAllById(dataRaw.getShowtimes()));
-
-		Set<MovieGenre> movieGenres = new HashSet<>(movieGenreRepository.findAllById(dataRaw.getGenres()));
-
-		movie.setShowtimes(showtimes);
-		movie.setGenres(movieGenres);
-
-		movieRepository.save(movie);
-
-		return null;
+		return movieRepository.save(movie);
 	}
 
 	@Override
-	public Movie update(MovieDTO dataRaw) {
-		return null;
+	public Movie update(Integer movieId, MovieDTO dataRaw) {
+
+		Movie movieToUpdate = movieRepository.findById(movieId)
+			.orElseThrow(() -> new ResourceNotFoundException("Movie not found"));
+
+		// bring all fields from movieDto to movie then save it
+
+		Movie movie = mapper.movieDtoToMovie(dataRaw);
+
+		movie.setId(movieId);
+		movie.setShowtimes(checkShowtimes(dataRaw.getShowtimes()));
+		movie.setGenres(checkGernes(dataRaw.getGenres()));
+
+		return movieRepository.save(movie);
 	}
 }
