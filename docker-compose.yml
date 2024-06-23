@@ -15,6 +15,7 @@ services:
       # - redis
 
   db:
+    profiles: [ "start" ]
     image: mysql:8
     restart: always
     ports:

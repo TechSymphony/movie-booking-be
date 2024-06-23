@@ -52,7 +52,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
@@ -65,7 +65,7 @@ jobs:
             cd /home/dev/repos/movie-booking-be
             git pull
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{vars.PROJECT_NAME}}:${{ github.sha }}
-            docker-compose up -d --no-recreate
-            docker-compose restart ${{vars.PROJECT_NAME}}
+            docker compose up -d --profile start --no-recreate
+            docker compose restart ${{vars.PROJECT_NAME}}
             
 
