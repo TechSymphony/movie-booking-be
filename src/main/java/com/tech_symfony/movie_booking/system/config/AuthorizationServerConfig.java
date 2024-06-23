@@ -12,9 +12,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
@@ -64,6 +68,16 @@ public class AuthorizationServerConfig {
 			.build();
 		var jwk = new JWKSet(rsa);
 		return new ImmutableJWKSet<>(jwk);
+	}
+
+	@Bean
+	public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
+		return new NimbusJwtEncoder(jwkSource);
+	}
+
+	@Bean
+	public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
+		return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
 	}
 
 }

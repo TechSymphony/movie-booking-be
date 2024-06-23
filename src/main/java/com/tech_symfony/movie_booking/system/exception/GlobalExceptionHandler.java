@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 // import org.springframework.samples.petclinic.rest.controller.BindingErrorsResponse;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,6 +54,32 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> exception(Exception e) {
+		ObjectMapper mapper = new ObjectMapper();
+		ErrorInfo errorInfo = new ErrorInfo(e);
+		String respJSONstring = "{}";
+		try {
+			respJSONstring = mapper.writeValueAsString(errorInfo);
+		} catch (JsonProcessingException e1) {
+			e1.printStackTrace();
+		}
+		return ResponseEntity.badRequest().body(respJSONstring);
+	}
+
+	@ExceptionHandler(JwtException.class)
+	public ResponseEntity<String> exception(JwtException e) {
+		ObjectMapper mapper = new ObjectMapper();
+		ErrorInfo errorInfo = new ErrorInfo(e);
+		String respJSONstring = "{}";
+		try {
+			respJSONstring = mapper.writeValueAsString(errorInfo);
+		} catch (JsonProcessingException e1) {
+			e1.printStackTrace();
+		}
+		return ResponseEntity.badRequest().body(respJSONstring);
+	}
+
+	@ExceptionHandler(UserAlreadyExistsException.class)
+	public ResponseEntity<String> exception(UserAlreadyExistsException e) {
 		ObjectMapper mapper = new ObjectMapper();
 		ErrorInfo errorInfo = new ErrorInfo(e);
 		String respJSONstring = "{}";

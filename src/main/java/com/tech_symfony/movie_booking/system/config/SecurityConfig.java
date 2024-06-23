@@ -64,6 +64,7 @@ public class SecurityConfig {
 		throws Exception {
 
 		http
+			.csrf().disable()
 			// using resource server and authorize server in same application
 			.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()))
 			// Authorize requests
@@ -89,7 +90,10 @@ public class SecurityConfig {
 			.oauth2Login(oauth2 -> oauth2
 				.userInfoEndpoint(infoEndpoint ->
 					infoEndpoint.userService(oAuth2UserService)))
-			.formLogin(Customizer.withDefaults());
+			.formLogin(Customizer.withDefaults())
+			.formLogin(formLogin -> formLogin
+				.failureHandler(new CustomAuthenticationFailureHandler())
+			);
 
 		return http.cors(Customizer.withDefaults()).getOrBuild();
 	}
