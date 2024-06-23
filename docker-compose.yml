@@ -1,8 +1,6 @@
-version: '3.7'
-
 services:
   app:
-    image: movie-booking-be:v1
+    image: ntduy03/movie-booking-be:latest
     restart: always
     ports:
       - "8080:8080"
@@ -15,7 +13,6 @@ services:
       # - redis
 
   db:
-    profiles: [ "start" ]
     image: mysql:8
     restart: always
     ports:
