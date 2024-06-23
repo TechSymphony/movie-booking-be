@@ -6,27 +6,17 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: CI/CD Pipeline Java with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "MBC-33-feature-ci-cd" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    # services:
-    #   mysql:
-    #     image: mysql:8
-
-    #     env:
-    #       MYSQL_ROOT_PASSWORD: rootpass
-    #       MYSQL_DATABASE: database
-    #     ports:
-    #       - 3306:3306
 
     steps:
       - uses: actions/checkout@v4
@@ -35,11 +25,34 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-          cache: maven
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+      - name: Build and test with Maven
+        run: mvn clean install
 
-      - name: Remote SSH
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build . -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.PROJECT_NAME}}:${{ github.sha }}
+
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.PROJECT_NAME}}:${{ github.sha }}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -47,14 +60,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           username: ${{ secrets.SSH_USERNAME }}
           script: |
-            cd ~/repos/movie-booking-be
-            git checkout main
-            git pull
-            docker compose down
-            docker build -t movie-booking-be:v1 .
-            docker compose up -d
-          #  docker compose up -d
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{env.PROJECT_NAME}}:${{ github.sha }}
+            docker-compose up -d --no-recreate
+            docker-compose restart ${{env.PROJECT_NAME}}
+            
 
-      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-      # - name: Update dependency graph
-      #   uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
