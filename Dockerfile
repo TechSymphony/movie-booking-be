@@ -5,25 +5,25 @@ COPY . .
 RUN mvn clean install -DskipTests=true
 
 ## Run stage ##
-FROM amazoncorretto:17.0.0-alpine
+FROM amazoncorretto:17-alpine3.19 as run
+WORKDIR /app
 
 #  run the application as a non-root user
-RUN addgroup -S spring && adduser -S spring -G spring
+# RUN addgroup -S spring && adduser -S spring -G spring
 
-
-WORKDIR /run
 ARG FILE_JAR="movie_booking-0.0.1-SNAPSHOT.jar"
-COPY --from=build /app/target/$FILE_JAR /run/$FILE_JAR
+COPY --from=build /app/target/$FILE_JAR app.jar
 
-RUN chown spring:spring /run
-USER spring:spring
+#RUN chown spring:spring /run
+#USER spring:spring
 
 
 EXPOSE 8080
 
 ARG JAVA_OPTIONS="-Xmx512m -Xms64m"
+CMD ["java", "-jar", "app.jar"]
 
-ENTRYPOINT java -jar $JAVA_OPTIONS /run/$FILE_JAR
+#ENTRYPOINT java -jar $JAVA_OPTIONS "app.jar"
 
 #FROM maven:3-eclipse-temurin-17-alpine AS deps
 #
