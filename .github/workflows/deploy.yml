@@ -53,7 +53,6 @@ jobs:
             cd /home/dev/repos/movie-booking-be
             git pull
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{vars.PROJECT_NAME}}:latest
-            docker compose up -d --no-recreate
             docker compose restart app
             
 
