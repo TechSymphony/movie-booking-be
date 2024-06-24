@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.role;
 
+import com.tech_symfony.movie_booking.api.role.DTO.RoleDto;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;

@@ -14,7 +14,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Permission extends NamedEntity {
+public class Permission{
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "id", nullable = false)
+	private Integer id;
+
+	private String name;
+
 	private String decription;
 	@ManyToMany(mappedBy = "permissions")
 	private Set<Role> roles;

@@ -2,10 +2,16 @@ package com.tech_symfony.movie_booking.api.role;
 
 import com.tech_symfony.movie_booking.api.role.exception.RoleInUseException;
 import com.tech_symfony.movie_booking.api.role.exception.RoleNotFoundException;
+import com.tech_symfony.movie_booking.api.role.permission.Permission;
+import com.tech_symfony.movie_booking.api.role.permission.PermissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public interface RoleService {
 	List<Role> findAll();
@@ -20,6 +26,7 @@ public interface RoleService {
 class DefaultRoleService implements RoleService{
 
 	private final RoleRepository roleRepository;
+	private final PermissionRepository permissionRepository;
 
 	@Override
 	public List<Role> findAll() {
@@ -38,14 +45,19 @@ class DefaultRoleService implements RoleService{
 	}
 
 	@Override
+	@Transactional
 	public Role update(Integer id, Role role) {
-		return roleRepository.findById(id)
-			.map(existingRole -> {
-				existingRole.setName(role.getName());
-				existingRole.setPermissions(role.getPermissions());
-				return roleRepository.save(existingRole);
+		Role oldRole = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
+		System.out.println(id);
+		Set<Permission> existingPermissions = role.getPermissions().stream()
+			.map(permission -> {
+				System.out.println(permission.getId());
+				return permissionRepository.findById(permission.getId())
+					.orElseThrow(() -> new RuntimeException("Permission not found: " + permission.getId()));
 			})
-			.orElseThrow(() -> new RoleNotFoundException(id));
+			.collect(Collectors.toSet());
+		oldRole.setPermissions(existingPermissions );
+		return oldRole;
 	}
 
 	@Override

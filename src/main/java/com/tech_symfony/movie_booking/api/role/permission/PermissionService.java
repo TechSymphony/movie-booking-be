@@ -16,6 +16,7 @@ import java.util.Map;
 public class PermissionService {
 
 	private final RoleRepository roleRepository;
+	private final PermissionRepository permissionRepository;
 
 	public boolean hasPermission(Authentication authentication, String permission) {
 		if (authentication.getPrincipal() instanceof Jwt) {
@@ -26,4 +27,6 @@ public class PermissionService {
 		}
 		return false;
 	}
+
+	public List<Permission> getAllPermission(){return permissionRepository.findAll();}
 }

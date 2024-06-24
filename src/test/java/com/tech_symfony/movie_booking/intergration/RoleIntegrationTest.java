@@ -3,6 +3,7 @@ package com.tech_symfony.movie_booking.intergration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech_symfony.movie_booking.MovieBookingApplication;
 import com.tech_symfony.movie_booking.api.role.*;
+import com.tech_symfony.movie_booking.api.role.DTO.RoleDto;
 import com.tech_symfony.movie_booking.model.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.api.role;
+package com.tech_symfony.movie_booking.api.role.DTO;
 
 import com.tech_symfony.movie_booking.api.role.permission.Permission;
 import com.tech_symfony.movie_booking.api.user.User;
