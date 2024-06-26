@@ -11,5 +11,6 @@ public interface UserMapper {
 	@Mapping(target = "principle", source = "email")
 	@Mapping(target = "credential", source = "password")
 	@Mapping(target = "role", source = "user.role")
+	@Mapping(target = "enabled", source = "verify")
 	CustomUserDetail userToCustomerUserDetail(User user);
 }

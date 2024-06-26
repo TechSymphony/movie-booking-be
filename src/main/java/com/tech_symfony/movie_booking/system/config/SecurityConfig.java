@@ -90,10 +90,7 @@ public class SecurityConfig {
 			.oauth2Login(oauth2 -> oauth2
 				.userInfoEndpoint(infoEndpoint ->
 					infoEndpoint.userService(oAuth2UserService)))
-			.formLogin(Customizer.withDefaults())
-			.formLogin(formLogin -> formLogin
-				.failureHandler(new CustomAuthenticationFailureHandler())
-			);
+			.formLogin(Customizer.withDefaults());
 
 		return http.cors(Customizer.withDefaults()).getOrBuild();
 	}

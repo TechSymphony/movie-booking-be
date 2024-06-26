@@ -67,6 +67,7 @@ spring:
               - http://localhost:8080/oauth2/callback/google
               - https://oauth.pstmn.io/v1/browser-callback
               - https://oauth.pstmn.io/v1/callback
+              - http://localhost:8080/api/v1/auth/callback
   config:
     import: optional:configtree:/run/secrets/ , optional:file:.env[.properties]
   application:
@@ -80,17 +81,6 @@ spring:
     show-sql: ${DB_SHOW_SQL}
     hibernate:
       ddl-auto: ${DB_HIBERNATE_DDL_AUTO}
-  mail:
-    host:
-    port:
-    username:
-    password:
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
 
 logging:
   level:
@@ -101,3 +91,7 @@ jwt:
     id: 'configured-f57f-46a2-b502-8a24c308be7f'
     public: classpath:app.pub
     private: classpath:app.key
+
+mail:
+  username: ${MAIL}
+

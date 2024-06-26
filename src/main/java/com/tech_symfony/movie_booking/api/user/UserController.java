@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.user;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +14,14 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/auth/register")
-	public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-		String result = userService.register(request);
-		return ResponseEntity.ok(result);
+	public String register(@RequestBody @Valid RegisterRequest request) {
+        return userService.register(request);
 	}
 
 	@GetMapping("/auth/verify")
-	public ResponseEntity<String> verify(@RequestParam(name = "t") String token) {
+	public String verify(@RequestParam(name = "t") String token) {
 		userService.verifyUser(token);
-		return ResponseEntity.ok("Success");
+		return "Success";
 	}
 
 	@GetMapping("/auth/unverified")

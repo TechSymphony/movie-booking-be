@@ -65,32 +65,6 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest().body(respJSONstring);
 	}
 
-	@ExceptionHandler(JwtException.class)
-	public ResponseEntity<String> exception(JwtException e) {
-		ObjectMapper mapper = new ObjectMapper();
-		ErrorInfo errorInfo = new ErrorInfo(e);
-		String respJSONstring = "{}";
-		try {
-			respJSONstring = mapper.writeValueAsString(errorInfo);
-		} catch (JsonProcessingException e1) {
-			e1.printStackTrace();
-		}
-		return ResponseEntity.badRequest().body(respJSONstring);
-	}
-
-	@ExceptionHandler(UserAlreadyExistsException.class)
-	public ResponseEntity<String> exception(UserAlreadyExistsException e) {
-		ObjectMapper mapper = new ObjectMapper();
-		ErrorInfo errorInfo = new ErrorInfo(e);
-		String respJSONstring = "{}";
-		try {
-			respJSONstring = mapper.writeValueAsString(errorInfo);
-		} catch (JsonProcessingException e1) {
-			e1.printStackTrace();
-		}
-		return ResponseEntity.badRequest().body(respJSONstring);
-	}
-
 //	/**
 //	 * Handles exception thrown by Bean Validation on controller methods parameters
 //	 *
