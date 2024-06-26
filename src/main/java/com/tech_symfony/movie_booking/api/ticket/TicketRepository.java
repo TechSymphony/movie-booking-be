@@ -26,12 +26,6 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 		@Param("seatId") Integer seatId
 	);
 
-	@Override
-	List<Ticket> findAll();
-
-	@Override
-	Optional<Ticket> findById(UUID id);
-
 	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_TICKET')")
 	@Override
 	Ticket save(Ticket ticket);

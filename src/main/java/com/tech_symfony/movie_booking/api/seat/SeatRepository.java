@@ -12,11 +12,6 @@ import java.util.Optional;
 
 @RepositoryRestResource
 public interface SeatRepository extends BaseAuthenticatedRepository<Seat, Integer> {
-	@Override
-	List<Seat> findAll();
-
-	@Override
-	Optional<Seat> findById(Integer id);
 
 	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_SEAT')")
 	@Override

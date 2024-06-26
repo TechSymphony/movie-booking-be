@@ -28,7 +28,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = MovieBookingApplication.class)
-public class RoleIntegrationTest extends BaseIntegrationTest {
+public class RoleIT extends BaseIntegrationTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 

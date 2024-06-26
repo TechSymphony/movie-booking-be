@@ -10,12 +10,6 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface CinemaRepository extends BaseAuthenticatedRepository<Cinema, Integer> {
 
-	@Override
-	List<Cinema> findAll();
-
-	@Override
-	Optional<Cinema> findById(Integer id);
-
 	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_CINEMA')")
 	@Override
 	Cinema save(Cinema cinema);

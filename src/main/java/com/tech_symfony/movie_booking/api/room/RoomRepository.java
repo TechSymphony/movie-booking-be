@@ -39,11 +39,6 @@ public interface RoomRepository extends BaseAuthenticatedRepository<Room, Intege
 //					@Param("cinemaId") String cinemaId,
 //					@Param("slug") String slug
 //	);
-	@Override
-	List<Room> findAll();
-
-	@Override
-	Optional<Room> findById(Integer id);
 
 	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_ROOM')")
 	@Override

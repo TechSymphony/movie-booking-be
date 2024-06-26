@@ -14,11 +14,6 @@ import java.util.Optional;
 
 @RepositoryRestResource
 public interface ShowtimeRepository extends BaseAuthenticatedRepository<Showtime, Integer> {
-	@Override
-	List<Showtime> findAll();
-
-	@Override
-	Optional<Showtime> findById(Integer id);
 
 	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_SHOWTIME')")
 	@Override

@@ -11,11 +11,6 @@ import java.util.Optional;
 
 @RepositoryRestResource(path = "movie-genres")
 public interface MovieGenreRepository extends BaseAuthenticatedRepository<MovieGenre, Integer> {
-	@Override
-	List<MovieGenre> findAll();
-
-	@Override
-	Optional<MovieGenre> findById(Integer id);
 
 	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_MOVIE_GENRE')")
 	@Override
