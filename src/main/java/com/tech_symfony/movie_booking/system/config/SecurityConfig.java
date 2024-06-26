@@ -113,7 +113,7 @@ public class SecurityConfig {
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		config.addAllowedOrigin("*");
-		config.setAllowCredentials(true);
+//		config.setAllowCredentials(true);
 		source.registerCorsConfiguration("/**", config);
 
 		return source;
