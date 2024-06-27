@@ -12,11 +12,11 @@ import java.util.Optional;
 @RepositoryRestResource(path = "movie-genres")
 public interface MovieGenreRepository extends BaseAuthenticatedRepository<MovieGenre, Integer> {
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_MOVIE_GENRE')")
+	@PreAuthorize("hasAuthority( 'SAVE_MOVIE_GENRE')")
 	@Override
 	MovieGenre save(MovieGenre movieGenre);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_MOVIE_GENRE')")
+	@PreAuthorize("hasAuthority( 'DELETE_MOVIE_GENRE')")
 	@Override
 	void deleteById(Integer id);
 }

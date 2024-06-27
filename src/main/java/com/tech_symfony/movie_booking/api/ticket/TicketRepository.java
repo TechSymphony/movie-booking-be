@@ -24,11 +24,11 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 		@Param("seatId") Integer seatId
 	);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_TICKET')")
+	@PreAuthorize("hasAuthority( 'SAVE_TICKET')")
 	@Override
 	Ticket save(Ticket ticket);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_TICKET')")
+	@PreAuthorize("hasAuthority( 'DELETE_TICKET')")
 	@Override
 	void deleteById(UUID id);
 }

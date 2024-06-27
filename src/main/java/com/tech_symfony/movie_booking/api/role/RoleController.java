@@ -17,25 +17,25 @@ public class RoleController {
 	private final RoleService roleService;
 	private final RoleModelAssembler assembler;
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'READ_ROLE')")
+	@PreAuthorize("hasAuthority( 'READ_ROLE')")
 	@GetMapping
 	public CollectionModel<EntityModel<RoleDto>> getAllRoles() {
 		return assembler.toCollectionModel(roleService.findAll());
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'READ_ROLE')")
+	@PreAuthorize("hasAuthority( 'READ_ROLE')")
 	public EntityModel<RoleDto> getById(@PathVariable Integer id) {
 		return assembler.toModel(roleService.findById(id));
 	}
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'UPDATE_ROLE')")
+	@PreAuthorize("hasAuthority( 'UPDATE_ROLE')")
 	@PutMapping("/{id}")
 	public EntityModel<RoleDto> updateRole(@PathVariable Integer id, @RequestBody Role role) {
 		return assembler.toModel(roleService.update(id, role));
 	}
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'CREATE_ROLE')")
+	@PreAuthorize("hasAuthority( 'CREATE_ROLE')")
 	@PostMapping
 	public ResponseEntity<EntityModel<RoleDto>> createRole(@RequestBody Role role) {
 		Role newRole = roleService.save(role);
@@ -44,7 +44,7 @@ public class RoleController {
 			.body(assembler.toModel(newRole));
 	}
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_ROLE')")
+	@PreAuthorize("hasAuthority( 'DELETE_ROLE')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteRole(@PathVariable Integer id) {
 		return ResponseEntity.ok().body(roleService.delete(id));

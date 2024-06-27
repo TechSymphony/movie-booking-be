@@ -10,11 +10,11 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface CinemaRepository extends BaseAuthenticatedRepository<Cinema, Integer> {
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_CINEMA')")
+	@PreAuthorize("hasAuthority( 'SAVE_CINEMA')")
 	@Override
 	Cinema save(Cinema cinema);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_CINEMA')")
+	@PreAuthorize("hasAuthority( 'DELETE_CINEMA')")
 	@Override
 	void deleteById(Integer id);
 }

@@ -15,11 +15,11 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface ShowtimeRepository extends BaseAuthenticatedRepository<Showtime, Integer> {
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_SHOWTIME')")
+	@PreAuthorize("hasAuthority( 'SAVE_SHOWTIME')")
 	@Override
 	Showtime save(Showtime showtime);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_SHOWTIME')")
+	@PreAuthorize("hasAuthority( 'DELETE_SHOWTIME')")
 	@Override
 	void deleteById(Integer id);
 }

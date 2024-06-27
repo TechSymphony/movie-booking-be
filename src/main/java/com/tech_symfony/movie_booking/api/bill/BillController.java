@@ -33,7 +33,7 @@ public class BillController {
 	)
 	@PostMapping(value = "/bills")
 	@ResponseStatus(HttpStatus.CREATED)
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'CREATE_BILL')")
+	@PreAuthorize("hasAuthority( 'CREATE_BILL')")
 	public ResponseEntity<EntityModel<Bill>> create(
 		@Valid @RequestBody BillDTO dataRaw,
 		Principal principal
@@ -53,7 +53,7 @@ public class BillController {
 			"sẽ được nêu rõ. "
 	)
 	@PutMapping(value = "/bills/{billId}/payment")
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'CREATE_PAYMENT')")
+	@PreAuthorize("hasAuthority( 'CREATE_PAYMENT')")
 	public EntityModel<Bill> pay(
 		@PathVariable UUID billId
 	) {

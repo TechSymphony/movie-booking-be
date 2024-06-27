@@ -13,11 +13,11 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface SeatTypeRepository extends BaseAuthenticatedRepository<SeatType, Integer> {
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_SEAT_TYPE')")
+	@PreAuthorize("hasAuthority( 'SAVE_SEAT_TYPE')")
 	@Override
 	SeatType save(SeatType seatType);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_SEAT_TYPE')")
+	@PreAuthorize("hasAuthority( 'DELETE_SEAT_TYPE')")
 	@Override
 	void deleteById(Integer id);
 }

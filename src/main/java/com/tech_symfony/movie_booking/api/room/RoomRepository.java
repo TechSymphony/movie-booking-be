@@ -40,11 +40,11 @@ public interface RoomRepository extends BaseAuthenticatedRepository<Room, Intege
 //					@Param("slug") String slug
 //	);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_ROOM')")
+	@PreAuthorize("hasAuthority( 'SAVE_ROOM')")
 	@Override
 	Room save(Room room);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_ROOM')")
+	@PreAuthorize("hasAuthority( 'DELETE_ROOM')")
 	@Override
 	void deleteById(Integer id);
 }
