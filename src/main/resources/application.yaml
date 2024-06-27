@@ -18,10 +18,9 @@ springdoc:
       client-id: public-client
       use-pkce-with-authorization-code-grant: true
     urls:
-      - name: "Swagger UI - Spring data rest"
+      - name: "Swagger UI "
         url: /v3/api-docs
-  #      - name: "Spring restdocs"
-  #        url: /openapi-3.0.yml
+
   oAuthFlow:
     authorizationUrl: ${BASE_URL}/oauth2/authorize
     tokenUrl: ${BASE_URL}/oauth2/token
@@ -67,7 +66,7 @@ spring:
               - profile
               - phone
             redirect-uri:
-              - http://localhost:8080/oauth2/callback/google
+              - ${BASE_URL}/oauth2/callback/google
               - https://oauth.pstmn.io/v1/browser-callback
               - https://oauth.pstmn.io/v1/callback
   config:

@@ -13,10 +13,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-//@RepositoryRestResource
 public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
-	@RestResource(exported = false)
 	@Query("SELECT t FROM Ticket t " +
 		"JOIN t.showtime s " +
 		"JOIN t.seat sr " +

@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.role;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.role.permission.Permission;
 import com.tech_symfony.movie_booking.api.user.User;
 import com.tech_symfony.movie_booking.model.NamedEntity;
@@ -16,12 +17,13 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Role extends  NamedEntity{
+public class Role extends NamedEntity {
 
 	@OneToMany(
 		cascade = CascadeType.ALL,
 		fetch = FetchType.LAZY
 	)
+	@JsonIgnore
 	private Set<User> users;
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -30,6 +32,7 @@ public class Role extends  NamedEntity{
 		joinColumns = @JoinColumn(name = "role_id"),
 		inverseJoinColumns = @JoinColumn(name = "permission_id")
 	)
+	@JsonIgnore
 	private Set<Permission> permissions;
 
 }

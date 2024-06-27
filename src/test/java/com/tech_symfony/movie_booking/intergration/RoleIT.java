@@ -3,7 +3,7 @@ package com.tech_symfony.movie_booking.intergration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech_symfony.movie_booking.MovieBookingApplication;
 import com.tech_symfony.movie_booking.api.role.*;
-import com.tech_symfony.movie_booking.api.role.DTO.RoleDto;
+import com.tech_symfony.movie_booking.api.role.RoleDto;
 import com.tech_symfony.movie_booking.model.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,6 @@ public class RoleIT extends BaseIntegrationTest {
 	private RoleModelAssembler roleModelAssembler;
 
 
-
 	@Test
 	public void getById() throws Exception {
 		Role role = new Role();
@@ -50,7 +49,7 @@ public class RoleIT extends BaseIntegrationTest {
 
 		given(roleService.findById(anyInt())).willReturn(role);
 		given(roleModelAssembler.toModel(any())).willReturn(EntityModel.of(
-				new RoleDto(role.getId(), role.getName(), role.getUsers(), role.getPermissions()))
+				new RoleDto(role.getId(), role.getName(), role.getPermissions()))
 			.add(linkTo(methodOn(RoleController.class).getById(role.getId())).withSelfRel()));
 
 		this.mockMvc.perform(get("/roles/{id}", 1)
@@ -89,7 +88,7 @@ public class RoleIT extends BaseIntegrationTest {
 
 		given(roleService.save(any(Role.class))).willReturn(createRole);
 		given(roleModelAssembler.toModel(any())).willReturn(EntityModel.of(
-				new RoleDto(role.getId(), role.getName(), role.getUsers(), role.getPermissions()))
+				RoleMapper.INSTANCE.roleToRoleDTO(createRole))
 			.add(linkTo(methodOn(RoleController.class).getById(role.getId())).withSelfRel()));
 
 		this.mockMvc.perform(post("/roles")
@@ -100,12 +99,13 @@ public class RoleIT extends BaseIntegrationTest {
 				requestFields(
 					fieldWithPath("id").description("The ID of the role").optional(),
 					fieldWithPath("name").description("The name of the role"),
-					fieldWithPath("permissions").description("The permissions of the role").optional(),
-					fieldWithPath("users").description("The users associated with the role").optional()
+					fieldWithPath("permissions").description("The permissions of the role").optional()
+//					,fieldWithPath("users").description("The users associated with the role").optional()
 				)
 			));
 	}
-//
+
+	//
 	@Test
 	public void updateRole() throws Exception {
 		Role role = new Role();
@@ -121,7 +121,7 @@ public class RoleIT extends BaseIntegrationTest {
 
 		given(roleService.update(any(Integer.class), any(Role.class))).willReturn(createRole);
 		given(roleModelAssembler.toModel(any())).willReturn(EntityModel.of(
-				new RoleDto(role.getId(), role.getName(), role.getUsers(), role.getPermissions()))
+				RoleMapper.INSTANCE.roleToRoleDTO(createRole))
 			.add(linkTo(methodOn(RoleController.class).getById(role.getId())).withSelfRel()));
 
 		this.mockMvc.perform(put("/roles/{id}", 1)
@@ -137,7 +137,8 @@ public class RoleIT extends BaseIntegrationTest {
 				))
 			);
 	}
-//
+
+	//
 	@Test
 	public void deleteRole() throws Exception {
 		given(roleService.delete(anyInt())).willReturn(true);

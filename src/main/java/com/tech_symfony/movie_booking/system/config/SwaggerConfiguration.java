@@ -28,12 +28,12 @@ import java.util.Optional;
 @OpenAPIDefinition(
 	info = @Info(
 		contact = @Contact(
-			name = "Duy Nguyen ",
+			name = "tech symphony",
 			email = "contact.duynguyen@gmail.com",
-			url = "https://github.com/1119-DuyNguyen"
+			url = "https://github.com/TechSymphony/movie-booking-be"
 		),
 		description = "Open Api for  movie booking app",
-		title = "OpenApi movie booking - Duy Nguyen",
+		title = "OpenApi movie booking ",
 		version = "1.0"
 	)
 
