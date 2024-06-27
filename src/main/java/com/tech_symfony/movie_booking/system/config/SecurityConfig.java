@@ -64,7 +64,6 @@ public class SecurityConfig {
 		throws Exception {
 
 		http
-			.csrf().disable()
 			// using resource server and authorize server in same application
 			.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()))
 			// Authorize requests
@@ -74,6 +73,7 @@ public class SecurityConfig {
 
 				//
 				.requestMatchers("/", "api/v1/auth/**").permitAll()
+				.requestMatchers( "auth/**").permitAll()
 				.requestMatchers(antMatcher("/**/search/public*")).permitAll()
 
 				//swagger docs

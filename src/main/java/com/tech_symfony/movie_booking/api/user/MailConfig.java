@@ -27,13 +27,13 @@ import java.util.Properties;
 @Configuration
 public class MailConfig {
 
-	@Value("${spring.security.oauth2.client.registration.google.clientId}")
+	@Value("${spring.security.oauth2.client.registration.google.clientId:default}")
 	private String clientId;
 
-	@Value("${spring.security.oauth2.client.registration.google.clientSecret}")
+	@Value("${spring.security.oauth2.client.registration.google.clientSecret:default}")
 	private String clientSecret;
 
-	@Value("${mail.username}")
+	@Value("${mail.username:default}")
 	private String fromEmail;
 
 	public void accessToken(JavaMailSenderImpl mailSender) throws IOException {

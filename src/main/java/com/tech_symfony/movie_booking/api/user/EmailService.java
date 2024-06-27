@@ -24,7 +24,7 @@ public class EmailService {
 
 	private final MailConfig mailConfig;
 
-	@Value("${mail.username}")
+	@Value("${mail.username:default}")
 	private String fromEmail;
 
 	@Async

@@ -8,6 +8,10 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,23 +21,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.util.Collections;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 //Class này dùng để lấy refresh token từ gg để dùng Gmail API
 //Trước tiên phải enable Gmail API trong gg dev console, email dùng để gửi thư phải là account của gg dev console đó
 //gọi /api/v1/auth/mail trong trình duyệt để tiến hành đăng nhập và app sẽ lấy refresh token để dùng
 //chi tiết config trong class MailConfig
 //lưu ý redirect uri phải được đăng ký đúng (trong trường hợp đang sử dụng là http://localhost:8080/api/v1/auth/callback)
-@Controller
-@RequestMapping("/api/v1")
+@BasePathAwareController
 @RequiredArgsConstructor
 public class MailController {
 
-	@Value("${spring.security.oauth2.client.registration.google.clientId}")
+	@Value("${spring.security.oauth2.client.registration.google.clientId:default}")
 	private String clientId;
 
-	@Value("${spring.security.oauth2.client.registration.google.clientSecret}")
+	@Value("${spring.security.oauth2.client.registration.google.clientSecret:default}")
 	private String clientSecret;
 
-	@Value("${spring.security.oauth2.client.registration.google.redirect-uri[3]}")
+	@Value("${spring.security.oauth2.client.registration.google.redirect-uri[3]:default}")
 	private String redirectUri;
 
 	private final GoogleCredential credential;
@@ -50,15 +56,17 @@ public class MailController {
 		return "redirect:" + authorizationUrl;
 	}
 
-	@GetMapping("/auth/callback")
+	@GetMapping("api/v1/auth/callback")
 	public String callback(@RequestParam("code") String authorizationCode) {
-		// Save the authorization code to be used for exchanging tokens
-		return "redirect:/api/v1/auth/exchange-token?code=" + authorizationCode;
+		String exchangeTokenUrl = linkTo(
+			methodOn(MailController.class).exchangeToken(authorizationCode)
+		).toUri().toString();
+
+		return "redirect:" + exchangeTokenUrl;
 	}
 
 	@GetMapping("/auth/exchange-token")
-	@ResponseBody
-	public String exchangeToken(@RequestParam("code") String authorizationCode) {
+	public ResponseEntity<String> exchangeToken(@RequestParam("code") String authorizationCode) {
 		try {
 			GoogleTokenResponse response = new GoogleAuthorizationCodeTokenRequest(
 				new NetHttpTransport(),
@@ -71,9 +79,9 @@ public class MailController {
 				.execute();
 			String refreshToken = response.getRefreshToken();
 			credential.setRefreshToken(refreshToken);
-			return "Tokens retrieved successfully";
+			return ResponseEntity.ok("Tokens retrieved successfully");
 		} catch (IOException e) {
-			return "Error retrieving tokens";
+			return ResponseEntity.status(400).body("Error retrieving tokens");
 		}
 	}
 }

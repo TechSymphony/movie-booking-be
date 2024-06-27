@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -68,7 +71,8 @@ public class UserService {
 		emailService.sendEmail(
 			registerRequest.getEmail(),
 			"Verify url",
-			"http://localhost:8080/api/v1/auth/verify?t=" + token
+			linkTo(methodOn(UserController.class).verify(token)
+			).toUri().toString()
 		);
 		return "Success";
 	}
