@@ -86,10 +86,9 @@ public class User extends BaseUUIDEntity {
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.UNKNOWN;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(
-		name = "role_id",
-		nullable = true
+		name = "role_id"
 	)
 	private Role role;
 

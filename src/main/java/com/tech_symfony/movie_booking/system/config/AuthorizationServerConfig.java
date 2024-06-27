@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.util.StringUtils;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -26,17 +27,26 @@ import java.util.UUID;
 
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
+	@Value("${BASE_URL:}")
+	String BASE_URL;
+	@Value("${FRONTEND_URL:}")
+	String FRONTEND_URL;
 
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {
-
+		if (StringUtils.isEmpty(FRONTEND_URL)) {
+			FRONTEND_URL = BASE_URL + "/brower-callback";
+		}
 		RegisteredClient publicClient = RegisteredClient.withId(UUID.randomUUID().toString())
 			.clientId("public-client")
 			.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 //			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 			.redirectUri("https://oauth.pstmn.io/v1/browser-callback")
-			.redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
+			.redirectUri(BASE_URL + "/swagger-ui/oauth2-redirect.html")
+			// for frontend
+			.redirectUri(FRONTEND_URL)
+
 			.scope(OidcScopes.OPENID)
 			.scope(OidcScopes.PROFILE)
 			.tokenSettings(TokenSettings.builder()

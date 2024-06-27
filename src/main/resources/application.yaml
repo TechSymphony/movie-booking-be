@@ -1,4 +1,7 @@
 server:
+  #  tomcat:
+  #    protocol-header: x-forwarded-proto
+  #    remote-ip-header: x-forwarded-for
   port: ${ENV_PORT}
 
 
@@ -90,3 +93,4 @@ jwt:
     id: 'configured-f57f-46a2-b502-8a24c308be7f'
     public: classpath:app.pub
     private: classpath:app.key
+
