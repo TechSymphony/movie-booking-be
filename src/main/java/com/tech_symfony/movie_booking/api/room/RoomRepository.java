@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.room;
 
+import com.tech_symfony.movie_booking.api.cinema.Cinema;
 import com.tech_symfony.movie_booking.model.BaseAuthenticatedRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,10 +9,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource
 public interface RoomRepository extends BaseAuthenticatedRepository<Room, Integer> {
@@ -36,4 +39,12 @@ public interface RoomRepository extends BaseAuthenticatedRepository<Room, Intege
 //					@Param("cinemaId") String cinemaId,
 //					@Param("slug") String slug
 //	);
+
+	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_ROOM')")
+	@Override
+	Room save(Room room);
+
+	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_ROOM')")
+	@Override
+	void deleteById(Integer id);
 }

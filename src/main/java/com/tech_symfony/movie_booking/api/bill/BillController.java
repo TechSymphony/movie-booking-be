@@ -9,6 +9,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -32,6 +33,7 @@ public class BillController {
 	)
 	@PostMapping(value = "/bills")
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("@permissionService.hasPermission(authentication, 'CREATE_BILL')")
 	public ResponseEntity<EntityModel<Bill>> create(
 		@Valid @RequestBody BillDTO dataRaw,
 		Principal principal
@@ -51,6 +53,7 @@ public class BillController {
 			"sẽ được nêu rõ. "
 	)
 	@PutMapping(value = "/bills/{billId}/payment")
+	@PreAuthorize("@permissionService.hasPermission(authentication, 'CREATE_PAYMENT')")
 	public EntityModel<Bill> pay(
 		@PathVariable UUID billId
 	) {
