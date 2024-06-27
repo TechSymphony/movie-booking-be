@@ -16,8 +16,8 @@ start:
 stop:
 	docker-compose down
 build-nocache:
-	docker build -t movie-self-learning-be:v1 . --no-cache --force-rm
+	docker build -t movie-booking-be:v1 . --no-cache --force-rm
 build:
-	docker build -t movie-self-learning-be:v1 .
+	docker build -t movie-booking-be:v1 .
 build-dev:
-	docker build -t movie-self-learning-be:dev . --target dev
+	docker build -t movie-booking-be:dev . --target dev

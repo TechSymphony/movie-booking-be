@@ -2,6 +2,8 @@ package com.tech_symfony.movie_booking.system.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tech_symfony.movie_booking.api.role.exception.RoleInUseException;
+import com.tech_symfony.movie_booking.api.role.exception.RoleNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -63,6 +65,28 @@ public class GlobalExceptionHandler {
 			e1.printStackTrace();
 		}
 		return ResponseEntity.badRequest().body(respJSONstring);
+	}
+
+	@ExceptionHandler(RoleInUseException.class)
+	public ResponseEntity<Map<String, Object>> handleRoleInUseException(RoleInUseException ex) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("timestamp", ex.getTimestamp());
+		body.put("httpStatus", ex.getHttpStatus());
+		body.put("statusCode", ex.getStatusCode());
+		body.put("error", ex.getError());
+		body.put("messages", ex.getMessages());
+		return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(RoleNotFoundException.class)
+	public ResponseEntity<Map<String, Object>> handleRoleNotFoundException(RoleNotFoundException ex) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("timestamp", ex.getTimestamp());
+		body.put("httpStatus", ex.getHttpStatus());
+		body.put("statusCode", ex.getStatusCode());
+		body.put("error", ex.getError());
+		body.put("messages", ex.getMessages());
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
 
 //	/**
