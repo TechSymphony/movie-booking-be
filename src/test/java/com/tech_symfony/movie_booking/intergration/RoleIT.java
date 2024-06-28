@@ -45,7 +45,6 @@ public class RoleIT extends BaseIntegrationTest {
 		role.setId(1);
 		role.setName("ROLE_ADMIN");
 		role.setPermissions(Collections.emptySet());
-		role.setUsers(Collections.emptySet());
 
 		given(roleService.findById(anyInt())).willReturn(role);
 		given(roleModelAssembler.toModel(any())).willReturn(EntityModel.of(
@@ -66,7 +65,7 @@ public class RoleIT extends BaseIntegrationTest {
 					fieldWithPath("id").description("The ID of the role"),
 					fieldWithPath("name").description("The name of the role"),
 					fieldWithPath("permissions").description("The permissions of the role"),
-					fieldWithPath("users").description("The users associated with the role"),
+//					fieldWithPath("users").description("The users associated with the role"),
 					subsectionWithPath("_links").description("Links to other resources")
 				)
 			));
@@ -78,13 +77,11 @@ public class RoleIT extends BaseIntegrationTest {
 		Role role = new Role();
 		role.setName("ROLE_ADMIN");
 		role.setPermissions(Collections.emptySet());
-		role.setUsers(Collections.emptySet());
 
 		Role createRole = new Role();
 		createRole.setId(1);
 		createRole.setName("ROLE_ADMIN");
 		createRole.setPermissions(Collections.emptySet());
-		createRole.setUsers(Collections.emptySet());
 
 		given(roleService.save(any(Role.class))).willReturn(createRole);
 		given(roleModelAssembler.toModel(any())).willReturn(EntityModel.of(
@@ -111,13 +108,11 @@ public class RoleIT extends BaseIntegrationTest {
 		Role role = new Role();
 		role.setName("ROLE_ADMIN");
 		role.setPermissions(Collections.emptySet());
-		role.setUsers(Collections.emptySet());
 
 		Role createRole = new Role();
 		createRole.setId(1);
 		createRole.setName("ROLE_ADMIN");
 		createRole.setPermissions(Collections.emptySet());
-		createRole.setUsers(Collections.emptySet());
 
 		given(roleService.update(any(Integer.class), any(Role.class))).willReturn(createRole);
 		given(roleModelAssembler.toModel(any())).willReturn(EntityModel.of(
@@ -129,12 +124,12 @@ public class RoleIT extends BaseIntegrationTest {
 				.content(objectMapper.writeValueAsString(role)))
 			.andExpect(status().isOk())
 			.andDo(document("roles-update",
-				requestFields(
-					fieldWithPath("id").description("The ID of the role").optional(),
-					fieldWithPath("name").description("The name of the role"),
-					fieldWithPath("permissions").description("The permissions of the role").optional(),
-					fieldWithPath("users").description("The users associated with the role").optional() // Ensure users is documented
-				))
+					requestFields(
+						fieldWithPath("id").description("The ID of the role").optional(),
+						fieldWithPath("name").description("The name of the role"),
+						fieldWithPath("permissions").description("The permissions of the role").optional()
+//					,fieldWithPath("users").description("The users associated with the role").optional() // Ensure users is documented
+					))
 			);
 	}
 

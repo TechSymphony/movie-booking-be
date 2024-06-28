@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.time.LocalDateTime;
 import java.util.Date;

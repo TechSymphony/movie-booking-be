@@ -11,7 +11,6 @@ import java.util.Optional;
 @RepositoryRestResource(excerptProjection = PermissionProjector.class)
 @PreAuthorize("hasAuthority('READ_PERMISSION')")
 public interface PermissionRepository extends BaseAuthenticatedRepository<Permission, Integer> {
-	Optional<Permission> findByIdIn(List<Integer> ids);
 
 	@RestResource(exported = false)
 	@Override

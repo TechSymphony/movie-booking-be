@@ -16,6 +16,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -69,7 +71,7 @@ public class SecurityConfig {
 			// Authorize requests
 			.authorizeHttpRequests((authorize) -> authorize
 				//Getting public api
-				.requestMatchers(HttpMethod.GET, "movies/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "movies/**", "profile", "cinemas", "seats", "seat-types").permitAll()
 
 				//
 				.requestMatchers("/", "api/v1/auth/**").permitAll()
@@ -119,5 +121,14 @@ public class SecurityConfig {
 		return source;
 	}
 
+	@Bean
+	public JwtAuthenticationConverter jwtAuthenticationConverter() {
 
+		JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+		grantedAuthoritiesConverter.setAuthorityPrefix("");
+
+		JwtAuthenticationConverter authConverter = new JwtAuthenticationConverter();
+		authConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+		return authConverter;
+	}
 }

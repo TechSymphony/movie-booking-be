@@ -1,11 +1,15 @@
 package com.tech_symfony.movie_booking.api.movie;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tech_symfony.movie_booking.api.movie_genre.MovieGenre;
 import com.tech_symfony.movie_booking.api.showtime.Showtime;
 import com.tech_symfony.movie_booking.model.NamedEntity;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 
 import java.sql.Date;
@@ -89,11 +93,12 @@ public class Movie extends NamedEntity {
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL
 	)
+	@JsonManagedReference
 	private Set<Showtime> showtimes;
 
 
 	@NotEmpty(message = "Genre MUST not be empty")
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(
 		name = "movie_genre",
 		joinColumns = @JoinColumn(name = "movie_id", nullable = false),

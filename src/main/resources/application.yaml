@@ -8,6 +8,8 @@ server:
 
 #spring.jpa.show-sql: true
 springdoc:
+  paths-to-exclude: /profile/**
+
   #  url=/openapi-3:
   #    0:
   #      yml:
@@ -35,27 +37,7 @@ spring:
 
     oauth2:
 
-      #      authorizationserver:
-      #        client:
-      #
-      #          public-client:
 
-      #            registration:
-      #              client-id: "public-client"
-      #              client-authentication-methods:
-      #                - "none"
-      #              authorization-grant-types:
-      #                - "authorization_code"
-      #              redirect-uris:
-      #                - "https://oauth.pstmn.io/v1/browser-callback"
-      #              #                - "http:localhost:8080/oauth2/callback/public-client"
-      #
-      #              scopes: openid,profile,email
-
-
-      # hien ra cai bang kieu gg cho phep xem tem email, bla bla bla
-      #            require-authorization-consent: true
-      #            require-proof-key: true
       client:
         registration:
           google:

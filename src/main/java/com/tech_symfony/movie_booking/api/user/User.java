@@ -9,6 +9,7 @@ import com.tech_symfony.movie_booking.api.bill.Bill;
 import com.tech_symfony.movie_booking.api.role.Role;
 import com.tech_symfony.movie_booking.model.BaseUUIDEntity;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -90,12 +91,13 @@ public class User extends BaseUUIDEntity {
 	@JoinColumn(
 		name = "role_id"
 	)
+	@RestResource(exported = false)
 	private Role role;
 
 	@OneToMany(
 		mappedBy = "user",
 		fetch = FetchType.LAZY
 	)
-	private Set<Bill> bills;
+	private List<Bill> bills;
 
 }

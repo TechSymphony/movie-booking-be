@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.seat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tech_symfony.movie_booking.api.room.Room;
@@ -9,6 +10,7 @@ import com.tech_symfony.movie_booking.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 
 import java.util.Set;
@@ -32,6 +34,7 @@ public class Seat extends BaseEntity {
 		name = "room_id",
 		nullable = false
 	)
+	@RestResource(exported = false)
 	private Room room;
 
 
@@ -42,6 +45,9 @@ public class Seat extends BaseEntity {
 		referencedColumnName = "id",
 		nullable = false
 	)
+	@JsonBackReference
+	@RestResource(exported = false)
+
 	private SeatType type;
 
 	@OneToMany(
@@ -49,6 +55,8 @@ public class Seat extends BaseEntity {
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.PERSIST
 	)
+	@JsonBackReference
+
 	private Set<Ticket> tickets;
 
 

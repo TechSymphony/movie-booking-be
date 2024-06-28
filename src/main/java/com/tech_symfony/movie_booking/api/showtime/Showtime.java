@@ -1,15 +1,15 @@
 package com.tech_symfony.movie_booking.api.showtime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tech_symfony.movie_booking.api.movie.Movie;
 import com.tech_symfony.movie_booking.api.room.Room;
 import com.tech_symfony.movie_booking.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
-
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -39,21 +39,25 @@ public class Showtime extends BaseEntity {
 	@Column(name = "status", columnDefinition = "boolean default true")
 	private Boolean status;
 
-	@NotEmpty(message = "room id must not be empty")
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@NotEmpty(message = "showtime id must not be empty")
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(
 		name = "movie_id",
 		nullable = false
 	)
+	@RestResource(exported = false)
+	@JsonBackReference
 	private Movie movie;
 
 
-	@NotEmpty(message = "room id must not be empty")
+	@NotEmpty(message = "showtime id must not be empty")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(
 		name = "room_id",
 		nullable = false
 	)
+	@RestResource(exported = false)
+	@JsonBackReference
 	private Room room;
 
 }

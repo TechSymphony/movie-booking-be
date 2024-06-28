@@ -1,11 +1,13 @@
 package com.tech_symfony.movie_booking.api.role;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.role.permission.Permission;
 import com.tech_symfony.movie_booking.api.user.User;
 import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Set;
 
@@ -19,12 +21,13 @@ import java.util.Set;
 @Builder
 public class Role extends NamedEntity {
 
-	@OneToMany(
-		cascade = CascadeType.ALL,
-		fetch = FetchType.LAZY
-	)
-	@JsonIgnore
-	private Set<User> users;
+//	@OneToMany(
+//		cascade = CascadeType.ALL,
+//		fetch = FetchType.LAZY
+//	)
+//	@JsonBackReference
+//	@RestResource(exported = false)
+//	private Set<User> users;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
@@ -32,7 +35,6 @@ public class Role extends NamedEntity {
 		joinColumns = @JoinColumn(name = "role_id"),
 		inverseJoinColumns = @JoinColumn(name = "permission_id")
 	)
-	@JsonIgnore
 	private Set<Permission> permissions;
 
 }
