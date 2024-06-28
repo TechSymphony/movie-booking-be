@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.api.bill;
+package com.tech_symfony.movie_booking.api.bill.dto;
 
 import com.tech_symfony.movie_booking.model.BaseUUIDEntity;
 import jakarta.validation.constraints.Min;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Setter
 @Getter
-public class BillDTO extends BaseUUIDEntity {
+public class BillRequestDTO extends BaseUUIDEntity {
 
 //	@Digits(integer = 2, fraction = 0, message = "Changed point MUST be a number")
 //	@Min(value = 0, message = "Changed point MUST MUST be at least 0")

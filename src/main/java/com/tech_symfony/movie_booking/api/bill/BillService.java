@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.bill;
 
+import com.tech_symfony.movie_booking.api.bill.dto.BillRequestDTO;
 import com.tech_symfony.movie_booking.api.bill.vnpay.VnpayService;
 import com.tech_symfony.movie_booking.api.seat.Seat;
 import com.tech_symfony.movie_booking.api.seat.SeatRepository;
@@ -25,7 +26,7 @@ import java.util.*;
 
 public interface BillService {
 
-	Bill create(BillDTO dataRaw, String username);
+	Bill create(BillRequestDTO dataRaw, String username);
 
 	Bill pay(UUID billID);
 
@@ -68,11 +69,11 @@ class DefaultBillService implements BillService {
 
 
 	@Override
-	public Bill create(BillDTO billDTO, String username) {
-		Showtime showtime = showtimeRepository.findById(billDTO.getShowtimeId())
+	public Bill create(BillRequestDTO billRequestDTO, String username) {
+		Showtime showtime = showtimeRepository.findById(billRequestDTO.getShowtimeId())
 			.orElseThrow(() -> new ResourceNotFoundException("Showtime not found"));
 		List<Seat> seatList = seatRepository
-			.findByIdInAndRoomId(billDTO.getSeatId(), showtime.getRoom().getId())
+			.findByIdInAndRoomId(billRequestDTO.getSeatId(), showtime.getRoom().getId())
 			.orElseThrow(() -> new ResourceNotFoundException("Seat not found"));
 
 		checkSeat(showtime, seatList);

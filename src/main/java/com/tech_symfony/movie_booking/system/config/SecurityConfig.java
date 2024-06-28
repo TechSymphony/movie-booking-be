@@ -66,21 +66,24 @@ public class SecurityConfig {
 		throws Exception {
 
 		http
+			.csrf((csrf) -> csrf.disable())
 			// using resource server and authorize server in same application
 			.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()))
+
 			// Authorize requests
 			.authorizeHttpRequests((authorize) -> authorize
 				//Getting public api
-				.requestMatchers(HttpMethod.GET, "movies/**", "profile", "cinemas", "seats", "seat-types").permitAll()
+				.requestMatchers(HttpMethod.GET, "movies/**", "cinemas", "seats", "seat-types").permitAll()
 
 				//
 				.requestMatchers("/", "api/v1/auth/**").permitAll()
 				.requestMatchers(antMatcher("/**/search/public*")).permitAll()
-
+				.requestMatchers("/users").hasAuthority("READ_USER")
 				//swagger docs
 				.requestMatchers("/swagger-ui/**", "/v3/**", "/swagger-ui.html", "/openapi-3.0.yml").permitAll()
 				.anyRequest()
 				.authenticated()
+
 			)
 			.userDetailsService(customUserDetailService)
 

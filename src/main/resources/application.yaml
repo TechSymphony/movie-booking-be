@@ -33,6 +33,7 @@ springdoc:
 
 spring:
 
+
   security:
 
     oauth2:
