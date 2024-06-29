@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Projection(name = "billProjection", types = {Bill.class})
-interface BillInfoProjector {
+interface BillInfoProjection {
 
 	UUID getId();
 

@@ -24,6 +24,8 @@ public class CustomUserDetail implements UserDetails {
 
 	private Role role;
 
+	private UUID uuid;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		if (role == null) {

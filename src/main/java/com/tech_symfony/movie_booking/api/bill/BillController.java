@@ -53,14 +53,24 @@ public class BillController {
 			"để hiển thị với khách hàng, kết quả có thể thành công hoặc thất bại. Khi thất bại, lí do " +
 			"sẽ được nêu rõ. "
 	)
-	@PutMapping(value = "/bills/{billId}/payment")
-	@PostAuthorize("returnObject.username == authentication.principal.username ")
+	@PutMapping(value = "/bills/{id}/payment")
 	public EntityModel<Bill> pay(
-		@PathVariable UUID billId
+		@PathVariable UUID id
 	) {
 
-		return billModelAssembler.toModel(billService.pay(billId));
+		return billModelAssembler.toModel(billService.pay(id));
 	}
 
+	@Operation(
+		summary = "Cập nhập thanh toán",
+		description = "Api được gọi khi khách hàng vào rạp, nhân viên sẽ quét QR và cập nhập trạng thái đơn hàng đã sử dụng thành công"
+	)
+	@PutMapping(value = "/bills/{id}")
+	public EntityModel<Bill> updateStatus(
+		@PathVariable UUID id
+	) {
+		// TODO: chưa ràng buộc thời hạn nếu như vé bị outdated
+		return billModelAssembler.toModel(billService.updateStatus(id));
+	}
 
 }

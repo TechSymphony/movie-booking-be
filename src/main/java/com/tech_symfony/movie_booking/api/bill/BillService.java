@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.json.JSONObject;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +31,7 @@ public interface BillService {
 
 	Bill pay(UUID billID);
 
+	Bill updateStatus(UUID billId);
 
 }
 
@@ -122,6 +124,15 @@ class DefaultBillService implements BillService {
 		bill.setTransactionId(jsonObject.getString("vnp_TransactionNo"));
 		return billRepository.save(bill);
 
+	}
+
+	@PreAuthorize("hasAuthority( 'SAVE_BILL')")
+	public Bill updateStatus(UUID billId) {
+
+		Bill bill = billRepository.findById(billId)
+			.orElseThrow(() -> new ResourceNotFoundException("Bill not found"));
+		bill.setStatus(BillStatus.COMPLETED);
+		return billRepository.save(bill);
 	}
 
 

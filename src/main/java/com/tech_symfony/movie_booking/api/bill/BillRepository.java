@@ -9,13 +9,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.Optional;
 import java.util.UUID;
 
-@RepositoryRestResource(excerptProjection = BillInfoProjector.class)
+@RepositoryRestResource(excerptProjection = BillInfoProjection.class)
 @PreAuthorize("hasAuthority( 'READ_BILL')")
 public interface BillRepository extends BaseAuthenticatedRepository<Bill, UUID> {
 
-	@Override
-	@PreAuthorize("hasAuthority( 'SAVE_BILL')")
-	<S extends Bill> S save(S entity);
 
 	@Override
 	@RestResource(exported = false)
