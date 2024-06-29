@@ -173,7 +173,7 @@ services:
       - es01
     restart: unless-stopped
     env_file:
-      - .env.elastic
+      - .env
   # metricbeat:
   #   depends_on:
   #     es01:
