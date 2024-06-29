@@ -19,7 +19,6 @@ import java.util.UUID;
 public class BaseUUIDEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private UUID id;
 
 	public UUID getId() {

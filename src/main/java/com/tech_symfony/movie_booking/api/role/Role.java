@@ -7,6 +7,7 @@ import com.tech_symfony.movie_booking.api.user.User;
 import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Set;
@@ -29,7 +30,8 @@ public class Role extends NamedEntity {
 //	@RestResource(exported = false)
 //	private Set<User> users;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
+
 	@JoinTable(
 		name = "role_permission",
 		joinColumns = @JoinColumn(name = "role_id"),
