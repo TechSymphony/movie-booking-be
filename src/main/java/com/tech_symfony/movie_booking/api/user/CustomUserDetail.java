@@ -32,6 +32,7 @@ public class CustomUserDetail implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
+    
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		role.getPermissions().forEach(permission ->
@@ -39,6 +40,7 @@ public class CustomUserDetail implements UserDetails {
 		);
 
 		return grantedAuthorities;
+
 	}
 
 	@Override

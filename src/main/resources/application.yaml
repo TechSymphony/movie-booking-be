@@ -1,8 +1,6 @@
 server:
   port: ${ENV_PORT}
 
-
-
 #spring.jpa.show-sql: true
 springdoc:
   #  url=/openapi-3:
@@ -28,6 +26,15 @@ springdoc:
 
 
 spring:
+#
+#  mvc:
+#    log-resolved-exception: false
+
+  elasticsearch:
+    username: elastic
+    password: ${ELASTIC_PASSWORD}
+
+
 
   security:
 
@@ -84,7 +91,7 @@ spring:
 
 logging:
   level:
-    org.springframework.security: debug
+    org.springframework.security: trace
 
 jwt:
   key:
