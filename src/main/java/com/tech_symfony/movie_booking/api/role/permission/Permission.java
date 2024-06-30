@@ -1,7 +1,9 @@
 package com.tech_symfony.movie_booking.api.role.permission;
 
 import com.tech_symfony.movie_booking.api.role.Role;
+import com.tech_symfony.movie_booking.model.BaseEntity;
 import com.tech_symfony.movie_booking.model.NamedEntity;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,15 +16,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Permission{
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "id", nullable = false)
-	private Integer id;
+public class Permission extends NamedEntity {
 
-	private String name;
 
 	private String decription;
-	@ManyToMany(mappedBy = "permissions")
-	private Set<Role> roles;
+
 }

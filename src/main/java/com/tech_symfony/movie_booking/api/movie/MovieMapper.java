@@ -24,11 +24,11 @@ interface MovieMapper {
 
 	@Mapping(target = "showtimes", source = "showtimes", ignore = true)
 	@Mapping(target = "genres", source = "genres", ignore = true)
-	abstract MovieDTO movieToMovieDto(Movie movie);
+	MovieDTO movieToMovieDto(Movie movie);
 
 	@Mapping(target = "showtimes", source = "showtimes", ignore = true)
 	@Mapping(target = "genres", source = "genres", ignore = true)
-	abstract Movie movieDtoToMovie(MovieDTO movieDto);
+	Movie movieDtoToMovie(MovieDTO movieDto);
 
 	default Date dateInStringToSqlDate(String date) {
 		return Date.valueOf(date);

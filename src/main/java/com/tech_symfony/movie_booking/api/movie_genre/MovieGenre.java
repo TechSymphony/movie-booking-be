@@ -1,9 +1,11 @@
 package com.tech_symfony.movie_booking.api.movie_genre;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.movie.Movie;
 import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Set;
 
@@ -17,6 +19,8 @@ public class MovieGenre extends NamedEntity {
 
 
 	@ManyToMany(mappedBy = "genres")
+	@RestResource(exported = false)
+	@JsonIgnore
 	private Set<Movie> movies;
 
 }

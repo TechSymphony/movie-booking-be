@@ -1,7 +1,9 @@
 package com.tech_symfony.movie_booking.api.ticket;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tech_symfony.movie_booking.api.bill.Bill;
 import com.tech_symfony.movie_booking.api.seat.Seat;
 import com.tech_symfony.movie_booking.api.showtime.Showtime;
@@ -33,7 +35,7 @@ public class Ticket extends BaseUUIDEntity {
 		nullable = false
 	)
 	@NotNull(message = "Bill  MUST not be null")
-
+	@JsonBackReference
 	private Bill bill;
 
 
@@ -43,6 +45,7 @@ public class Ticket extends BaseUUIDEntity {
 		nullable = false
 	)
 	@NotNull(message = "Showtime  MUST not be null")
+	@JsonManagedReference
 	private Showtime showtime;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -51,7 +54,7 @@ public class Ticket extends BaseUUIDEntity {
 		nullable = false
 	)
 	@NotNull(message = "seat  MUST not be null")
-
+	@JsonManagedReference
 	private Seat seat;
 
 

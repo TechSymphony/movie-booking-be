@@ -16,10 +16,9 @@ import java.util.UUID;
 
 @MappedSuperclass
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
-public class BaseUUIDEntity {
+public class BaseUUIDEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private UUID id;
 
 	public UUID getId() {

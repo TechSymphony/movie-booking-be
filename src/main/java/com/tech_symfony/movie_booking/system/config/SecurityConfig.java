@@ -1,9 +1,8 @@
 package com.tech_symfony.movie_booking.system.config;
 
-import com.tech_symfony.movie_booking.api.user.CustomUserDetailService;
-import com.tech_symfony.movie_booking.api.user.OAuth2UserService;
+import com.tech_symfony.movie_booking.api.user.auth.CustomUserDetailService;
+import com.tech_symfony.movie_booking.api.user.auth.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,6 +15,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
@@ -64,22 +65,24 @@ public class SecurityConfig {
 		throws Exception {
 
 		http
+			.csrf((csrf) -> csrf.disable())
 			// using resource server and authorize server in same application
 			.oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()))
+
 			// Authorize requests
 			.authorizeHttpRequests((authorize) -> authorize
 				//Getting public api
-				.requestMatchers(HttpMethod.GET, "movies/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "movies/**", "cinemas", "seats", "seat-types").permitAll()
 
 				//
-				.requestMatchers("/", "api/v1/auth/**").permitAll()
-				.requestMatchers( "auth/**").permitAll()
+				.requestMatchers("/", "auth/**").permitAll()
 				.requestMatchers(antMatcher("/**/search/public*")).permitAll()
-
+				.requestMatchers("/users").hasAuthority("READ_USER")
 				//swagger docs
 				.requestMatchers("/swagger-ui/**", "/v3/**", "/swagger-ui.html", "/openapi-3.0.yml").permitAll()
 				.anyRequest()
 				.authenticated()
+
 			)
 			.userDetailsService(customUserDetailService)
 
@@ -120,5 +123,14 @@ public class SecurityConfig {
 		return source;
 	}
 
+	@Bean
+	public JwtAuthenticationConverter jwtAuthenticationConverter() {
 
+		JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+		grantedAuthoritiesConverter.setAuthorityPrefix("");
+
+		JwtAuthenticationConverter authConverter = new JwtAuthenticationConverter();
+		authConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+		return authConverter;
+	}
 }

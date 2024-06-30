@@ -3,24 +3,17 @@ package com.tech_symfony.movie_booking.intergration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tech_symfony.movie_booking.MovieBookingApplication;
 import com.tech_symfony.movie_booking.model.BaseIntegrationTest;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.resourceDetails;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.util.StringUtils.collectionToDelimitedString;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 
 @SpringBootTest(classes = MovieBookingApplication.class)
-public class RestdocsExampleIntegrationTest extends BaseIntegrationTest {
+public class RestdocsExampleIT extends BaseIntegrationTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 

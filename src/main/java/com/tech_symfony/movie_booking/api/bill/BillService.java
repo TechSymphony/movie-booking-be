@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.bill;
 
+import com.tech_symfony.movie_booking.api.bill.dto.BillRequestDTO;
 import com.tech_symfony.movie_booking.api.bill.vnpay.VnpayService;
 import com.tech_symfony.movie_booking.api.seat.Seat;
 import com.tech_symfony.movie_booking.api.seat.SeatRepository;
@@ -14,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.json.JSONObject;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +27,11 @@ import java.util.*;
 
 public interface BillService {
 
-	Bill create(BillDTO dataRaw, String username);
+	Bill create(BillRequestDTO dataRaw, String username);
 
 	Bill pay(UUID billID);
 
+	Bill updateStatus(UUID billId);
 
 }
 
@@ -52,15 +57,12 @@ class DefaultBillService implements BillService {
 
 
 	private void checkSeat(Showtime showtime, List<Seat> seatList) {
-		seatList.forEach(seat -> {
-			if (!seat.getRoom().getId().equals(showtime.getRoom().getId())) {
-				throw new ForbidenMethodControllerException("Data not found");
-			}
-			Set<Ticket> t = ticketRepository.findByShowtimeAndSeat(showtime.getId(), seat.getId());
-			if (!t.isEmpty()) {
-				throw new ForbidenMethodControllerException("Seat already reserved");
-			}
-		});
+
+		Set<Ticket> t = ticketRepository.findByShowtimeAndSeatIn(showtime, seatList);
+		if (t.size() > 0) {
+			throw new ForbidenMethodControllerException("Seat already reserved");
+		}
+
 	}
 
 	private Double getPriceOfSeat(Seat seat) {
@@ -69,10 +71,12 @@ class DefaultBillService implements BillService {
 
 
 	@Override
-	public Bill create(BillDTO billDTO, String username) {
-		Showtime showtime = showtimeRepository.findById(billDTO.getShowtimeId())
+	public Bill create(BillRequestDTO billRequestDTO, String username) {
+		Showtime showtime = showtimeRepository.findById(billRequestDTO.getShowtimeId())
 			.orElseThrow(() -> new ResourceNotFoundException("Showtime not found"));
-		List<Seat> seatList = seatRepository.findAllById(billDTO.getSeatId());
+		List<Seat> seatList = seatRepository
+			.findByIdInAndRoomId(billRequestDTO.getSeatId(), showtime.getRoom().getId())
+			.orElseThrow(() -> new ResourceNotFoundException("Seat not found"));
 
 		checkSeat(showtime, seatList);
 
@@ -107,7 +111,10 @@ class DefaultBillService implements BillService {
 
 	@Override
 	public Bill pay(UUID billID) {
-		Bill bill = billRepository.findById(billID)
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userRepository.findByEmail(auth.getName())
+			.orElseThrow(() -> new UsernameNotFoundException("Conflict"));
+		Bill bill = billRepository.findByIdAndUser(billID, user)
 			.orElseThrow(() -> new ResourceNotFoundException("Bill is not exits"));
 		JSONObject jsonObject = vnpayService.verifyPay(bill);
 
@@ -116,8 +123,16 @@ class DefaultBillService implements BillService {
 		bill.setPaymentAt(LocalDateTime.now());
 		bill.setTransactionId(jsonObject.getString("vnp_TransactionNo"));
 		return billRepository.save(bill);
-//		return bill;
 
+	}
+
+	@PreAuthorize("hasAuthority( 'SAVE_BILL')")
+	public Bill updateStatus(UUID billId) {
+
+		Bill bill = billRepository.findById(billId)
+			.orElseThrow(() -> new ResourceNotFoundException("Bill not found"));
+		bill.setStatus(BillStatus.COMPLETED);
+		return billRepository.save(bill);
 	}
 
 

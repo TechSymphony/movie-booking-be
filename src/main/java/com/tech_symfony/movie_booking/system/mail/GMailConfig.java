@@ -1,8 +1,5 @@
-package com.tech_symfony.movie_booking.api.user;
+package com.tech_symfony.movie_booking.system.mail;
 
-import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
-import com.google.api.client.auth.oauth2.TokenResponse;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -14,18 +11,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Configuration
-public class MailConfig {
+public class GMailConfig {
 
 	@Value("${spring.security.oauth2.client.registration.google.clientId:default}")
 	private String clientId;

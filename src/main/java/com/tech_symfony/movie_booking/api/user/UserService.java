@@ -1,5 +1,10 @@
 package com.tech_symfony.movie_booking.api.user;
 
+import com.tech_symfony.movie_booking.api.user.attribute.Provider;
+import com.tech_symfony.movie_booking.api.user.register.RegisterRequest;
+import com.tech_symfony.movie_booking.api.user.register.TokenService;
+import com.tech_symfony.movie_booking.api.user.register.UserRegisterController;
+import com.tech_symfony.movie_booking.system.mail.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,7 +76,7 @@ public class UserService {
 		emailService.sendEmail(
 			registerRequest.getEmail(),
 			"Verify url",
-			linkTo(methodOn(UserController.class).verify(token)
+			linkTo(methodOn(UserRegisterController.class).verify(token)
 			).toUri().toString()
 		);
 		return "Success";
@@ -83,7 +88,7 @@ public class UserService {
 		User user = userRepository.findByIdAndVerifyFalse(UUID.fromString(userId)).orElseThrow(
 			() -> new UsernameNotFoundException("User not found.")
 		);
-		if(tokenService.isTokenExpired(token)) {
+		if (tokenService.isTokenExpired(token)) {
 			throw new JwtException("Expired url!");
 		}
 		user.setVerify(true);

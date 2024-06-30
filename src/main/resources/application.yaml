@@ -1,8 +1,13 @@
 server:
+  #  tomcat:
+  #    protocol-header: x-forwarded-proto
+  #    remote-ip-header: x-forwarded-for
   port: ${ENV_PORT}
 
 #spring.jpa.show-sql: true
 springdoc:
+  paths-to-exclude: /profile/**
+
   #  url=/openapi-3:
   #    0:
   #      yml:
@@ -13,10 +18,9 @@ springdoc:
       client-id: public-client
       use-pkce-with-authorization-code-grant: true
     urls:
-      - name: "Swagger UI - Spring data rest"
+      - name: "Swagger UI "
         url: /v3/api-docs
-  #      - name: "Spring restdocs"
-  #        url: /openapi-3.0.yml
+
   oAuthFlow:
     authorizationUrl: ${BASE_URL}/oauth2/authorize
     tokenUrl: ${BASE_URL}/oauth2/token
@@ -36,31 +40,12 @@ spring:
 
 
 
+
   security:
 
     oauth2:
 
-      #      authorizationserver:
-      #        client:
-      #
-      #          public-client:
 
-      #            registration:
-      #              client-id: "public-client"
-      #              client-authentication-methods:
-      #                - "none"
-      #              authorization-grant-types:
-      #                - "authorization_code"
-      #              redirect-uris:
-      #                - "https://oauth.pstmn.io/v1/browser-callback"
-      #              #                - "http:localhost:8080/oauth2/callback/public-client"
-      #
-      #              scopes: openid,profile,email
-
-
-      # hien ra cai bang kieu gg cho phep xem tem email, bla bla bla
-      #            require-authorization-consent: true
-      #            require-proof-key: true
       client:
         registration:
           google:
@@ -71,7 +56,7 @@ spring:
               - profile
               - phone
             redirect-uri:
-              - http://localhost:8080/oauth2/callback/google
+              - ${BASE_URL}/oauth2/callback/google
               - https://oauth.pstmn.io/v1/browser-callback
               - https://oauth.pstmn.io/v1/callback
               - http://localhost:8080/api/v1/auth/callback
@@ -99,6 +84,8 @@ jwt:
     public: classpath:app.pub
     private: classpath:app.key
 
+
 mail:
   username: ${MAIL}
+
 

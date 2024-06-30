@@ -1,5 +1,6 @@
-package com.tech_symfony.movie_booking.api.user;
+package com.tech_symfony.movie_booking.api.user.auth;
 
+import com.tech_symfony.movie_booking.api.user.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -12,6 +13,6 @@ public interface UserMapper {
 	@Mapping(target = "credential", source = "password")
 	@Mapping(target = "enabled", source = "verify")
 	@Mapping(target = "role", source = "role")
-
+	@Mapping(target = "uuid", source = "id")
 	CustomUserDetail userToCustomerUserDetail(User user);
 }

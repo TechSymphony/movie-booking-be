@@ -1,6 +1,8 @@
 package com.tech_symfony.movie_booking.api.bill;
 
+import com.tech_symfony.movie_booking.api.bill.dto.BillRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -9,16 +11,16 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.security.Principal;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @RepositoryRestController
 @ResponseBody
+@SecurityRequirement(name = "security_auth")
 public class BillController {
 
 	private final BillService billService;
@@ -33,9 +35,8 @@ public class BillController {
 	)
 	@PostMapping(value = "/bills")
 	@ResponseStatus(HttpStatus.CREATED)
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'CREATE_BILL')")
 	public ResponseEntity<EntityModel<Bill>> create(
-		@Valid @RequestBody BillDTO dataRaw,
+		@Valid @RequestBody BillRequestDTO dataRaw,
 		Principal principal
 	) {
 		Bill newBill = billService.create(dataRaw, principal.getName());
@@ -52,14 +53,24 @@ public class BillController {
 			"để hiển thị với khách hàng, kết quả có thể thành công hoặc thất bại. Khi thất bại, lí do " +
 			"sẽ được nêu rõ. "
 	)
-	@PutMapping(value = "/bills/{billId}/payment")
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'CREATE_PAYMENT')")
+	@PutMapping(value = "/bills/{id}/payment")
 	public EntityModel<Bill> pay(
-		@PathVariable UUID billId
+		@PathVariable UUID id
 	) {
 
-		return billModelAssembler.toModel(billService.pay(billId));
+		return billModelAssembler.toModel(billService.pay(id));
 	}
 
+	@Operation(
+		summary = "Cập nhập thanh toán",
+		description = "Api được gọi khi khách hàng vào rạp, nhân viên sẽ quét QR và cập nhập trạng thái đơn hàng đã sử dụng thành công"
+	)
+	@PutMapping(value = "/bills/{id}")
+	public EntityModel<Bill> updateStatus(
+		@PathVariable UUID id
+	) {
+		// TODO: chưa ràng buộc thời hạn nếu như vé bị outdated
+		return billModelAssembler.toModel(billService.updateStatus(id));
+	}
 
 }

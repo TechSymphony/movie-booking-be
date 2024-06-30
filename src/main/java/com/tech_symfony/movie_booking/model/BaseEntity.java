@@ -21,10 +21,9 @@ import lombok.ToString;
  */
 @MappedSuperclass
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
 	@Id
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 

@@ -1,12 +1,14 @@
 package com.tech_symfony.movie_booking.api.movie;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tech_symfony.movie_booking.api.movie_genre.MovieGenre;
 import com.tech_symfony.movie_booking.api.showtime.Showtime;
 import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.*;
-
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Date;
 import java.util.HashSet;
@@ -84,16 +86,17 @@ public class Movie extends NamedEntity {
 
 	private String slug;
 
-//	@NotEmpty(message = "Showtime MUST not be empty")
+	//	@NotEmpty(message = "Showtime MUST not be empty")
 	@OneToMany(
 		mappedBy = "movie",
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL
 	)
-	private Set<Showtime> showtimes = new HashSet<>();
+	@JsonManagedReference
+	private Set<Showtime> showtimes;
 
 
-//	@NotEmpty(message = "Genre MUST not be empty")
+	//	@NotEmpty(message = "Genre MUST not be empty")
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(
 		name = "movie_genre",

@@ -1,19 +1,15 @@
-package com.tech_symfony.movie_booking.api.user;
+package com.tech_symfony.movie_booking.system.mail;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 
 @Service
@@ -22,7 +18,7 @@ public class EmailService {
 
 	private final ApplicationContext applicationContext;
 
-	private final MailConfig mailConfig;
+	private final GMailConfig GMailConfig;
 
 	@Value("${mail.username:default}")
 	private String fromEmail;
@@ -32,7 +28,7 @@ public class EmailService {
 		JavaMailSender javaMailSender = applicationContext.getBean(JavaMailSender.class);
 		JavaMailSenderImpl mailSender = (JavaMailSenderImpl) javaMailSender;
 		try {
-			mailConfig.accessToken(mailSender);
+			GMailConfig.accessToken(mailSender);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

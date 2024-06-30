@@ -1,7 +1,6 @@
-package com.tech_symfony.movie_booking.api.user;
+package com.tech_symfony.movie_booking.api.user.auth;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.role.Role;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,10 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Setter
 @Getter
@@ -26,13 +22,16 @@ public class CustomUserDetail implements UserDetails {
 	private String credential;
 
 	private Role role;
-
 	private boolean enabled;
+
+	private UUID uuid;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (role == null) {
+			return new ArrayList<GrantedAuthority>();
+		}
 
-    
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		role.getPermissions().forEach(permission ->

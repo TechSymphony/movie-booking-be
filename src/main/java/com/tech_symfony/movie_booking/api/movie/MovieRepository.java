@@ -17,15 +17,15 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface MovieRepository extends BaseAuthenticatedRepository<Movie, Integer> {
 
-	@RestResource(path = "public", rel = "public")
-	@Query("SELECT m FROM Movie m WHERE (:slug is null or m.slug like %:slug% ) ")
-	Page<Movie> findBySlugContaining(@Param("slug") String slug, Pageable pageable);
+//	@RestResource(path = "public", rel = "public")
+//	@Query("SELECT m FROM Movie m WHERE (:slug is null or m.slug like %:slug% ) ")
+//	Page<Movie> findBySlugContaining(@Param("slug") String slug, Pageable pageable);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'SAVE_MOVIE')")
+	@PreAuthorize("hasAuthority( 'SAVE_MOVIE')")
 	@Override
 	Movie save(Movie movie);
 
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'DELETE_MOVIE')")
+	@PreAuthorize("hasAuthority( 'DELETE_MOVIE')")
 	@Override
 	void deleteById(Integer id);
 

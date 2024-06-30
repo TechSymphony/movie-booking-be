@@ -1,30 +1,26 @@
 package com.tech_symfony.movie_booking.api.role.permission;
 
-import com.tech_symfony.movie_booking.api.cinema.Cinema;
-import com.tech_symfony.movie_booking.api.role.Role;
 import com.tech_symfony.movie_booking.model.BaseAuthenticatedRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
 
-@RepositoryRestResource
-public interface PermissionRepository  extends BaseAuthenticatedRepository<Permission, Integer> {
-	@Override
-	@PreAuthorize("@permissionService.hasPermission(authentication, 'READ_PERMISSION')")
-	List<Permission> findAll();
+@RepositoryRestResource(excerptProjection = PermissionProjector.class)
+@PreAuthorize("hasAuthority('READ_PERMISSION')")
+public interface PermissionRepository extends BaseAuthenticatedRepository<Permission, Integer> {
 
+	@RestResource(exported = false)
 	@Override
-	default Optional<Permission> findById(Integer id){
-		return null;
-	}
+	Optional<Permission> findById(Integer id);
 
+	@RestResource(exported = false)
 	@Override
-	default Permission save(Permission permission){
-		return null;
-	}
+	Permission save(Permission permission);
 
+	@RestResource(exported = false)
 	@Override
-	default void deleteById(Integer id){}
+	void deleteById(Integer id);
 }
