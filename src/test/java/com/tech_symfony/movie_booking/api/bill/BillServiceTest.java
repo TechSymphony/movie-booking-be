@@ -10,6 +10,7 @@ import com.tech_symfony.movie_booking.api.showtime.ShowtimeRepository;
 import com.tech_symfony.movie_booking.api.ticket.TicketRepository;
 import com.tech_symfony.movie_booking.api.user.User;
 import com.tech_symfony.movie_booking.api.user.UserRepository;
+import com.tech_symfony.movie_booking.model.BaseUnitTest;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,8 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith({MockitoExtension.class})
-public class BillServiceTest {
+//@ExtendWith({MockitoExtension.class})
+public class BillServiceTest extends BaseUnitTest {
 
 	@Mock
 	private BillRepository billRepository;
