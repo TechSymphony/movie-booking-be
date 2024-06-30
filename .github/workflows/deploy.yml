@@ -54,6 +54,6 @@ jobs:
             git pull
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{vars.PROJECT_NAME}}:latest
             docker compose stop
-            docker compose up -d 
-            
+            docker compose up app -d 
+
 
