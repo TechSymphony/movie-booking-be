@@ -215,3 +215,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
       MYSQL_ALLOW_EMPTY_PASSWORD: ${DB_ALLOW_EMPTY_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+
+#  redis:
+#    image: redis:6-alpine
+#    restart: always
+#    volumes:
+#      - ./.docker/data/redis:/var/lib/redis
