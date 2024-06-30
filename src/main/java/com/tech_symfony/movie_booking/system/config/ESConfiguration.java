@@ -18,17 +18,23 @@ import java.util.Base64;
 @Configuration
 public class ESConfiguration extends ElasticsearchConfiguration {
 
-	@Value("${spring.elasticsearch.username}")
+	@Value("${spring.elasticsearch.username:elastic}")
 	private String username;
 
-	@Value("${spring.elasticsearch.password}")
+	@Value("${spring.elasticsearch.password:default}")
 	private String password;
+
+	@Value("${ELASTIC_HOST:localhost}")
+	private String host;
+
+	@Value("${ELASTIC_PORT:9200}")
+	private String port;
 
 	@Override
 	public ClientConfiguration clientConfiguration() {
 
 		return ClientConfiguration.builder()
-			.connectedTo("localhost:9200")
+			.connectedTo(host+":"+port)
 //			.usingSsl(getSslContext())
 			.withBasicAuth(username, password)
 			.build();
