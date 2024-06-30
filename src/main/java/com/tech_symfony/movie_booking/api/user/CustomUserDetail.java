@@ -23,6 +23,7 @@ public class CustomUserDetail implements UserDetails {
 	private String credential;
 
 	private Role role;
+	private boolean enabled;
 
 	private UUID uuid;
 
@@ -31,6 +32,7 @@ public class CustomUserDetail implements UserDetails {
 		if (role == null) {
 			return new ArrayList<GrantedAuthority>();
 		}
+
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		role.getPermissions().forEach(permission ->
@@ -38,6 +40,7 @@ public class CustomUserDetail implements UserDetails {
 		);
 
 		return grantedAuthorities;
+
 	}
 
 	@Override
@@ -67,7 +70,7 @@ public class CustomUserDetail implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return enabled;
 	}
 
 

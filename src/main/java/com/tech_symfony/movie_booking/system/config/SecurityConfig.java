@@ -77,6 +77,7 @@ public class SecurityConfig {
 
 				//
 				.requestMatchers("/", "api/v1/auth/**").permitAll()
+				.requestMatchers( "auth/**").permitAll()
 				.requestMatchers(antMatcher("/**/search/public*")).permitAll()
 				.requestMatchers("/users").hasAuthority("READ_USER")
 				//swagger docs

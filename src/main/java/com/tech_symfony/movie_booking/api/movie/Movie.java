@@ -13,11 +13,12 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
 @Getter
-
+@ToString
 @Entity
 @Table(name = "movies")
 public class Movie extends NamedEntity {
@@ -27,15 +28,15 @@ public class Movie extends NamedEntity {
 
 
 	@Column(name = "sub_name")
-	@NotBlank(message = "Sub name MUST not be plank")
+	@NotBlank(message = "Sub name MUST not be blank")
 	private String subName;
 
 	@NotNull
-	@NotBlank(message = "Director MUST not be plank")
+	@NotBlank(message = "Director MUST not be blank")
 	private String director;
 
 	@NotNull
-	@NotBlank(message = "Caster MUST not be plank")
+	@NotBlank(message = "Caster MUST not be blank")
 	private String caster;
 
 	@NotNull(message = "Release date MUST not be null")
@@ -57,12 +58,12 @@ public class Movie extends NamedEntity {
 	private String language;
 
 
-	@NotBlank(message = "Description MUST not be blank")
+	@PositiveOrZero(message = "Description MUST not be negative")
 	@Column(name = "number_of_ratings")
 	private Integer numberOfRatings;
 
 	@Column(name = "sum_of_ratings")
-	@NotBlank(message = "Trailer MUST not be blank")
+	@PositiveOrZero(message = "Sum of ratings MUST not be negative")
 	private Integer sumOfRatings;
 
 	@Column(columnDefinition = "TEXT")
@@ -76,7 +77,7 @@ public class Movie extends NamedEntity {
 	private String horizontalPoster;
 
 	@NotNull
-	@NotBlank(message = "Trailer MUST not be plank")
+	@NotBlank(message = "Trailer MUST not be blank")
 	private String trailer;
 
 	@Positive(message = "Rated MUST not be negative")
@@ -87,7 +88,7 @@ public class Movie extends NamedEntity {
 
 	private String slug;
 
-	@NotEmpty(message = "Showtime MUST not be empty")
+//	@NotEmpty(message = "Showtime MUST not be empty")
 	@OneToMany(
 		mappedBy = "movie",
 		fetch = FetchType.LAZY,
@@ -99,12 +100,18 @@ public class Movie extends NamedEntity {
 
 	@NotEmpty(message = "Genre MUST not be empty")
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+	private Set<Showtime> showtimes = new HashSet<>();
+
+
+//	@NotEmpty(message = "Genre MUST not be empty")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(
 		name = "movie_genre",
 		joinColumns = @JoinColumn(name = "movie_id", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "movie_genre_id", nullable = false)
 	)
-	private Set<MovieGenre> genres;
+	private Set<MovieGenre> genres = new HashSet<>();
 	//
 //	@OneToMany(
 //		mappedBy = "movie",
