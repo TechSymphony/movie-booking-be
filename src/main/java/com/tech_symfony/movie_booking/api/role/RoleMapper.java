@@ -1,6 +1,5 @@
 package com.tech_symfony.movie_booking.api.role;
 
-import com.tech_symfony.movie_booking.api.user.CustomUserDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

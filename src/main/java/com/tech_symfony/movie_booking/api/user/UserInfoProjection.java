@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.user;
 
+import com.tech_symfony.movie_booking.api.user.attribute.Gender;
 import org.springframework.data.rest.core.config.Projection;
 
 import java.sql.Date;

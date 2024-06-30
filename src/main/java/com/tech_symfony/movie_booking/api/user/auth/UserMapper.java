@@ -1,5 +1,6 @@
-package com.tech_symfony.movie_booking.api.user;
+package com.tech_symfony.movie_booking.api.user.auth;
 
+import com.tech_symfony.movie_booking.api.user.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

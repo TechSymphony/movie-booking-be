@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.system.config;
+package com.tech_symfony.movie_booking.system.config.auth;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -8,7 +8,6 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -33,10 +32,8 @@ import org.springframework.util.StringUtils;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Configuration
@@ -102,6 +99,7 @@ public class AuthorizationServerConfig {
 		};
 	}
 
+	@Bean
 	public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
 		return new NimbusJwtEncoder(jwkSource);
 	}

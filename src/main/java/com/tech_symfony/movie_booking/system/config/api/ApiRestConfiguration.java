@@ -1,13 +1,11 @@
-package com.tech_symfony.movie_booking.system.config;
+package com.tech_symfony.movie_booking.system.config.api;
 
 import com.tech_symfony.movie_booking.api.bill.Bill;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.rest.core.config.MetadataConfiguration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.ExposureConfiguration;
 import org.springframework.data.rest.core.mapping.RepositoryDetectionStrategy;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration

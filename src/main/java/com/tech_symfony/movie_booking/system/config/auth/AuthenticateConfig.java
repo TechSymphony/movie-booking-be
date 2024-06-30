@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.system.config;
+package com.tech_symfony.movie_booking.system.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -1,7 +1,6 @@
-package com.tech_symfony.movie_booking.api.user;
+package com.tech_symfony.movie_booking.api.user.auth;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.role.Role;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,9 +1,8 @@
 package com.tech_symfony.movie_booking.system.config;
 
-import com.tech_symfony.movie_booking.api.user.CustomUserDetailService;
-import com.tech_symfony.movie_booking.api.user.OAuth2UserService;
+import com.tech_symfony.movie_booking.api.user.auth.CustomUserDetailService;
+import com.tech_symfony.movie_booking.api.user.auth.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -76,8 +75,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "movies/**", "cinemas", "seats", "seat-types").permitAll()
 
 				//
-				.requestMatchers("/", "api/v1/auth/**").permitAll()
-				.requestMatchers( "auth/**").permitAll()
+				.requestMatchers("/", "auth/**").permitAll()
 				.requestMatchers(antMatcher("/**/search/public*")).permitAll()
 				.requestMatchers("/users").hasAuthority("READ_USER")
 				//swagger docs

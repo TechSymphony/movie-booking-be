@@ -1,26 +1,18 @@
 package com.tech_symfony.movie_booking.api.user;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tech_symfony.movie_booking.api.bill.Bill;
 import com.tech_symfony.movie_booking.api.role.Role;
+import com.tech_symfony.movie_booking.api.user.attribute.Gender;
+import com.tech_symfony.movie_booking.api.user.attribute.Provider;
 import com.tech_symfony.movie_booking.model.BaseUUIDEntity;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.RestResource;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
