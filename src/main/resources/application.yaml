@@ -4,8 +4,6 @@ server:
   #    remote-ip-header: x-forwarded-for
   port: ${ENV_PORT}
 
-
-
 #spring.jpa.show-sql: true
 springdoc:
   paths-to-exclude: /profile/**
@@ -32,6 +30,15 @@ springdoc:
 
 
 spring:
+#
+#  mvc:
+#    log-resolved-exception: false
+
+  elasticsearch:
+    username: elastic
+    password: ${ELASTIC_PASSWORD}
+
+
 
 
   security:
@@ -52,6 +59,7 @@ spring:
               - ${BASE_URL}/oauth2/callback/google
               - https://oauth.pstmn.io/v1/browser-callback
               - https://oauth.pstmn.io/v1/callback
+              - http://localhost:8080/api/v1/auth/callback
   config:
     import: optional:configtree:/run/secrets/ , optional:file:.env[.properties]
   application:
@@ -68,11 +76,16 @@ spring:
 
 logging:
   level:
-    org.springframework.security: debug
+    org.springframework.security: trace
 
 jwt:
   key:
     id: 'configured-f57f-46a2-b502-8a24c308be7f'
     public: classpath:app.pub
     private: classpath:app.key
+
+
+mail:
+  username: ${MAIL}
+
 

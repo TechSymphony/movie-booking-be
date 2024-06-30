@@ -4,15 +4,17 @@ setup:
 	@make start
 dev:
 	@make stop
-	@make build-dev
 	@make start-dev
 start-dev:
 	@make stop
-	docker-compose up dev -d
-	docker compose watch --no-up
+	docker-compose up setup -d
+	docker-compose up db -d
+	docker-compose up logstash -d
 start:
 	@make stop
+	docker-compose up setup -d
 	docker-compose up app -d
+	docker-compose up logstash -d
 stop:
 	docker-compose down
 build-nocache:
