@@ -26,6 +26,10 @@ springdoc:
 
 
 spring:
+#
+#  mvc:
+#    log-resolved-exception: false
+
   elasticsearch:
     username: elastic
     password: ${ELASTIC_PASSWORD}
