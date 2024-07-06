@@ -30,7 +30,7 @@ public class Role extends NamedEntity {
 //	@RestResource(exported = false)
 //	private Set<User> users;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 
 	@JoinTable(
 		name = "role_permission",

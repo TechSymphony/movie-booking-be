@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import io.swagger.v3.oas.annotations.security.OAuthFlows;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
 @SecurityScheme(
@@ -27,7 +28,8 @@ import org.springframework.context.annotation.Configuration;
 		description = "Open Api for  movie booking app",
 		title = "OpenApi movie booking ",
 		version = "1.0"
-	)
+	),
+	servers = {@Server(url = "/", description = "Default Server URL")}
 
 )
 public class SwaggerConfiguration {

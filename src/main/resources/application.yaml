@@ -30,9 +30,9 @@ springdoc:
 
 
 spring:
-#
-#  mvc:
-#    log-resolved-exception: false
+  #
+  #  mvc:
+  #    log-resolved-exception: false
 
   elasticsearch:
     username: elastic
@@ -76,7 +76,7 @@ spring:
 
 logging:
   level:
-    org.springframework.security: trace
+    org.springframework.security: ${ DEBUG }
 
 jwt:
   key:
