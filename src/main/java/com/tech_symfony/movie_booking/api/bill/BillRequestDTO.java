@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.api.bill.dto;
+package com.tech_symfony.movie_booking.api.bill;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;

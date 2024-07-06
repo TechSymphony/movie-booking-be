@@ -1,6 +1,5 @@
 package com.tech_symfony.movie_booking.api.bill;
 
-import com.tech_symfony.movie_booking.api.bill.dto.BillRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -11,7 +10,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -26,6 +25,7 @@ public class BillController {
 	private final BillService billService;
 	private final RepositoryEntityLinks entityLinks;
 	private final BillModelAssembler billModelAssembler;
+	private Principal principal = SecurityContextHolder.getContext().getAuthentication();
 
 	@Operation(
 		summary = "Thêm hóa đơn kèm vé trước khi thanh toán",
@@ -36,8 +36,7 @@ public class BillController {
 	@PostMapping(value = "/bills")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<EntityModel<Bill>> create(
-		@Valid @RequestBody BillRequestDTO dataRaw,
-		Principal principal
+		@Valid @RequestBody BillRequestDTO dataRaw
 	) {
 		Bill newBill = billService.create(dataRaw, principal.getName());
 		Link link = entityLinks.linkToItemResource(Bill.class, newBill.getId());
@@ -58,7 +57,7 @@ public class BillController {
 		@PathVariable UUID id
 	) {
 
-		return billModelAssembler.toModel(billService.pay(id));
+		return billModelAssembler.toModel(billService.pay(id, principal.getName()));
 	}
 
 	@Operation(
