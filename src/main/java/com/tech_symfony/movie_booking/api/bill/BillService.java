@@ -55,13 +55,13 @@ class DefaultBillService implements BillService {
 	private final VnpayService vnpayService;
 
 
-	private void checkSeat(Showtime showtime, List<Seat> seatList) {
+	private Boolean checkSeat(Showtime showtime, List<Seat> seatList) {
 
 		Set<Ticket> t = ticketRepository.findByShowtimeAndSeatIn(showtime, seatList);
 		if (t.size() > 0) {
 			throw new ForbidenMethodControllerException("Seat already reserved");
 		}
-
+		return true;
 	}
 
 	private Double getPriceOfSeat(Seat seat) {
@@ -124,11 +124,14 @@ class DefaultBillService implements BillService {
 
 	}
 
-	@PreAuthorize("hasAuthority( 'SAVE_BILL')")
+	@PreAuthorize("hasAuthority('SAVE_BILL')")
 	public Bill updateStatus(UUID billId) {
 
 		Bill bill = billRepository.findById(billId)
 			.orElseThrow(() -> new ResourceNotFoundException("Bill not found"));
+		if (bill.getStatus() != BillStatus.HOLDING) {
+			throw new ForbidenMethodControllerException("Bill is not holding");
+		}
 		bill.setStatus(BillStatus.COMPLETED);
 		return billRepository.save(bill);
 	}

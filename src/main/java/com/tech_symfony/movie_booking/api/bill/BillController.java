@@ -10,6 +10,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class BillController {
 	)
 	@PostMapping(value = "/bills")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<EntityModel<Bill>> create(
+	public ResponseEntity<EntityModel<BillInfoProjection>> create(
 		@Valid @RequestBody BillRequestDTO dataRaw
 	) {
 		Bill newBill = billService.create(dataRaw, principal.getName());
@@ -53,7 +54,7 @@ public class BillController {
 			"sẽ được nêu rõ. "
 	)
 	@PutMapping(value = "/bills/{id}/payment")
-	public EntityModel<Bill> pay(
+	public EntityModel<BillInfoProjection> pay(
 		@PathVariable UUID id
 	) {
 
@@ -62,13 +63,12 @@ public class BillController {
 
 	@Operation(
 		summary = "Cập nhập thanh toán",
-		description = "Api được gọi khi khách hàng vào rạp, nhân viên sẽ quét QR và cập nhập trạng thái đơn hàng đã sử dụng thành công"
+		description = "Api được gọi khi khách hàng vào rạp, nhân viên sẽ quét và cập nhập trạng thái vé đã sử dụng thành công"
 	)
 	@PutMapping(value = "/bills/{id}")
-	public EntityModel<Bill> updateStatus(
+	public EntityModel<BillInfoProjection> updateStatus(
 		@PathVariable UUID id
 	) {
-		// TODO: chưa ràng buộc thời hạn nếu như vé bị outdated
 		return billModelAssembler.toModel(billService.updateStatus(id));
 	}
 
