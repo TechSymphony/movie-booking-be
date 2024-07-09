@@ -28,14 +28,13 @@ public class Room extends NamedEntity {
 	@Column(name = "available_seats")
 	private Integer availableSeats;
 
-	private String slug;
+//	private String slug;
 
 	@OneToMany(
 		mappedBy = "room",
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL
 	)
-	@JsonManagedReference
 	private Set<Showtime> showtimes;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
