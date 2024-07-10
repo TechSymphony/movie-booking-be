@@ -77,6 +77,12 @@
       <version>1.19.8</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>mysql</artifactId>
+      <version>1.19.8</version>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -311,41 +317,7 @@
           </dependency>
         </dependencies>
       </plugin>
-      <!--      <plugin>-->
-      <!--        <groupId>io.github.berkleytechnologyservices</groupId>-->
-      <!--        <artifactId>restdocs-spec-maven-plugin</artifactId>-->
-      <!--        <version>${restdocs-spec.version}</version>-->
-      <!--        <executions>-->
-      <!--          <execution>-->
-      <!--            <goals>-->
-      <!--              <goal>generate</goal>-->
-      <!--            </goals>-->
-      <!--            <configuration>-->
-      <!--              <specification>OPENAPI_V3</specification>-->
-      <!--              <outputDirectory>${project.build.directory}/classes/static</outputDirectory>-->
-      <!--              <host>${server.variable.url}</host>-->
-      <!--              <oauth2>-->
 
-      <!--                <tokenUrl>http://${server.variable.url}/oauth2/token</tokenUrl>-->
-      <!--                <authorizationUrl>http://${server.variable.url}/oauth2/authorize</authorizationUrl>-->
-      <!--                <flows>-->
-      <!--                  <flow>authorizationCode</flow>-->
-      <!--                </flows>-->
-      <!--                &lt;!&ndash;                <scopes>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                  <scope>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                    <name>read</name>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                    <description>Access to read operations.</description>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                  </scope>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                  <scope>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                    <name>write</name>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                    <description>Access to write operations.</description>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                  </scope>&ndash;&gt;-->
-      <!--                &lt;!&ndash;                </scopes>&ndash;&gt;-->
-      <!--              </oauth2>-->
-      <!--            </configuration>-->
-      <!--          </execution>-->
-      <!--        </executions>-->
-      <!--      </plugin>-->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -366,24 +338,6 @@
           </execution>
         </executions>
       </plugin>
-      <!--      <plugin>-->
-      <!--        <groupId>org.springdoc</groupId>-->
-      <!--        <artifactId>springdoc-openapi-maven-plugin</artifactId>-->
-      <!--        <version>1.4</version>-->
-      <!--        <executions>-->
-      <!--          <execution>-->
-      <!--            <phase>integration-test</phase>-->
-      <!--            <goals>-->
-      <!--              <goal>generate</goal>-->
-      <!--            </goals>-->
-      <!--          </execution>-->
-      <!--        </executions>-->
-      <!--      </plugin>-->
-      <!--      <plugin>-->
-      <!--        <groupId>de.qaware.maven</groupId>-->
-      <!--        <artifactId>go-offline-maven-plugin</artifactId>-->
-      <!--        <version>${go-offline-maven-plugin.version}</version>-->
-      <!--      </plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -404,5 +358,39 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>unit-test</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/Test*.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>integration-test</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*IT.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
+  </profiles>
 </project>
