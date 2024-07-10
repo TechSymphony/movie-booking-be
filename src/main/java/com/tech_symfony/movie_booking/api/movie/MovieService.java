@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public interface MovieService {
 	Movie create(MovieDTO dataRaw);
@@ -85,7 +84,7 @@ class DefaultMovieService implements MovieService {
 	@Override
 	public Movie update(Integer movieId, MovieDTO dataRaw) {
 
-		Movie movieToUpdate = movieRepository.findById(movieId)
+		movieRepository.findById(movieId)
 			.orElseThrow(() -> new ResourceNotFoundException("Movie not found"));
 
 		// bring all fields from movieDto to movie then save it
