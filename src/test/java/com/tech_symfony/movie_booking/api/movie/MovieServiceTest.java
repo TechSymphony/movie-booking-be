@@ -62,25 +62,6 @@ public class MovieServiceTest extends BaseUnitTest {
 		movieDTO.setShowtimes(Set.of(1, 2));
 		movieDTO.setGenres(Set.of(1, 2));
 	}
-//
-//	@Test
-//	public void shouldCreateMovieSuccessfully() {
-//		// Given
-//
-//		given(movieRepository.save(any(Movie.class))).willReturn(new Movie());
-//		given(showtimeRepository.existsById(any(Integer.class))).willReturn(true);
-//		given(movieGenreRepository.existsById(any(Integer.class))).willReturn(true);
-//		given(showtimeRepository.findById(any(Integer.class))).willReturn(Optional.of(new Showtime()));
-//		given(movieGenreRepository.findById(any(Integer.class))).willReturn(Optional.of(new MovieGenre()));
-//
-//		// When
-//
-//		Movie movie = movieService.create(movieDTO);
-//
-//		// Then
-//
-//		assertNotNull(movie);
-//	}
 
 	@Test
 	void testCreateMovie() {
