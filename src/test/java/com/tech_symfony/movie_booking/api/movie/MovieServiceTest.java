@@ -65,8 +65,7 @@ public class MovieServiceTest extends BaseUnitTest {
 
 	@Test
 	void testCreateMovie() {
-		Movie movie = new Movie();
-		when(movieRepository.save(any(Movie.class))).thenReturn(movie);
+		when(movieRepository.save(any(Movie.class))).thenReturn(new Movie());
 		when(showtimeRepository.existsById(anyInt())).thenReturn(true);
 		when(showtimeRepository.findById(anyInt())).thenReturn(Optional.of(new Showtime()));
 		when(movieGenreRepository.existsById(anyInt())).thenReturn(true);
@@ -156,5 +155,26 @@ public class MovieServiceTest extends BaseUnitTest {
 			movieService.create(movieDTO);
 		});
 		assertEquals("Movie genre not found", exception.getMessage());
+	}
+
+	@Test
+	void testDeleteMovie() {
+		given(movieRepository.findById(anyInt())).willReturn(Optional.of(new Movie()));
+		movieService.delete(1);
+		verify(movieRepository).deleteById(1);
+	}
+
+	@Test
+	void testGetMovie() {
+		given(movieRepository.findById(anyInt())).willReturn(Optional.of(new Movie()));
+		assertNotNull(movieService.findById(1));
+		verify(movieRepository).findById(1);
+	}
+
+	@Test
+	void testGetMovies() {
+		given(movieRepository.findAll()).willReturn(List.of(new Movie()));
+		assertNotNull(movieService.findAll());
+		verify(movieRepository).findAll();
 	}
 }

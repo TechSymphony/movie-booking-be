@@ -2,9 +2,11 @@ package com.tech_symfony.movie_booking.system.container;
 
 import org.testcontainers.containers.wait.strategy.HttpWaitStrategy;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.Duration;
 
+@Testcontainers
 public class ElasticTestContainer extends ElasticsearchContainer {
 	private static final String DOCKER_ELASTIC = "docker.elastic.co/elasticsearch/elasticsearch:8.3.3";
 
