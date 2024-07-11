@@ -199,6 +199,19 @@
     <!--      <artifactId>spring-dotenv</artifactId>-->
     <!--    </dependency>-->
 
+    <!-- Discord -->
+    <dependency>
+      <groupId>net.dv8tion</groupId>
+      <artifactId>JDA</artifactId>
+      <version>5.0.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>club.minnced</groupId>
+          <artifactId>opus-java</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
   </dependencies>
 
   <build>
