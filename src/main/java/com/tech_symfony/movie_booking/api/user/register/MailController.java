@@ -56,7 +56,6 @@ public class MailController {
 		String exchangeTokenUrl = linkTo(
 			methodOn(MailController.class).exchangeToken(authorizationCode)
 		).toUri().toString();
-
 		return "redirect:" + exchangeTokenUrl;
 	}
 
