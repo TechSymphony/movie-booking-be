@@ -8,11 +8,8 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 public interface MovieSearchRepository extends ElasticsearchRepository<MovieSearch, String> {
 	@Query("""
 		{
-			"match": {
-				"name": {
-					"query": "?0",
-					"fuzziness" : "AUTO"
-				}
+			"wildcard": {
+				"name": "?0*"
 			}
 		}
 		""")
