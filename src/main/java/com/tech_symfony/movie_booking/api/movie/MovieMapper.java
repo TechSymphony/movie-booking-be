@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 interface MovieMapper {
 
+	MovieMapper INSTANCE = Mappers.getMapper(MovieMapper.class);
+
 	@Mapping(target = "showtimes", source = "showtimes", ignore = true)
 	@Mapping(target = "genres", source = "genres", ignore = true)
 	MovieDTO movieToMovieDto(Movie movie);

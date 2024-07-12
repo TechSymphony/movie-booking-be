@@ -7,22 +7,19 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Component
-@AllArgsConstructor
-public class MovieModelAssembler implements RepresentationModelAssembler<Movie, EntityModel<Movie>> {
-
-	private final RepositoryEntityLinks entityLinks;
-
+public class MovieModelAssembler implements RepresentationModelAssembler<Movie, EntityModel<MovieDTO>> {
 	@Override
-	public EntityModel<Movie> toModel(Movie entity) {
+	public EntityModel<MovieDTO> toModel(Movie entity) {
 
-		Link linkResource = entityLinks.linkToItemResource(Movie.class, entity.getId());
-		Link linkCollectionResource = entityLinks.linkToCollectionResource(Movie.class);
-
+		MovieDTO movieDto = MovieMapper.INSTANCE.movieToMovieDto(entity);
 		return EntityModel.of(
-			entity,
-			linkResource,
-			linkCollectionResource
+			movieDto,
+			linkTo(methodOn(MovieController.class).getMovieById(entity.getId())).withSelfRel(),
+			linkTo(methodOn(MovieController.class).getAllMovies()).withRel("movies")
 		);
 	}
 }

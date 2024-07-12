@@ -3,6 +3,7 @@ package com.tech_symfony.movie_booking.api.movie;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.CollectionModel;
@@ -12,10 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@RepositoryRestController
+@BasePathAwareController
 @ResponseBody
 public class MovieController {
 
@@ -27,7 +29,7 @@ public class MovieController {
 		description = "API xem danh sách bộ phim"
 	)
 	@GetMapping(value = "/movies")
-	public CollectionModel<EntityModel<Movie>> getAllMovies() {
+	public CollectionModel<EntityModel<MovieDTO>> getAllMovies() {
 		return movieModelAssembler.toCollectionModel(movieService.findAll());
 	}
 
@@ -37,7 +39,7 @@ public class MovieController {
 	)
 	@GetMapping(value = "/movies/{movieId}")
 	@ResponseStatus(HttpStatus.OK)
-	public EntityModel<Movie> getMovieById(
+	public EntityModel<MovieDTO> getMovieById(
 		@PathVariable Integer movieId
 	) {
 		return movieModelAssembler.toModel(movieService.findById(movieId));
@@ -49,7 +51,7 @@ public class MovieController {
 	)
 	@PostMapping(value = "/movies")
 	@ResponseStatus(HttpStatus.CREATED)
-	public EntityModel<Movie> create(
+	public EntityModel<MovieDTO> create(
 		@Valid @RequestBody MovieDTO dataRaw
 	) {
 		return movieModelAssembler.toModel(movieService.create(dataRaw));
@@ -60,7 +62,7 @@ public class MovieController {
 		description = "API cập nhật một bộ phim"
 	)
 	@PutMapping(value = "/movies/{movieId}")
-	public EntityModel<Movie> update(
+	public EntityModel<MovieDTO> update(
 		@PathVariable Integer movieId,
 		@Valid @RequestBody MovieDTO dataRaw
 	) {
