@@ -1,18 +1,8 @@
 package com.tech_symfony.movie_booking.system.exception;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tech_symfony.movie_booking.api.role.exception.RoleInUseException;
-import com.tech_symfony.movie_booking.api.role.exception.RoleNotFoundException;
 import jakarta.validation.ConstraintViolationException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-// import org.springframework.samples.petclinic.rest.controller.BindingErrorsResponse;
 import org.springframework.security.access.AccessDeniedException;
-
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,7 +31,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class})
 	@ResponseStatus(code = BAD_REQUEST)
 	@ResponseBody
-	public ResponseEntity<?> handlerException(ConstraintViolationException e, WebRequest request) {
+	public ErrorInfo handlerException(ConstraintViolationException e, WebRequest request) {
 		final List<Object> errors = new ArrayList<>();
 		e.getConstraintViolations().stream().forEach(fieldError -> {
 			Map<String, Object> error = new HashMap<>();
@@ -49,36 +39,44 @@ public class GlobalExceptionHandler {
 			error.put("message", fieldError.getMessage());
 			errors.add(error);
 		});
-		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-		Map<String, Object> body = new HashMap<>();
-		body.put("error", errors);
-		return new ResponseEntity<>(body, httpStatus);
+
+		return new ErrorInfo(e, errors);
 	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public ErrorInfo accessDenied(Exception e) {
+		return new ErrorInfo(e);
+	}
+
 
 	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<String> exception(Exception e) {
-		ObjectMapper mapper = new ObjectMapper();
-		ErrorInfo errorInfo = new ErrorInfo(e);
-		String respJSONstring = "{}";
-		try {
-			respJSONstring = mapper.writeValueAsString(errorInfo);
-		} catch (JsonProcessingException e1) {
-			e1.printStackTrace();
-		}
-		if (e instanceof AccessDeniedException)
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(respJSONstring);
-
-		return ResponseEntity.badRequest().body(respJSONstring);
+	@ResponseBody
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ErrorInfo exception(Exception e) {
+		return new ErrorInfo(e);
 	}
 
 
-	private class ErrorInfo {
-		public final String className;
-		public final String exMessage;
+	//	public ResponseEntity<String> exception(Exception e) {
+//		ObjectMapper mapper = new ObjectMapper();
+//		ErrorInfo errorInfo = new ErrorInfo(e);
+//		String respJSONstring = "{}";
+//		try {
+//			respJSONstring = mapper.writeValueAsString(errorInfo);
+//		} catch (JsonProcessingException e1) {
+//			e1.printStackTrace();
+//		}
+//
+//		ResponseEntity.BodyBuilder responseWithStatus;
+//		if (e instanceof AccessDeniedException) {
+//			responseWithStatus = ResponseEntity.status(HttpStatus.NOT_FOUND);
+//		} else {
+//			responseWithStatus = ResponseEntity.status(HttpStatus.BAD_REQUEST);
+//		}
+//
+//		return responseWithStatus.body(respJSONstring);
+//	}
 
-		public ErrorInfo(Exception ex) {
-			this.className = ex.getClass().getName();
-			this.exMessage = ex.getLocalizedMessage();
-		}
-	}
 }
