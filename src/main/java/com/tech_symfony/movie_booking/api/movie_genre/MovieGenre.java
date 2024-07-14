@@ -18,7 +18,7 @@ import java.util.Set;
 public class MovieGenre extends NamedEntity {
 
 
-	@ManyToMany(mappedBy = "genres")
+	@ManyToMany(mappedBy = "genres", fetch = FetchType.EAGER)
 	@RestResource(exported = false)
 	@JsonIgnore
 	private Set<Movie> movies;

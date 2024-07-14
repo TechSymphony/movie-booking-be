@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.BDDMockito.given;
@@ -66,15 +68,16 @@ public class MovieServiceTest extends BaseUnitTest {
 	@Test
 	void testCreateMovie() {
 		when(movieRepository.save(any(Movie.class))).thenReturn(new Movie());
-		when(showtimeRepository.existsById(anyInt())).thenReturn(true);
-		when(showtimeRepository.findById(anyInt())).thenReturn(Optional.of(new Showtime()));
-		when(movieGenreRepository.existsById(anyInt())).thenReturn(true);
 		when(movieGenreRepository.findById(anyInt())).thenReturn(Optional.of(new MovieGenre()));
 
 		Movie result = movieService.create(movieDTO);
-
 		assertNotNull(result);
-		verify(movieRepository).save(any(Movie.class));
+
+		movieDTO.setShowtimes(null);
+		movieDTO.setGenres(null);
+		result = movieService.create(movieDTO);
+		assertNotNull(result);
+		verify(movieRepository, times(4)).save(any(Movie.class));
 	}
 
 	@Test
@@ -82,62 +85,22 @@ public class MovieServiceTest extends BaseUnitTest {
 		Movie movie = new Movie();
 		when(movieRepository.findById(anyInt())).thenReturn(Optional.of(movie));
 		when(movieRepository.save(any(Movie.class))).thenReturn(movie);
-		when(showtimeRepository.existsById(anyInt())).thenReturn(true);
-		when(showtimeRepository.findById(anyInt())).thenReturn(Optional.of(new Showtime()));
-		when(movieGenreRepository.existsById(anyInt())).thenReturn(true);
 		when(movieGenreRepository.findById(anyInt())).thenReturn(Optional.of(new MovieGenre()));
 
 		Movie result = movieService.update(1, movieDTO);
-
 		assertNotNull(result);
-		verify(movieRepository).save(any(Movie.class));
-	}
 
-	@Test
-	void testCheckShowtimesWithNull() {
 		movieDTO.setShowtimes(null);
-
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			movieService.create(movieDTO);
-		});
-		assertEquals("Showtimes field not found", exception.getMessage());
-	}
-
-	@Test
-	void testCheckShowtimesWithEmpty() {
-		movieDTO.setShowtimes(new HashSet<>());
-
-		ForbidenMethodControllerException exception = assertThrows(ForbidenMethodControllerException.class, () -> {
-			movieService.create(movieDTO);
-		});
-		assertEquals("Showtimes data not found", exception.getMessage());
-	}
-
-	@Test
-	void testCheckShowtimesWithNonExistentShowtime() {
-		when(showtimeRepository.existsById(anyInt())).thenReturn(false);
-
-		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
-			movieService.create(movieDTO);
-		});
-		assertEquals("Showtime not found", exception.getMessage());
-	}
-
-	@Test
-	void testCheckGenresWithNull() {
-		when(showtimeRepository.existsById(anyInt())).thenReturn(true);
-		when(showtimeRepository.findById(anyInt())).thenReturn(Optional.of(new Showtime()));
 		movieDTO.setGenres(null);
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			movieService.create(movieDTO);
-		});
-		assertEquals("Genres field not found", exception.getMessage());
+		result = movieService.update(1, movieDTO);
+		assertNotNull(result);
+
+		verify(movieRepository, times(2)).save(any(Movie.class));
 	}
 
 	@Test
 	void testCheckGenresWithEmpty() {
-		when(showtimeRepository.existsById(anyInt())).thenReturn(true);
-		when(showtimeRepository.findById(anyInt())).thenReturn(Optional.of(new Showtime()));
+		when(movieRepository.save(any(Movie.class))).thenReturn(new Movie());
 		movieDTO.setGenres(Set.of());
 
 		ForbidenMethodControllerException exception = assertThrows(ForbidenMethodControllerException.class, () -> {
@@ -148,13 +111,12 @@ public class MovieServiceTest extends BaseUnitTest {
 
 	@Test
 	void testCheckGenresWithNonExistentGenre() {
-		when(showtimeRepository.existsById(anyInt())).thenReturn(true);
-		when(showtimeRepository.findById(anyInt())).thenReturn(Optional.of(new Showtime()));
+		when(movieRepository.save(any(Movie.class))).thenReturn(new Movie());
 
 		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
 			movieService.create(movieDTO);
 		});
-		assertEquals("Movie genre not found", exception.getMessage());
+		assertThat(exception.getMessage(), containsString("Not found genre with id: "));
 	}
 
 	@Test

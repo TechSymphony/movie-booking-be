@@ -95,15 +95,23 @@ public class Movie extends NamedEntity {
 	@JsonManagedReference
 	private Set<Showtime> showtimes;
 
-
+	public void addShowtime(Showtime showtime) {
+		if (this.showtimes == null) {
+			this.showtimes = new HashSet<>();
+		}
+		this.showtimes.add(showtime);
+		showtime.setMovie(this);
+	}
 	//	@NotEmpty(message = "Genre MUST not be empty")
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {
+		CascadeType.PERSIST
+	})
 	@JoinTable(
 		name = "movie_genre",
 		joinColumns = @JoinColumn(name = "movie_id", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "movie_genre_id", nullable = false)
 	)
-	private Set<MovieGenre> genres = new HashSet<>();
+	private Set<MovieGenre> genres;
 	//
 //	@OneToMany(
 //		mappedBy = "movie",
@@ -113,5 +121,27 @@ public class Movie extends NamedEntity {
 //	private Set<MovieImageEntity> images;
 //
 
+	public void addGenre(MovieGenre movieGenre) {
+		if (this.genres == null) {
+			this.genres = new HashSet<>();
+		}
+		this.genres.add(movieGenre);
+		if (movieGenre.getMovies() == null) {
+			movieGenre.setMovies(new HashSet<>());
+		}
+		movieGenre.getMovies().add(this);
+	}
 
+	public void removeGenre(Integer movieGenreId) {
+		MovieGenre movieGenre = this.genres
+			.stream()
+			.filter(g -> g.getId().equals(movieGenreId))
+			.findFirst()
+			.orElse(null);
+		if (movieGenre == null) {
+			return;
+		}
+		this.genres.remove(movieGenre);
+		movieGenre.getMovies().remove(this);
+	}
 }

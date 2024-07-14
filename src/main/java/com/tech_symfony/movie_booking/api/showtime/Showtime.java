@@ -7,6 +7,7 @@ import com.tech_symfony.movie_booking.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -23,7 +24,7 @@ import java.sql.Time;
 public class Showtime extends BaseEntity {
 
 	@Future(message = "The start date must be in the future")
-	@NotEmpty(message = "Start date must not be null")
+	// @NotEmpty(message = "Start date must not be null")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date")
 	private Date startDate;
@@ -39,8 +40,8 @@ public class Showtime extends BaseEntity {
 	@Column(name = "status", columnDefinition = "boolean default true")
 	private Boolean status;
 
-	@NotEmpty(message = "showtime id must not be empty")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@NotNull(message = "movie id must not be null")
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(
 		name = "movie_id",
 		nullable = false
@@ -49,8 +50,7 @@ public class Showtime extends BaseEntity {
 	@JsonBackReference
 	private Movie movie;
 
-
-	@NotEmpty(message = "showtime id must not be empty")
+	@NotNull(message = "room id must not be null")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(
 		name = "room_id",

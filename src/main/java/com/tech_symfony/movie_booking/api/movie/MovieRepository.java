@@ -21,7 +21,7 @@ public interface MovieRepository extends BaseAuthenticatedRepository<Movie, Inte
 //	@Query("SELECT m FROM Movie m WHERE (:slug is null or m.slug like %:slug% ) ")
 //	Page<Movie> findBySlugContaining(@Param("slug") String slug, Pageable pageable);
 
-	@PreAuthorize("hasAuthority( 'SAVE_MOVIE')")
+//	@PreAuthorize("hasAuthority( 'SAVE_MOVIE')")
 	@Override
 	Movie save(Movie movie);
 
