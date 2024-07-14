@@ -68,7 +68,7 @@ public class MovieIT extends BaseIntegrationTest {
 	@Test
 	@WithMockUser(authorities = {"SAVE_MOVIE"})
 	@Transactional
-	public void createMovie() throws Exception {
+	public void postMovie() throws Exception {
 		MovieDTO movieDTO = new MovieDTO();
 
 		movieDTO.setCode("mv-0002");
@@ -104,7 +104,7 @@ public class MovieIT extends BaseIntegrationTest {
 	@Test
 	@WithMockUser(authorities = {"SAVE_MOVIE"})
 	@Transactional
-	public void updateMovie() throws Exception {
+	public void putMovie() throws Exception {
 		MovieDTO movieDTO = new MovieDTO();
 
 		movieDTO.setCode("mv-0002");
