@@ -71,8 +71,8 @@ public class UserService {
 		user.setFullName(registerRequest.getFullName());
 		user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 		user.setVerify(false);
-		userRepository.save(user);
-		String token = tokenService.generateToken(user.getId().toString());
+		User savedUser = userRepository.save(user);
+		String token = tokenService.generateToken(savedUser.getId().toString());
 		emailService.sendEmail(
 			registerRequest.getEmail(),
 			"Verify url",
