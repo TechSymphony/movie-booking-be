@@ -33,6 +33,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodCall;
@@ -45,24 +46,51 @@ public class MovieIT extends BaseIntegrationTest {
 	private ObjectMapper objectMapper;
 
 	@Test
+	@Transactional
 	public void getMovies() throws Exception {
 		this.mockMvc.perform(get(fromMethodCall(on(MovieController.class).getAllMovies()).build().toUriString()))
 			.andDo(result -> {
 				System.out.println("Response JSON: " + result.getResponse().getContentAsString());
 			})
 			.andExpect(status().isOk())
-			.andDo(document("movies-getAll"))
+			.andDo(document("movies-getAll",
+				responseFields(
+					subsectionWithPath("_embedded").description("Embedded resources")
+				)))
 			.andReturn();
 	}
 
 	@Test
+	@Transactional
 	public void getMovieById() throws Exception {
 			this.mockMvc.perform(get(fromMethodCall(on(MovieController.class).getMovieById(1)).build().toUriString()))
 			.andDo(result -> {
 				System.out.println("Response JSON: " + result.getResponse().getContentAsString());
 			})
 			.andExpect(status().isOk())
-			.andDo(document("movies-get"));
+			.andDo(document("movies-get",
+				responseFields(
+					fieldWithPath("code").description("The code of the movie"),
+					fieldWithPath("name").description("The name of the movie"),
+					fieldWithPath("subName").description("The sub name of the movie"),
+					fieldWithPath("director").description("The director of the movie"),
+					fieldWithPath("caster").description("The caster of the movie"),
+					fieldWithPath("releaseDate").description("The release date of the movie"),
+					fieldWithPath("endDate").description("The end date of the movie"),
+					fieldWithPath("runningTime").description("The running time of the movie"),
+					fieldWithPath("language").description("The language of the movie"),
+					fieldWithPath("numberOfRatings").description("The number of ratings of the movie"),
+					fieldWithPath("sumOfRatings").description("The sum of ratings of the movie"),
+					fieldWithPath("description").description("The description of the movie"),
+					fieldWithPath("poster").description("The poster of the movie"),
+					fieldWithPath("trailer").description("The trailer of the movie"),
+					fieldWithPath("rated").description("The rated of the movie"),
+					fieldWithPath("slug").description("The slug of the movie"),
+					fieldWithPath("horizontalPoster").description("The horizontal poster of the movie"),
+					subsectionWithPath("showtimes").description("The showtimes of the movie"),
+					subsectionWithPath("genres").description("The genres of the movie"),
+					subsectionWithPath("_links").description("Links to other resources")
+				)));
 	}
 
 	@Test
@@ -84,6 +112,7 @@ public class MovieIT extends BaseIntegrationTest {
 		movieDTO.setSumOfRatings(1000);
 		movieDTO.setDescription("The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.");
 		movieDTO.setPoster("https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg");
+		movieDTO.setHorizontalPoster("https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg");
 		movieDTO.setTrailer("https://www.youtube.com/watch?v=sY1S34973zA");
 		movieDTO.setRated(5);
 		movieDTO.setSlug("the-godfather");
@@ -98,7 +127,29 @@ public class MovieIT extends BaseIntegrationTest {
 				System.out.println("Response JSON: " + result.getResponse().getContentAsString());
 			})
 			.andExpect(status().isCreated())
-			.andDo(document("movies-create"));
+			.andDo(document("movies-create",
+				requestFields(
+					fieldWithPath("code").description("The code of the movie"),
+					fieldWithPath("name").description("The name of the movie"),
+					fieldWithPath("subName").description("The sub name of the movie"),
+					fieldWithPath("director").description("The director of the movie"),
+					fieldWithPath("caster").description("The caster of the movie"),
+					fieldWithPath("releaseDate").description("The release date of the movie"),
+					fieldWithPath("endDate").description("The end date of the movie"),
+					fieldWithPath("runningTime").description("The running time of the movie"),
+					fieldWithPath("language").description("The language of the movie"),
+					fieldWithPath("numberOfRatings").description("The number of ratings of the movie"),
+					fieldWithPath("sumOfRatings").description("The sum of ratings of the movie"),
+					fieldWithPath("description").description("The description of the movie"),
+					fieldWithPath("poster").description("The poster of the movie"),
+					fieldWithPath("horizontalPoster").description("The horizontal poster of the movie"),
+					fieldWithPath("trailer").description("The trailer of the movie"),
+					fieldWithPath("rated").description("The rated of the movie"),
+					fieldWithPath("slug").description("The slug of the movie"),
+					subsectionWithPath("genres").description("The genres of the movie"),
+					fieldWithPath("id").ignored(),
+					fieldWithPath("showtimes").ignored()
+				)));
 	}
 
 	@Test
@@ -134,7 +185,29 @@ public class MovieIT extends BaseIntegrationTest {
 				System.out.println("Response JSON: " + result.getResponse().getContentAsString());
 			})
 			.andExpect(status().isOk())
-			.andDo(document("movies-create"));
+			.andDo(document("movies-update",
+				requestFields(
+					fieldWithPath("code").description("The code of the movie"),
+					fieldWithPath("name").description("The name of the movie"),
+					fieldWithPath("subName").description("The sub name of the movie"),
+					fieldWithPath("director").description("The director of the movie"),
+					fieldWithPath("caster").description("The caster of the movie"),
+					fieldWithPath("releaseDate").description("The release date of the movie"),
+					fieldWithPath("endDate").description("The end date of the movie"),
+					fieldWithPath("runningTime").description("The running time of the movie"),
+					fieldWithPath("language").description("The language of the movie"),
+					fieldWithPath("numberOfRatings").description("The number of ratings of the movie"),
+					fieldWithPath("sumOfRatings").description("The sum of ratings of the movie"),
+					fieldWithPath("description").description("The description of the movie"),
+					fieldWithPath("poster").description("The poster of the movie"),
+					fieldWithPath("horizontalPoster").description("The horizontal poster of the movie"),
+					fieldWithPath("trailer").description("The trailer of the movie"),
+					fieldWithPath("rated").description("The rated of the movie"),
+					fieldWithPath("slug").description("The slug of the movie"),
+					subsectionWithPath("genres").description("The genres of the movie"),
+					fieldWithPath("id").ignored(),
+					fieldWithPath("showtimes").ignored()
+				)));
 	}
 
 	@Test

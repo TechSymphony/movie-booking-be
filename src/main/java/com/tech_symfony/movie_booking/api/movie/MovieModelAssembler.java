@@ -7,17 +7,18 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class MovieModelAssembler implements RepresentationModelAssembler<Movie, EntityModel<MovieDTO>> {
+public class MovieModelAssembler implements RepresentationModelAssembler<Movie, EntityModel<Movie>> {
 	@Override
-	public EntityModel<MovieDTO> toModel(Movie entity) {
+	public EntityModel<Movie> toModel(Movie entity) {
 
-		MovieDTO movieDto = MovieMapper.INSTANCE.movieToMovieDto(entity);
 		return EntityModel.of(
-			movieDto,
+			entity,
 			linkTo(methodOn(MovieController.class).getMovieById(entity.getId())).withSelfRel(),
 			linkTo(methodOn(MovieController.class).getAllMovies()).withRel("movies")
 		);

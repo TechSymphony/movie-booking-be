@@ -39,6 +39,8 @@ public class MovieDTO extends NamedEntity {
 
 	private String poster;
 
+	private String horizontalPoster;
+
 	private String trailer;
 
 	private Integer rated;

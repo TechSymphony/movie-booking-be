@@ -29,7 +29,7 @@ public class MovieController {
 		description = "API xem danh sách bộ phim"
 	)
 	@GetMapping(value = "/movies")
-	public CollectionModel<EntityModel<MovieDTO>> getAllMovies() {
+	public CollectionModel<EntityModel<Movie>> getAllMovies() {
 		return movieModelAssembler.toCollectionModel(movieService.findAll());
 	}
 
@@ -39,7 +39,7 @@ public class MovieController {
 	)
 	@GetMapping(value = "/movies/{movieId}")
 	@ResponseStatus(HttpStatus.OK)
-	public EntityModel<MovieDTO> getMovieById(
+	public EntityModel<Movie> getMovieById(
 		@PathVariable Integer movieId
 	) {
 		return movieModelAssembler.toModel(movieService.findById(movieId));
@@ -51,7 +51,7 @@ public class MovieController {
 	)
 	@PostMapping(value = "/movies")
 	@ResponseStatus(HttpStatus.CREATED)
-	public EntityModel<MovieDTO> create(
+	public EntityModel<Movie> create(
 		@Valid @RequestBody MovieDTO dataRaw
 	) {
 		return movieModelAssembler.toModel(movieService.create(dataRaw));
@@ -62,7 +62,7 @@ public class MovieController {
 		description = "API cập nhật một bộ phim"
 	)
 	@PutMapping(value = "/movies/{movieId}")
-	public EntityModel<MovieDTO> update(
+	public EntityModel<Movie> update(
 		@PathVariable Integer movieId,
 		@Valid @RequestBody MovieDTO dataRaw
 	) {
