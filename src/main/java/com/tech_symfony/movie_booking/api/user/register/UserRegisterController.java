@@ -14,6 +14,8 @@ public class UserRegisterController {
 
 	private final UserService userService;
 
+	private final TokenService tokenService;
+
 	@PostMapping("/auth/register")
 	@ResponseBody
 	public String register(@RequestBody @Valid RegisterRequest request) {
