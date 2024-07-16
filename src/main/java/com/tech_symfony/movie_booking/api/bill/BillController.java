@@ -10,12 +10,11 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.UUID;
+
+import static com.tech_symfony.movie_booking.api.user.UserUtils.getCurrentUsername;
 
 @RequiredArgsConstructor
 @RepositoryRestController
@@ -26,7 +25,7 @@ public class BillController {
 	private final BillService billService;
 	private final RepositoryEntityLinks entityLinks;
 	private final BillModelAssembler billModelAssembler;
-	private Principal principal = SecurityContextHolder.getContext().getAuthentication();
+
 
 	@Operation(
 		summary = "Thêm hóa đơn kèm vé trước khi thanh toán",
@@ -39,7 +38,8 @@ public class BillController {
 	public ResponseEntity<EntityModel<BillInfoProjection>> create(
 		@Valid @RequestBody BillRequestDTO dataRaw
 	) {
-		Bill newBill = billService.create(dataRaw, principal.getName());
+
+		Bill newBill = billService.create(dataRaw, getCurrentUsername());
 		Link link = entityLinks.linkToItemResource(Bill.class, newBill.getId());
 		return ResponseEntity
 			.created(link.toUri())
@@ -58,7 +58,7 @@ public class BillController {
 		@PathVariable UUID id
 	) {
 
-		return billModelAssembler.toModel(billService.pay(id, principal.getName()));
+		return billModelAssembler.toModel(billService.pay(id, getCurrentUsername()));
 	}
 
 	@Operation(

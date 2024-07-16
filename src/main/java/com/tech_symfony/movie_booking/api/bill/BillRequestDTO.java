@@ -18,7 +18,6 @@ public class BillRequestDTO {
 //	private int changedPoint;
 
 	@NotNull(message = "Showtime id MUST not be null")
-	@Min(1)
 	private int showtimeId;
 
 	@NotEmpty(message = "seat MUST not be empty")

@@ -1,110 +1,85 @@
 package com.tech_symfony.movie_booking.api.bill;
 
-import com.tech_symfony.movie_booking.MovieBookingApplication;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tech_symfony.movie_booking.api.bill.vnpay.VnpayService;
 import com.tech_symfony.movie_booking.model.BaseIntegrationTest;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(classes = MovieBookingApplication.class)
+import java.util.List;
+
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodCall;
+import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
+
+@Sql({"/showtime.sql", "/bill.sql"})
+@Transactional
 public class BillIT extends BaseIntegrationTest {
 
+	@Autowired
+	private ObjectMapper objectMapper;
+	@MockBean
+	private VnpayService vnpayService;
 
-//	@Autowired
-//	private ObjectMapper objectMapper;
-//	@Autowired
-//	private VnpayService vnpayService;
-//
-//	@InjectMocks
-//	private DefaultBillService billService;
-//	private static BillRequestDTO billRequestDTO;
-//	private static Showtime showtime;
-//	private static List<Seat> seatList;
-//	private static User user;
-//
-//	private static UUID existingBillId;
-//	private static Bill holdingBill;
-//	private static Bill completedBill;
-//
-//	@BeforeAll
-//	public static void setUp() {
-//
-//		user = new User();
-//		user.setEmail("user@example.com");
-//		Room room = new Room();
-//		room.setId(1);
-//		showtime = new Showtime();
-//		showtime.setId(1);
-//		showtime.setRoom(room);
-//
-//		SeatType seatType = new SeatType();
-//		seatType.setPrice(100.0);
-//		seatType.setId(1);
-//		seatList = new ArrayList<>();
-//		Seat seat1 = new Seat();
-//		seat1.setId(2);
-//		seat1.setType(seatType);
-//		seat1.setRoom(room);
-//		Seat seat2 = new Seat();
-//		seat2.setId(3);
-//		seat2.setType(seatType);
-//		seat1.setRoom(room);
-//		seatList.add(seat1);
-//		seatList.add(seat2);
-//
-//
-//		billRequestDTO = new BillRequestDTO();
-//		billRequestDTO.setShowtimeId(showtime.getId());
-//		billRequestDTO.setSeatId(Arrays.asList(2, 3));
-//
-//		existingBillId = UUID.randomUUID();
-//		holdingBill = new Bill();
-//		holdingBill.setId(existingBillId);
-//		holdingBill.setStatus(BillStatus.HOLDING);
-//
-//		completedBill = new Bill();
-//		completedBill.setId(existingBillId);
-//		completedBill.setStatus(BillStatus.COMPLETED);
-//
-//	}
-//	@Test
-//	@WithMockUser(username = "testuser")
-//	void createBillSuccess() throws Exception {
-//		BillRequestDTO billRequestDTO = new BillRequestDTO();
-//		// set fields of billRequestDTO as needed
-//
-//		this.mockMvc.perform(post("/bills")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content(objectMapper.writeValueAsString(billRequestDTO)))
-//			.andExpect(status().isCreated())
-//			.andExpect(content().contentTypeCompatibleWith(MediaTypes.HAL_JSON))
-//			.andExpect(jsonPath("$.id").exists())
-//			.andExpect(jsonPath("$.total").exists())
-//			.andExpect(jsonPath("$.status").value("Unpaid"))
-//			.andExpect(jsonPath("$.paymentAt").exists())
-//			.andExpect(jsonPath("$.transactionId").exists())
-//			.andExpect(jsonPath("$._links.self.href", containsString("/bills/")))
-//			.andExpect(jsonPath("$._links.bill.href", containsString("/bills")))
-//			.andDo(document("create-bill",
-//				requestFields(
-//					fieldWithPath("field1").description("Description of field1").type(JsonFieldType.STRING),
-//					fieldWithPath("field2").description("Description of field2").type(JsonFieldType.STRING)
-//					// Add more fields as necessary
-//				),
-//				responseFields(
-//					fieldWithPath("id").description("The bill's ID").type(JsonFieldType.STRING),
-//					fieldWithPath("total").description("The total amount").type(JsonFieldType.NUMBER),
-//					fieldWithPath("status").description("The bill's status").type(JsonFieldType.STRING),
-//					fieldWithPath("paymentAt").description("The payment timestamp").type(JsonFieldType.STRING),
-//					fieldWithPath("transactionId").description("The transaction ID").type(JsonFieldType.STRING),
-//					subsectionWithPath("_links").description("Links to other resources")
-//				),
-//				links(
-//					linkWithRel("self").description("Link to this resource"),
-//					linkWithRel("bill").description("Link to the bill collection"),
-//					linkWithRel("pay").optional().description("Link to pay the bill if in progress")
-//				)
-//			));
-//	}
-//
+
+	@Test
+	@WithMockUser(username = "admin@gmail.com", password = "test")
+	void createBillSuccess() throws Exception {
+
+		BillRequestDTO billRequestDTO = new BillRequestDTO();
+		billRequestDTO.setSeatId(List.of(1, 2));
+		billRequestDTO.setShowtimeId(1);
+		String url = fromMethodCall(on(BillController.class).create(billRequestDTO)).build().toUriString();
+
+		when(vnpayService.doPost(any(Bill.class))).thenReturn("vnpayUrl");
+		this.mockMvc.perform(post(url)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(billRequestDTO)))
+			.andExpect(status().isCreated())
+			.andExpect(header().string("Location", notNullValue()))
+			.andDo(document("create-bill",
+				requestFields(
+					fieldWithPath("showtimeId").description("The ID of the showtime"),
+					fieldWithPath("seatId").description("The list of seat IDs")
+				),
+				responseFields(
+					fieldWithPath("id").description("The bill's ID"),
+					fieldWithPath("total").description("The total amount"),
+					fieldWithPath("status").description("The bill's status"),
+					fieldWithPath("paymentAt").description("The payment timestamp"),
+					fieldWithPath("transactionId").description("The transaction ID"),
+					subsectionWithPath("_links").description("Links to other resources")
+				),
+				links(
+					linkWithRel("self").description("Link to this resource").optional(),
+					linkWithRel("bill").description("Link to this resource"),
+					linkWithRel("bills").description("Link to the bill collection"),
+					linkWithRel("pay").optional().description("Link to pay the bill if in progress")
+				),
+				responseHeaders(
+					headerWithName("Location").description("The location of the created showtime")
+				)
+			));
+
+	}
+
+
 //	@Test
 //	@WithMockUser(username = "testuser")
 //	void payBillSuccess() throws Exception {
