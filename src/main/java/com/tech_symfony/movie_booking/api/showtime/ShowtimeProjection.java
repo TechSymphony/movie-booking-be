@@ -1,5 +1,8 @@
 package com.tech_symfony.movie_booking.api.showtime;
 
+import com.tech_symfony.movie_booking.api.room.Room;
+import com.tech_symfony.movie_booking.model.NamedProjection;
+
 import java.sql.Date;
 import java.sql.Time;
 
@@ -13,8 +16,8 @@ public interface ShowtimeProjection {
 
 	Boolean getStatus();
 
-	String getMovieTitle();
+	NamedProjection getMovie();
 
-	String getRoomName();
+	NamedProjection getRoom();
 
 }

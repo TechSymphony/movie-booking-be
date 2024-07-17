@@ -3,6 +3,7 @@ package com.tech_symfony.movie_booking.api.bill;
 import com.tech_symfony.movie_booking.api.user.UserAuthUtilService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @RepositoryRestController
 @ResponseBody
 @SecurityRequirement(name = "security_auth")
+@Tag(name = "bill-entity-controller")
 public class BillController {
 
 	private final BillService billService;

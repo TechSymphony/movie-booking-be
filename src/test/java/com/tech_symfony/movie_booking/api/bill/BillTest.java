@@ -93,7 +93,6 @@ public class BillTest extends BaseUnitTest {
 
 		assertNotNull(bill.getTickets());
 		assertTrue(bill.getTickets().contains(ticket));
-		assertEquals(bill, ticket.getBill());
 	}
 
 	@Test

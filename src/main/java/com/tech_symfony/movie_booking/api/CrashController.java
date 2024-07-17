@@ -1,6 +1,11 @@
 
 package com.tech_symfony.movie_booking.api;
 
+import com.tech_symfony.movie_booking.system.exception.ErrorInfo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 class CrashController {
+
+	@Operation(
+		summary = "Kiểm thử khả năng xử lý lỗi của ứng dụng"
+	)
 
 	@GetMapping("/oups")
 	public ResponseEntity<String> triggerException() {

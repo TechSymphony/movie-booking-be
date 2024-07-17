@@ -15,6 +15,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
@@ -29,32 +31,21 @@ import java.util.List;
 @AllArgsConstructor
 public class Ticket extends BaseUUIDEntity {
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinColumn(
-		name = "bill_id",
-		nullable = false
-	)
-	@NotNull(message = "Bill  MUST not be null")
-	@JsonBackReference
-	private Bill bill;
 
-
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(
 		name = "showtime_id",
 		nullable = false
 	)
 	@NotNull(message = "Showtime  MUST not be null")
-	@JsonManagedReference
 	private Showtime showtime;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(
 		name = "seat_id",
 		nullable = false
 	)
 	@NotNull(message = "seat  MUST not be null")
-	@JsonManagedReference
 	private Seat seat;
 
 
