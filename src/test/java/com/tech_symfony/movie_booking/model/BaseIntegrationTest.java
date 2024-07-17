@@ -1,6 +1,7 @@
 package com.tech_symfony.movie_booking.model;
 
 import com.tech_symfony.movie_booking.system.config.ESTestConfiguration;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @AutoConfigureRestDocs
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class, MockitoExtension.class})
@@ -52,9 +54,9 @@ public abstract class BaseIntegrationTest {
 				mockMvcRestDocumentationConfigurer.and().snippets()
 					.withDefaults(CliDocumentation.curlRequest(), HttpDocumentation.httpRequest(), HttpDocumentation.httpResponse())
 			)
+			.alwaysDo(print())
 			.alwaysDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
 			.build();
 	}
-
 
 }

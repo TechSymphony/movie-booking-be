@@ -72,7 +72,7 @@ public class SecurityConfig {
 			// Authorize requests
 			.authorizeHttpRequests((authorize) -> authorize
 				//Getting public api
-				.requestMatchers(HttpMethod.GET, "movies/**", "cinemas", "seats", "seat-types").permitAll()
+				.requestMatchers(HttpMethod.GET, "movies/**", "cinemas", "seats", "showtimes", "rooms", "seat-types").permitAll()
 
 				//
 				.requestMatchers("/", "auth/**").permitAll()

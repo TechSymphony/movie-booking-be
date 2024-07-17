@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.bill;
 
+import com.tech_symfony.movie_booking.api.user.UserAuthUtilService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-import static com.tech_symfony.movie_booking.api.user.UserUtils.getCurrentUsername;
 
 @RequiredArgsConstructor
 @RepositoryRestController
@@ -25,7 +25,7 @@ public class BillController {
 	private final BillService billService;
 	private final RepositoryEntityLinks entityLinks;
 	private final BillModelAssembler billModelAssembler;
-
+	private final UserAuthUtilService userAuthUtilService;
 
 	@Operation(
 		summary = "Thêm hóa đơn kèm vé trước khi thanh toán",
@@ -39,7 +39,7 @@ public class BillController {
 		@Valid @RequestBody BillRequestDTO dataRaw
 	) {
 
-		Bill newBill = billService.create(dataRaw, getCurrentUsername());
+		Bill newBill = billService.create(dataRaw, userAuthUtilService.getCurrentUsername());
 		Link link = entityLinks.linkToItemResource(Bill.class, newBill.getId());
 		return ResponseEntity
 			.created(link.toUri())
@@ -58,7 +58,7 @@ public class BillController {
 		@PathVariable UUID id
 	) {
 
-		return billModelAssembler.toModel(billService.pay(id, getCurrentUsername()));
+		return billModelAssembler.toModel(billService.pay(id, userAuthUtilService.getCurrentUsername()));
 	}
 
 	@Operation(

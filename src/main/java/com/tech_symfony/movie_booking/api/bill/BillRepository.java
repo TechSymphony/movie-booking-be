@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface BillRepository extends BaseAuthenticatedRepository<Bill, UUID> {
 
 	@Override
-	@PostAuthorize("hasAuthority( 'READ_BILL') or @UserUtils.getCurrentUser().getId() == returnObject.user.id")
+	@PostAuthorize("@userAuthUtilService.isOwner(returnObject.get().getUser().getId()) or hasAuthority('READ_BILL')")
 	Optional<Bill> findById(UUID uuid);
 
 	@Override

@@ -15,9 +15,9 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 public class CrashControllerIT extends BaseIntegrationTest {
 	@Test
-	void testTriggerExceptionJson() {
+	void testTriggerExceptionJson() throws Exception {
 		String uri = fromMethodCall(on(CrashController.class).triggerException()).build().toUriString();
-		assertThrows(RuntimeException.class, () -> this.mockMvc.perform(get(uri))
+		this.mockMvc.perform(get(uri))
 			.andExpect(status().isInternalServerError())
 			.andDo(document("error-example",
 				resourceDetails()
@@ -25,7 +25,7 @@ public class CrashControllerIT extends BaseIntegrationTest {
 				responseFields(subsectionWithPath("errors").description("The error message"),
 					subsectionWithPath("className").description("The path that caused the error"),
 					subsectionWithPath("timestamp").description("The timestamp of the error"))
-			)));
+			));
 	}
 
 

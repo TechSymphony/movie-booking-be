@@ -11,5 +11,9 @@ class MovieBookingApplicationIT extends BaseIntegrationTest {
 
 	}
 
+	@Test
+	public void applicationContextTest() {
+		MovieBookingApplication.main(new String[]{});
+	}
 
 }

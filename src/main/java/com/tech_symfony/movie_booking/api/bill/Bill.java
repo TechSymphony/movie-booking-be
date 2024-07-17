@@ -38,7 +38,6 @@ public class Bill extends BaseUUIDEntity {
 	private Double total;
 
 	@Column(name = "transaction_id")
-//	@NotEmpty(message = "Transaction id must not be empty")
 	private String transactionId;
 
 	@Column(name = "cancel_reason")
@@ -46,6 +45,7 @@ public class Bill extends BaseUUIDEntity {
 	private String cancelReason = "";
 
 	@Column(name = "cancel_date")
+	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime cancelDate;
 
 
@@ -65,7 +65,7 @@ public class Bill extends BaseUUIDEntity {
 	private User user;
 
 
-	@NotNull(message = "Gender must not be null")
+	@NotNull(message = "Status must not be null")
 	@Enumerated(EnumType.ORDINAL)
 	private BillStatus status = BillStatus.IN_PROGRESS;
 

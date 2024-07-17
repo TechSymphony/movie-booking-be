@@ -18,7 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 class BillModelAssembler implements RepresentationModelAssembler<Bill, EntityModel<BillInfoProjection>> {
 
 	private final RepositoryEntityLinks entityLinks;
-	private ProjectionFactory projectionFactory = new SpelAwareProxyProjectionFactory();
+	private final ProjectionFactory projectionFactory;
 
 	@Override
 	public EntityModel<BillInfoProjection> toModel(Bill bill) {

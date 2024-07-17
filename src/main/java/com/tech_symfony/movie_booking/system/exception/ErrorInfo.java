@@ -1,18 +1,23 @@
 package com.tech_symfony.movie_booking.system.exception;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Getter
 public class ErrorInfo {
-	public final String className;
-	public final String timestamp;
+	private final String className;
+	private final String timestamp;
 	private List<Object> errors;
 
 	public ErrorInfo(Exception ex) {
 		this.className = ex.getClass().getName();
 		this.errors = new ArrayList<>();
-		this.errors.add(new HashMap<String, String>().put("exMessage", ex.getLocalizedMessage()));
+		HashMap<String, String> error = new HashMap<>();
+		error.put("exMessage", ex.getLocalizedMessage());
+		this.errors.add(error);
 		this.timestamp = String.valueOf(System.currentTimeMillis());
 	}
 
