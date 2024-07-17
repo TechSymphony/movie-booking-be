@@ -8,15 +8,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @RepositoryRestController
 @ResponseBody
+@Controller
 public class MovieElasticController {
 
 	private final MovieElasticService movieElasticService;
@@ -28,6 +28,7 @@ public class MovieElasticController {
 	)
 	@GetMapping("/movies/search")
 	@ResponseBody
+	@ExceptionHandler(Exception.class)
 	public CollectionModel<EntityModel<MovieSearch>> search(Pageable pageable, @RequestParam Optional<String> name) {
 
 		Page<MovieSearch> movies = movieElasticService.search(PageRequest.of(

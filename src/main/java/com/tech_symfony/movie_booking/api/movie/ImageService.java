@@ -1,11 +1,17 @@
-//package com.tech_symfony.movie_booking.api.movie;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.stereotype.Service;
-//
-//public interface ImageService {
-//}
+package com.tech_symfony.movie_booking.api.movie;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+public interface ImageService {
+}
+
+class TelegramService implements ImageService {
+
+	@Value("${TELEGRAM_TOKEN}")
+	private String botToken;
+}
 //
 //@RequiredArgsConstructor
 //@Service
