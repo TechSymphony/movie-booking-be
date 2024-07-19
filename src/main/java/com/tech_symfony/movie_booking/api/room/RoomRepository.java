@@ -4,7 +4,7 @@ import com.tech_symfony.movie_booking.model.BaseAuthenticatedRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-@RepositoryRestResource
+@RepositoryRestResource(excerptProjection = RoomInfoProjection.class)
 public interface RoomRepository extends BaseAuthenticatedRepository<Room, Integer> {
 
 	@PreAuthorize("hasAuthority( 'SAVE_ROOM')")

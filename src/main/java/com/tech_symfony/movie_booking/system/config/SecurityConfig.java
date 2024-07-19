@@ -72,7 +72,7 @@ public class SecurityConfig {
 			// Authorize requests
 			.authorizeHttpRequests((authorize) -> authorize
 				//Getting public api
-				.requestMatchers(HttpMethod.GET, "movies/**", "cinemas", "seats", "seat-types").permitAll()
+				.requestMatchers(HttpMethod.GET, "movies/**", "cinemas", "seats", "showtimes", "rooms", "seat-types").permitAll()
 
 				//
 				.requestMatchers("/", "auth/**").permitAll()
@@ -80,6 +80,7 @@ public class SecurityConfig {
 				.requestMatchers("/users").hasAuthority("READ_USER")
 				//swagger docs
 				.requestMatchers("/swagger-ui/**", "/v3/**", "/swagger-ui.html", "/openapi-3.0.yml").permitAll()
+				.requestMatchers("/tickets").denyAll()
 				.anyRequest()
 				.authenticated()
 

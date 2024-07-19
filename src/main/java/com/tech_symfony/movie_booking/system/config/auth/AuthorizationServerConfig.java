@@ -46,7 +46,7 @@ public class AuthorizationServerConfig {
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {
 		if (StringUtils.isEmpty(FRONTEND_URL)) {
-			FRONTEND_URL = BASE_URL + "/brower-callback";
+			FRONTEND_URL = "http://localhost:3000" + "/brower-callback";
 		}
 		RegisteredClient publicClient = RegisteredClient.withId(UUID.randomUUID().toString())
 			.clientId("public-client")

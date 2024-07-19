@@ -1,6 +1,5 @@
 package com.tech_symfony.movie_booking.api.bill;
 
-import com.tech_symfony.movie_booking.api.bill.dto.BillRequestDTO;
 import com.tech_symfony.movie_booking.api.bill.vnpay.VnpayService;
 import com.tech_symfony.movie_booking.api.seat.Seat;
 import com.tech_symfony.movie_booking.api.seat.SeatRepository;
@@ -29,7 +28,7 @@ public interface BillService {
 
 	Bill create(BillRequestDTO dataRaw, String username);
 
-	Bill pay(UUID billID);
+	Bill pay(UUID billID, String username);
 
 	Bill updateStatus(UUID billId);
 
@@ -56,13 +55,13 @@ class DefaultBillService implements BillService {
 	private final VnpayService vnpayService;
 
 
-	private void checkSeat(Showtime showtime, List<Seat> seatList) {
+	private Boolean checkSeat(Showtime showtime, List<Seat> seatList) {
 
 		Set<Ticket> t = ticketRepository.findByShowtimeAndSeatIn(showtime, seatList);
 		if (t.size() > 0) {
 			throw new ForbidenMethodControllerException("Seat already reserved");
 		}
-
+		return true;
 	}
 
 	private Double getPriceOfSeat(Seat seat) {
@@ -101,18 +100,17 @@ class DefaultBillService implements BillService {
 		;
 		Timer timer = new Timer();
 
-//		bill.setId(UUID.fromString("e772c5cc-982d-45a2-a3d8-0e0a7e735fdf"));
-//		return bill;
+
 		Bill savedBill = billRepository.save(bill);
 		savedBill.setVnpayUrl(vnpayService.doPost(savedBill));
 		timer.schedule(new DeleteBillTask(billRepository, savedBill.getId()), payExpiration);
 		return savedBill;
 	}
 
+
 	@Override
-	public Bill pay(UUID billID) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userRepository.findByEmail(auth.getName())
+	public Bill pay(UUID billID, String username) {
+		User user = userRepository.findByEmail(username)
 			.orElseThrow(() -> new UsernameNotFoundException("Conflict"));
 		Bill bill = billRepository.findByIdAndUser(billID, user)
 			.orElseThrow(() -> new ResourceNotFoundException("Bill is not exits"));
@@ -126,11 +124,14 @@ class DefaultBillService implements BillService {
 
 	}
 
-	@PreAuthorize("hasAuthority( 'SAVE_BILL')")
+	@PreAuthorize("hasAuthority('SAVE_BILL')")
 	public Bill updateStatus(UUID billId) {
 
 		Bill bill = billRepository.findById(billId)
 			.orElseThrow(() -> new ResourceNotFoundException("Bill not found"));
+		if (bill.getStatus() != BillStatus.HOLDING) {
+			throw new ForbidenMethodControllerException("Bill is not holding");
+		}
 		bill.setStatus(BillStatus.COMPLETED);
 		return billRepository.save(bill);
 	}

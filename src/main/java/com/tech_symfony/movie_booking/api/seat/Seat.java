@@ -50,15 +50,6 @@ public class Seat extends BaseEntity {
 
 	private SeatType type;
 
-	@OneToMany(
-		mappedBy = "seat",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.PERSIST
-	)
-	@JsonBackReference
-
-	private Set<Ticket> tickets;
-
 
 	@Column(name = "row_name")
 	@NotBlank(message = "seat room row must not be blank")

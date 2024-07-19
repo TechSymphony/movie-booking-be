@@ -16,8 +16,8 @@ public class MovieSearchModelAssembler implements RepresentationModelAssembler<M
 
 	@Override
 	public EntityModel<MovieSearch> toModel(MovieSearch movieSearch) {
-		Link linkResource = entityLinks.linkToItemResource(Movie.class, movieSearch.getId());
-		Link linkCollectionResource = entityLinks.linkToCollectionResource(Movie.class);
+		Link linkResource = entityLinks.linkToItemResource(MovieSearch.class, movieSearch.getId());
+		Link linkCollectionResource = entityLinks.linkToCollectionResource(MovieSearch.class);
 
 		return EntityModel.of(
 			movieSearch,

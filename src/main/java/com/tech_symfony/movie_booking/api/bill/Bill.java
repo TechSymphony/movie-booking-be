@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.bill;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tech_symfony.movie_booking.api.ticket.Ticket;
 import com.tech_symfony.movie_booking.api.user.User;
 import com.tech_symfony.movie_booking.model.BaseUUIDEntity;
@@ -38,7 +39,6 @@ public class Bill extends BaseUUIDEntity {
 	private Double total;
 
 	@Column(name = "transaction_id")
-//	@NotEmpty(message = "Transaction id must not be empty")
 	private String transactionId;
 
 	@Column(name = "cancel_reason")
@@ -46,26 +46,27 @@ public class Bill extends BaseUUIDEntity {
 	private String cancelReason = "";
 
 	@Column(name = "cancel_date")
+	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime cancelDate;
 
-
+	//WARN:  a collection doesn't contain tickets so avoiding N+1 problem
 	@OneToMany(
-		mappedBy = "bill",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL
+		cascade = CascadeType.PERSIST
 	)
+	@JoinColumn(name = "bill_id")
 	private Set<Ticket> tickets;
 
 	@ManyToOne
 	@JoinColumn(
 		name = "user_id",
-		nullable = false
+		nullable = false,
+		updatable = false
 	)
 	@NotNull(message = "User must not be null")
 	private User user;
 
 
-	@NotNull(message = "Gender must not be null")
+	@NotNull(message = "Status must not be null")
 	@Enumerated(EnumType.ORDINAL)
 	private BillStatus status = BillStatus.IN_PROGRESS;
 
@@ -74,7 +75,6 @@ public class Bill extends BaseUUIDEntity {
 	) {
 		if (this.tickets == null) this.tickets = new HashSet<>();
 		this.tickets.add(ticket);
-		ticket.setBill(this);
 	}
 
 	@Transient

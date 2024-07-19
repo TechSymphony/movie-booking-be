@@ -35,7 +35,6 @@ public class Room extends NamedEntity {
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL
 	)
-	@JsonManagedReference
 	private Set<Showtime> showtimes;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

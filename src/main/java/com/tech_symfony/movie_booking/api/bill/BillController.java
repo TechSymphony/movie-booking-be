@@ -1,8 +1,9 @@
 package com.tech_symfony.movie_booking.api.bill;
 
-import com.tech_symfony.movie_booking.api.bill.dto.BillRequestDTO;
+import com.tech_symfony.movie_booking.api.user.UserAuthUtilService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -11,21 +12,22 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.UUID;
+
 
 @RequiredArgsConstructor
 @RepositoryRestController
 @ResponseBody
 @SecurityRequirement(name = "security_auth")
+@Tag(name = "bill-entity-controller")
 public class BillController {
 
 	private final BillService billService;
 	private final RepositoryEntityLinks entityLinks;
 	private final BillModelAssembler billModelAssembler;
+	private final UserAuthUtilService userAuthUtilService;
 
 	@Operation(
 		summary = "Thêm hóa đơn kèm vé trước khi thanh toán",
@@ -35,11 +37,11 @@ public class BillController {
 	)
 	@PostMapping(value = "/bills")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<EntityModel<Bill>> create(
-		@Valid @RequestBody BillRequestDTO dataRaw,
-		Principal principal
+	public ResponseEntity<EntityModel<BillInfoProjection>> create(
+		@Valid @RequestBody BillRequestDTO dataRaw
 	) {
-		Bill newBill = billService.create(dataRaw, principal.getName());
+
+		Bill newBill = billService.create(dataRaw, userAuthUtilService.getCurrentUsername());
 		Link link = entityLinks.linkToItemResource(Bill.class, newBill.getId());
 		return ResponseEntity
 			.created(link.toUri())
@@ -54,22 +56,21 @@ public class BillController {
 			"sẽ được nêu rõ. "
 	)
 	@PutMapping(value = "/bills/{id}/payment")
-	public EntityModel<Bill> pay(
+	public EntityModel<BillInfoProjection> pay(
 		@PathVariable UUID id
 	) {
 
-		return billModelAssembler.toModel(billService.pay(id));
+		return billModelAssembler.toModel(billService.pay(id, userAuthUtilService.getCurrentUsername()));
 	}
 
 	@Operation(
 		summary = "Cập nhập thanh toán",
-		description = "Api được gọi khi khách hàng vào rạp, nhân viên sẽ quét QR và cập nhập trạng thái đơn hàng đã sử dụng thành công"
+		description = "Api được gọi khi khách hàng vào rạp, nhân viên sẽ quét và cập nhập trạng thái vé đã sử dụng thành công"
 	)
 	@PutMapping(value = "/bills/{id}")
-	public EntityModel<Bill> updateStatus(
+	public EntityModel<BillInfoProjection> updateStatus(
 		@PathVariable UUID id
 	) {
-		// TODO: chưa ràng buộc thời hạn nếu như vé bị outdated
 		return billModelAssembler.toModel(billService.updateStatus(id));
 	}
 

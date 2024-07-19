@@ -1,4 +1,4 @@
-package com.tech_symfony.movie_booking.api.bill.dto;
+package com.tech_symfony.movie_booking.api.bill;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,7 +18,6 @@ public class BillRequestDTO {
 //	private int changedPoint;
 
 	@NotNull(message = "Showtime id MUST not be null")
-	@Min(1)
 	private int showtimeId;
 
 	@NotEmpty(message = "seat MUST not be empty")

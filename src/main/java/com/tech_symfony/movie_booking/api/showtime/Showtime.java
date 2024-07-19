@@ -1,6 +1,5 @@
 package com.tech_symfony.movie_booking.api.showtime;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tech_symfony.movie_booking.api.movie.Movie;
 import com.tech_symfony.movie_booking.api.room.Room;
 import com.tech_symfony.movie_booking.model.BaseEntity;
@@ -46,18 +45,16 @@ public class Showtime extends BaseEntity {
 		nullable = false
 	)
 	@RestResource(exported = false)
-	@JsonBackReference
 	private Movie movie;
 
 
 	@NotEmpty(message = "showtime id must not be empty")
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(
 		name = "room_id",
 		nullable = false
 	)
 	@RestResource(exported = false)
-	@JsonBackReference
 	private Room room;
 
 }
