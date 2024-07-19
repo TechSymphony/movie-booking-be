@@ -6,7 +6,9 @@ server:
 
 #spring.jpa.show-sql: true
 springdoc:
-  paths-to-exclude: /profile/**
+  paths-to-exclude:
+    - /profile/**
+    - /tickets
 
   #  url=/openapi-3:
   #    0:

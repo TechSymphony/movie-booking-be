@@ -80,6 +80,7 @@ public class SecurityConfig {
 				.requestMatchers("/users").hasAuthority("READ_USER")
 				//swagger docs
 				.requestMatchers("/swagger-ui/**", "/v3/**", "/swagger-ui.html", "/openapi-3.0.yml").permitAll()
+				.requestMatchers("/tickets").denyAll()
 				.anyRequest()
 				.authenticated()
 
