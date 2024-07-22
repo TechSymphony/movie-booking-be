@@ -19,6 +19,6 @@ import java.util.Set;
 public class Permission extends NamedEntity {
 
 
-	private String decription;
+	private String description;
 
 }

@@ -25,8 +25,8 @@ public interface RoleService {
 @RequiredArgsConstructor
 class DefaultRoleService implements RoleService{
 
-	private final RoleRepository roleRepository;
-	private final PermissionRepository permissionRepository;
+	private RoleRepository roleRepository;
+	private PermissionRepository permissionRepository;
 
 	@Override
 	public List<Role> findAll() {
@@ -48,13 +48,10 @@ class DefaultRoleService implements RoleService{
 	@Transactional
 	public Role update(Integer id, Role role) {
 		Role oldRole = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
-		System.out.println(id);
+//		System.out.println(id);
 		Set<Permission> existingPermissions = role.getPermissions().stream()
-			.map(permission -> {
-				System.out.println(permission.getId());
-				return permissionRepository.findById(permission.getId())
-					.orElseThrow(() -> new RuntimeException("Permission not found: " + permission.getId()));
-			})
+			.map(permission -> permissionRepository.findById(permission.getId())
+                .orElseThrow(() -> new RuntimeException("Permission not found: " + permission.getId())))
 			.collect(Collectors.toSet());
 		oldRole.setPermissions(existingPermissions );
 		return oldRole;
