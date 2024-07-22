@@ -25,8 +25,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-
-@RunWith(MockitoJUnitRunner.class)
 class UserRegisterControllerTest extends BaseIntegrationTest {
 
 	@Autowired
@@ -40,7 +38,6 @@ class UserRegisterControllerTest extends BaseIntegrationTest {
 
 	@BeforeEach
 	public void setup() {
-		MockitoAnnotations.openMocks(this);
 		doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
 	}
 
@@ -72,7 +69,6 @@ class UserRegisterControllerTest extends BaseIntegrationTest {
 		User user = userRepository.findByEmail("admin@gmail.com").orElse(null);
 		if (user!=null) {
 			String token = tokenService.generateToken(user.getId().toString());
-			System.out.println(token);
 			mockMvc.perform(
 					get(
 						MvcUriComponentsBuilder
