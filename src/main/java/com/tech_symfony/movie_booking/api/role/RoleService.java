@@ -25,8 +25,8 @@ public interface RoleService {
 @RequiredArgsConstructor
 class DefaultRoleService implements RoleService{
 
-	private RoleRepository roleRepository;
-	private PermissionRepository permissionRepository;
+	private final RoleRepository roleRepository;
+	private final PermissionRepository permissionRepository;
 
 	@Override
 	public List<Role> findAll() {

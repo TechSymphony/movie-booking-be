@@ -1,7 +1,6 @@
 package com.tech_symfony.movie_booking.intergration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tech_symfony.movie_booking.MovieBookingApplication;
 import com.tech_symfony.movie_booking.api.role.*;
 import com.tech_symfony.movie_booking.api.role.RoleDto;
 import com.tech_symfony.movie_booking.model.BaseIntegrationTest;
@@ -11,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.security.test.context.support.WithMockUser;
 
 
 import java.util.Collections;
@@ -27,7 +27,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = MovieBookingApplication.class)
 public class RoleIT extends BaseIntegrationTest {
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -38,8 +37,8 @@ public class RoleIT extends BaseIntegrationTest {
 	@MockBean
 	private RoleModelAssembler roleModelAssembler;
 
-
 	@Test
+	@WithMockUser(username = "testuser", authorities = {"READ_ROLE"})
 	public void getById() throws Exception {
 		Role role = new Role();
 		role.setId(1);
@@ -73,6 +72,7 @@ public class RoleIT extends BaseIntegrationTest {
 
 
 	@Test
+	@WithMockUser(username = "testuser", authorities = {"SAVE_ROLE"})
 	public void createRole() throws Exception {
 		Role role = new Role();
 		role.setName("ROLE_ADMIN");
@@ -104,8 +104,10 @@ public class RoleIT extends BaseIntegrationTest {
 
 	//
 	@Test
+	@WithMockUser(username = "testuser", authorities = {"SAVE_ROLE"})
 	public void updateRole() throws Exception {
 		Role role = new Role();
+		role.setId(1);
 		role.setName("ROLE_ADMIN");
 		role.setPermissions(Collections.emptySet());
 
@@ -135,6 +137,7 @@ public class RoleIT extends BaseIntegrationTest {
 
 	//
 	@Test
+	@WithMockUser(username = "testuser", authorities = {"DELETE_ROLE"})
 	public void deleteRole() throws Exception {
 		given(roleService.delete(anyInt())).willReturn(true);
 

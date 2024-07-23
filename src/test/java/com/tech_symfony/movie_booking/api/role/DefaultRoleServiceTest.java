@@ -23,7 +23,6 @@ import java.util.Set;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-//@SpringBootTest
 class DefaultRoleServiceTest extends BaseUnitTest {
 
 	@Mock
@@ -35,10 +34,6 @@ class DefaultRoleServiceTest extends BaseUnitTest {
 	@InjectMocks
 	private DefaultRoleService roleService;
 
-	@BeforeEach
-	void setUp() {
-		MockitoAnnotations.openMocks(this);
-	}
 	@Test
 	void findAll() {
 		when(roleRepository.findAll()).thenReturn(Collections.emptyList());

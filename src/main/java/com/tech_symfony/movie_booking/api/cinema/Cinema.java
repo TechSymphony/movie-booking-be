@@ -1,5 +1,7 @@
 package com.tech_symfony.movie_booking.api.cinema;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tech_symfony.movie_booking.api.room.Room;
 import com.tech_symfony.movie_booking.model.NamedEntity;
 import jakarta.persistence.*;
@@ -12,11 +14,9 @@ import java.util.Set;
 
 @Setter
 @Getter
-
 @Entity
 @Table(name = "cinemas")
 public class Cinema extends NamedEntity {
-
 
 	@NotBlank(message = "Cinema address must not be blank")
 	@NotNull(message = "Cinema address must not be null")
@@ -30,7 +30,6 @@ public class Cinema extends NamedEntity {
 	@NotNull(message = "Cinema city must not be null")
 	private String city;
 
-
 	@Column(columnDefinition = "TEXT")
 	@NotBlank(message = "Cinema description must not be blank")
 	@NotNull(message = "Cinema description must not be null")
@@ -42,7 +41,7 @@ public class Cinema extends NamedEntity {
 
 	@NotBlank(message = "Cinema phone number must not be blank")
 	@NotNull(message = "Cinema phone number must not be null")
-	@Pattern(regexp = "^[0-9]{10}$", message = "Invalid number phone")
+	@Pattern(regexp = "^[0-9]{10}$", message = "Invalid phone number")
 	@Column(name = "phone_number")
 	private String phoneNumber;
 
@@ -51,7 +50,6 @@ public class Cinema extends NamedEntity {
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL
 	)
+	@JsonManagedReference
 	private Set<Room> rooms;
-
-
 }

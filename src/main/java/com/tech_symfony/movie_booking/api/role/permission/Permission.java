@@ -18,7 +18,6 @@ import java.util.Set;
 @Builder
 public class Permission extends NamedEntity {
 
-
 	private String description;
 
 }

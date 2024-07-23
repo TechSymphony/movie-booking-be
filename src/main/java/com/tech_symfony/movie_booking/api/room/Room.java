@@ -1,5 +1,6 @@
 package com.tech_symfony.movie_booking.api.room;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tech_symfony.movie_booking.api.cinema.Cinema;
@@ -11,12 +12,10 @@ import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-
 import java.util.Set;
 
 @Setter
 @Getter
-
 @Entity
 @Table(name = "rooms")
 public class Room extends NamedEntity {
@@ -44,6 +43,7 @@ public class Room extends NamedEntity {
 		nullable = false
 	)
 	@RestResource(exported = false)
+	@JsonBackReference
 	private Cinema cinema;
 
 	@OneToMany(
@@ -51,7 +51,6 @@ public class Room extends NamedEntity {
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.PERSIST
 	)
+	@JsonIgnore
 	private Set<Seat> seats;
-
-
 }
